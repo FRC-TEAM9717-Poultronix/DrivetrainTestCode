@@ -20,6 +20,7 @@ public class Robot extends TimedRobot
 
   private static Robot   instance;
   private        Command m_autonomousCommand;
+  private        Command m_teleopCommand;
 
   private RobotContainer m_robotContainer;
 
@@ -130,6 +131,13 @@ public class Robot extends TimedRobot
     } else
     {
       CommandScheduler.getInstance().cancelAll();
+    }
+    
+    m_teleopCommand = m_robotContainer.getTeleopDriveCommand();
+    // schedule the teleop command (example)
+    if (m_teleopCommand != null)
+    {
+      m_teleopCommand.schedule();
     }
   }
 

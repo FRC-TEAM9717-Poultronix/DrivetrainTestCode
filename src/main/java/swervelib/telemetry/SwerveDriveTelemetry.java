@@ -1,5 +1,6 @@
 package swervelib.telemetry;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -154,6 +155,20 @@ public class SwerveDriveTelemetry
                                                                                                                   "swerve/advantagescope/desiredChassisSpeeds",
                                                                                                                   ChassisSpeeds.struct)
                                                                                                               .publish();
+
+  /**
+   * Robot {@link Pose2d} for AdvantageScope
+   */
+  private static final StructPublisher<Pose2d>             robotPose2dStruct
+                                                                                        = NetworkTableInstance.getDefault()
+                                                                                                              .getTable(
+                                                                                                                  "SmartDashboard")
+                                                                                                              .getStructTopic(
+                                                                                                                  "swerve/advantagescope/pose2d",
+                                                                                                                  Pose2d.struct)
+                                                                                                              .publish();
+
+
   /**
    * Robot {@link Rotation2d} for AdvantageScope swerve widgets.
    */
@@ -303,6 +318,11 @@ public class SwerveDriveTelemetry
    * An array of rotation and velocity values describing the desired state of each swerve module
    */
   public static        double[]             desiredStates;
+
+  /**
+   * The robot's current pose based on odometry
+   */
+  public static        Pose2d               robotPose2dObj           = new Pose2d();
   /**
    * The robot's current rotation based on odometry or gyro readings
    */
@@ -472,6 +492,7 @@ public class SwerveDriveTelemetry
     desiredChassisSpeedsStruct.set(desiredChassisSpeedsObj);
     measuredChassisSpeedsStruct.set(measuredChassisSpeedsObj);
     robotRotationStruct.set(robotRotationObj);
+    robotPose2dStruct.set(robotPose2dObj);    
   }
 
   /**

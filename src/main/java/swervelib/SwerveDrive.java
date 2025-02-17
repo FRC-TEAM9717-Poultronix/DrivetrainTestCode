@@ -1187,12 +1187,14 @@ public class SwerveDrive implements AutoCloseable
       {
         if (SwerveDriveTelemetry.isSimulation)
         {
+          SwerveDriveTelemetry.robotPose2dObj = mapleSimDrive.getSimulatedDriveTrainPose();
           field.setRobotPose(mapleSimDrive.getSimulatedDriveTrainPose());
           field.getObject("OdometryPose").setPose(swerveDrivePoseEstimator.getEstimatedPosition());
           field.getObject("XModules").setPoses(getSwerveModulePoses(mapleSimDrive.getSimulatedDriveTrainPose()));
 
         } else
         {
+          SwerveDriveTelemetry.robotPose2dObj = swerveDrivePoseEstimator.getEstimatedPosition();
           field.setRobotPose(swerveDrivePoseEstimator.getEstimatedPosition());
         }
       }

@@ -11,6 +11,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -84,6 +86,9 @@ public class RobotContainer
                                                                                                               (Math.PI *
                                                                                                                2))
                                                                                .headingWhile(true);
+ 
+  // Create SmartDashboard chooser for autonomous and teleop routines
+  private final SendableChooser<Command> m_chooserTeleop = new SendableChooser<>();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -105,7 +110,6 @@ public class RobotContainer
    */
   private void configureBindings()
   {
-
     Command driveFieldOrientedDirectAngle      = drivebase.driveFieldOriented(driveDirectAngle);
     Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
     Command driveRobotOrientedAngularVelocity  = drivebase.driveFieldOriented(driveRobotOriented);
@@ -116,12 +120,18 @@ public class RobotContainer
     Command driveSetpointGenKeyboard = drivebase.driveWithSetpointGeneratorFieldRelative(
         driveDirectAngleKeyboard);
 
+    // Setup SmartDashboard chooser options
+    m_chooserTeleop.setDefaultOption("driveFieldOrientedAnglularVelocity", driveFieldOrientedAnglularVelocity);
+    m_chooserTeleop.addOption("driveFieldOrientedDirectAngle", driveFieldOrientedDirectAngle);
+    m_chooserTeleop.addOption("driveRobotOrientedAngularVelocity", driveRobotOrientedAngularVelocity);
+    SmartDashboard.putData("Teleop Mode", m_chooserTeleop);
+
     if (RobotBase.isSimulation())
     {
       drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
     } else
     {
-      drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
+      drivebase.setDefaultCommand(getTeleopDriveCommand());
     }
 
     if (Robot.isSimulation())
@@ -146,7 +156,7 @@ public class RobotContainer
       driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
       driverXbox.b().whileTrue(
           drivebase.driveToPose(
-              new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
+              new Pose2d(new Translation2d(15, 4), Rotation2d.fromDegrees(0)))
                               );
       driverXbox.start().whileTrue(Commands.none());
       driverXbox.back().whileTrue(Commands.none());
@@ -165,6 +175,15 @@ public class RobotContainer
   {
     // An example command will be run in autonomous
     return drivebase.getAutonomousCommand("New Auto");
+  }
+
+  /**
+ * Use this to pass the teleop command to the main {@link Robot} class.
+ *
+ * @return the command to run in teleop
+ */
+  public Command getTeleopDriveCommand() {
+    return m_chooserTeleop.getSelected();
   }
 
   public void setMotorBrake(boolean brake)
