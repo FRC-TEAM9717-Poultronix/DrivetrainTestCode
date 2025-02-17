@@ -121,8 +121,8 @@ public class RobotContainer
         driveDirectAngleKeyboard);
 
     // Setup SmartDashboard chooser options
-    m_chooserTeleop.setDefaultOption("driveFieldOrientedAnglularVelocity", driveFieldOrientedAnglularVelocity);
-    m_chooserTeleop.addOption("driveFieldOrientedDirectAngle", driveFieldOrientedDirectAngle);
+    m_chooserTeleop.setDefaultOption("driveFieldOrientedDirectAngle", driveFieldOrientedDirectAngle);
+    m_chooserTeleop.addOption("driveFieldOrientedAnglularVelocity", driveFieldOrientedAnglularVelocity);
     m_chooserTeleop.addOption("driveRobotOrientedAngularVelocity", driveRobotOrientedAngularVelocity);
     SmartDashboard.putData("Teleop Mode", m_chooserTeleop);
 
