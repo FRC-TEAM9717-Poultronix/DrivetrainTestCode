@@ -28,30 +28,29 @@ public final class Constants
     public static final int leftElevatorID = 11;  // Can Id of Left elevator motor
     public static final int rightElevatorID = 12; // Can Id of Right elevator motor
 
+    public static final int MaxCurrentLimit = 40; // Max current limit of elevator motors 
     public static final double maxOutput = 1.0;   // Max power output of elevator motors
-    public static final double maxVelocity = 1.0; // Max velocity of elevator
-    public static final double maxAcceleration = 1.0; // Max acceleration of elevator
-    public static final double countsPerInch = 1.0;   // Encoder ticks per inch of elevator travel
-    public static final double posTolerance = 0.5;    // Tolerance for PID control of elevator
+    public static final double maxVelocity = 8000.0; // Max velocity of elevator
+    public static final double maxAcceleration = 10000.0; // Max acceleration of elevator
+    public static final double countsPerInch = 0.9861;   // Encoder ticks per inch of elevator travel
+    public static final double posTolerance = 0.1;    // Tolerance for PID control of elevator
 
     // PID values
-    public static final double kP = 0.002;
+    public static final double kP = 0.05;
     public static final double kI = 0.0;
-    public static final double kD = 0.0;
+    public static final double kD = 0.01;
 
     // Feedforward values
-    public static final double kS = 0.002;
-    public static final double kV = 0.0;
-    public static final double kG = 0.0;
+    public static final double kAF = 0.02;
     
     // Stored elevator positions
-    public static final double minPos = 0;
-    public static final double downPos = 1.0;
-    public static final double L1 = 2.0;
-    public static final double L2 = 3.0;
-    public static final double L3 = 4.0;
-    public static final double L4 = 5.0;
-    public static final double maxPos = 10.0;
+    public static final double minPos = 5;
+    public static final double downPos = 2.0;
+    public static final double L1 = 7.0;
+    public static final double L2 = 20.0;
+    public static final double L3 = 25.0;
+    public static final double L4 = 35.0;
+    public static final double maxPos = 40.0;
   }
 
   public static final class DrivebaseConstants
