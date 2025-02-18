@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.elevator.ElevatorHome;
 import frc.robot.commands.elevator.ElevatorPosition;
 import frc.robot.commands.elevator.ElevatorVelecity;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
@@ -157,6 +158,7 @@ public class RobotContainer
       m_driverXbox.rightBumper().onTrue(Commands.none());
     } else
     {
+      m_driverXbox.button(1).onTrue(new ElevatorHome(m_elevator));
       m_driverXbox.button(2).onTrue((Commands.runOnce(m_drivebase::zeroGyro)));
       m_driver2Xbox.button(5).whileTrue(new ElevatorVelecity(m_elevator, () -> m_driver2Xbox.getLeftY() * -0.3));
       m_driverXbox.x().onTrue(Commands.runOnce(m_drivebase::addFakeVisionReading));

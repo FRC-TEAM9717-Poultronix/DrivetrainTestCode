@@ -159,14 +159,10 @@ public class ElevatorSubsystem extends SubsystemBase {
         return m_encoder.getPosition();
     }
 
-    public void homeElevator() {
-        // primaryMotor.set(-0.1); // Slow downward movement until bottom limit is hit
-        
-        // if (bottomLimit.get()) {
-        //     handleBottomLimit();
-        // }
+    public boolean isStalled() {
+        return m_primaryMotor.getWarnings().stall;
     }
-
+    
     public boolean isAtPosition(ElevatorPosition position) {
         return m_atSetPoint = Math.abs(currentPos - position.positionInches) < ElevatorConstants.posTolerance;
     }
