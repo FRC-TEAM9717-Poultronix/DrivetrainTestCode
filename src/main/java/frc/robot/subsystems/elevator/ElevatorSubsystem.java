@@ -25,15 +25,20 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final RelativeEncoder m_encoder;
     private final SparkClosedLoopController m_closedLoopController;
 
-    private ElevatorPosition m_currentTarget = ElevatorPosition.DOWN;
     private boolean m_atSetPoint = true;
     private boolean m_isHomed = false;
-    private double m_setpoint = 0.0;
     private boolean m_isManual = true;
+    private boolean m_isStalled = false;
+
     private SparkMaxConfig m_leaderConfig = new SparkMaxConfig();
     private SparkMaxConfig m_followerConfig = new SparkMaxConfig();
-    double currentPos;
 
+    private double m_setpoint = 0.0;
+    private double m_currentVelocity;
+    private double m_currentPosition;
+    private double m_currentCurrent;
+
+    // enum of pre-defined positions
     public enum ElevatorPosition {
         DOWN(Constants.ElevatorConstants.downPos),
         POSITION_1(Constants.ElevatorConstants.L1),
@@ -47,7 +52,8 @@ public class ElevatorSubsystem extends SubsystemBase {
             this.positionInches = positionInches;
         }
     }
- 
+
+    // Constructor
     public ElevatorSubsystem() {
         m_primaryMotor = new SparkMax(ElevatorConstants.rightElevatorID, MotorType.kBrushless);
         m_followerMotor = new SparkMax(ElevatorConstants.leftElevatorID, MotorType.kBrushless);
@@ -58,28 +64,33 @@ public class ElevatorSubsystem extends SubsystemBase {
         configureMotors();
     }
 
+    // Initialize motor settings
     private void configureMotors() {
 
+        // Settings
         m_leaderConfig.idleMode(IdleMode.kBrake)
-                   .smartCurrentLimit(Constants.ElevatorConstants.MaxCurrentLimit)
-                   .voltageCompensation(12.0);
+                      .inverted(false)
+                      .smartCurrentLimit(Constants.ElevatorConstants.MaxCurrentLimit)
+                      .voltageCompensation(12.0);
 
         m_followerConfig.idleMode(IdleMode.kBrake)
-                   .smartCurrentLimit(Constants.ElevatorConstants.MaxCurrentLimit)
-                   .voltageCompensation(12.0);   
+                        .inverted(false)
+                        .smartCurrentLimit(Constants.ElevatorConstants.MaxCurrentLimit)
+                        .voltageCompensation(12.0);   
 
-        m_leaderConfig.encoder.positionConversionFactor(ElevatorConstants.countsPerInch);
-        m_leaderConfig.encoder.velocityConversionFactor(ElevatorConstants.countsPerInch/60);
+        m_leaderConfig.encoder.positionConversionFactor(ElevatorConstants.countsPerInch)
+                              .velocityConversionFactor(ElevatorConstants.countsPerInch/60);
 
-        m_followerConfig.encoder.positionConversionFactor(ElevatorConstants.countsPerInch);
-        m_followerConfig.encoder.velocityConversionFactor(ElevatorConstants.countsPerInch/60);
+        m_followerConfig.encoder.positionConversionFactor(ElevatorConstants.countsPerInch)
+                                .velocityConversionFactor(ElevatorConstants.countsPerInch/60);
     
-        m_leaderConfig.softLimit.forwardSoftLimitEnabled(true).forwardSoftLimit(Constants.ElevatorConstants.maxPos);
-        m_leaderConfig.softLimit.reverseSoftLimitEnabled(true).reverseSoftLimit(Constants.ElevatorConstants.minPos);
+        m_leaderConfig.softLimit.forwardSoftLimitEnabled(true).forwardSoftLimit(Constants.ElevatorConstants.maxPos)
+                                .reverseSoftLimitEnabled(true).reverseSoftLimit(Constants.ElevatorConstants.minPos);
 
-        m_followerConfig.softLimit.forwardSoftLimitEnabled(false);
-        m_followerConfig.softLimit.reverseSoftLimitEnabled(false);
-        
+        m_followerConfig.softLimit.forwardSoftLimitEnabled(false)
+                                  .reverseSoftLimitEnabled(false);
+
+        // Special Leader settings
         m_leaderConfig.closedLoop.maxMotion.maxVelocity(Constants.ElevatorConstants.maxVelocity)
                                         .maxAcceleration(Constants.ElevatorConstants.maxAcceleration)
                                         .allowedClosedLoopError(Constants.ElevatorConstants.posTolerance);  
@@ -87,27 +98,26 @@ public class ElevatorSubsystem extends SubsystemBase {
         m_leaderConfig.closedLoop.pid(Constants.ElevatorConstants.kP, Constants.ElevatorConstants.kI, Constants.ElevatorConstants.kD)
                               .outputRange(-1.0, 1.0);
 
-        // Configure follower
+        // Special follower settings
         m_followerConfig.follow(m_primaryMotor, true);  
 
-        // Primary motor configuration
+        // Send setting to motors
         m_primaryMotor.configure(m_leaderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        
-        // Follower motor configuration
         m_followerMotor.configure(m_followerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        m_primaryMotor.setInverted(false);
-        m_followerMotor.setInverted(false);
-
+        // Zero elevator motor assuming it is min position on startup 
         m_encoder.setPosition(Constants.ElevatorConstants.minPos);
     }
 
     @Override
     public void periodic() {
 
-        currentPos = m_encoder.getPosition();
-
-        m_atSetPoint = Math.abs(currentPos - m_setpoint) < ElevatorConstants.posTolerance;
+        // Gather Telemetry
+        m_currentVelocity = m_encoder.getVelocity();
+        m_currentPosition = m_encoder.getPosition();
+        m_currentCurrent  = m_primaryMotor.getOutputCurrent();
+        m_isStalled = m_primaryMotor.getWarnings().stall;
+        m_atSetPoint = Math.abs(m_currentPosition - m_setpoint) < ElevatorConstants.posTolerance;
 
         // Update SmartDashboard
         updateTelemetry();
@@ -119,13 +129,83 @@ public class ElevatorSubsystem extends SubsystemBase {
         m_closedLoopController.setReference(m_setpoint, SparkBase.ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, Constants.ElevatorConstants.kAF);
     }
 
+    private void updateTelemetry() {
+        SmartDashboard.putBoolean("elevator/is_homed", m_isHomed);
+        SmartDashboard.putBoolean("elevator/is_manual", m_isManual);
+
+        SmartDashboard.putNumber("elevator/height", getHeightInches());
+        SmartDashboard.putNumber("elevator/set_point", m_setpoint);
+
+        SmartDashboard.putNumber("elevator/velocity", getVelocity());
+        SmartDashboard.putNumber("elevator/motor_current", getCurrent());
+    }
+
     public void stopMotors() {
         m_primaryMotor.set(0);
     }
 
+    public double getVelocity() {
+        return m_currentVelocity;
+    }
+
+    public double getCurrent() {
+        return m_currentCurrent;
+    }
+
+    public double getHeightInches() {
+        return m_currentPosition;
+    }
+
+    public boolean isStalled() {
+        return m_isStalled;
+    }
+
+    public boolean isHomed() {
+        return m_isHomed;
+    }
+
     public boolean isAtSetPoint() {
-        // Check if the elevator is within a small tolerance of the target height
         return m_atSetPoint;
+    }
+    
+    public boolean isAtPosition(ElevatorPosition position) {
+        return Math.abs(m_currentPosition - position.positionInches) < ElevatorConstants.posTolerance;
+    }
+
+    public boolean disableSoftLimits() {
+        m_isHomed = false;
+        
+        SoftLimitConfig newLimit = new SoftLimitConfig();
+        newLimit.forwardSoftLimitEnabled(false)
+                .reverseSoftLimitEnabled(false);
+        
+        m_leaderConfig.apply(newLimit);
+        m_primaryMotor.configure(m_leaderConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+
+        return true;
+    }
+
+    public boolean enableSoftLimits() {
+        SoftLimitConfig newLimit = new SoftLimitConfig();
+        newLimit.forwardSoftLimitEnabled(true)
+                .reverseSoftLimitEnabled(true);
+        
+        m_leaderConfig.apply(newLimit);
+        m_primaryMotor.configure(m_leaderConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+
+        return true;
+    }
+
+    public boolean setHome() {
+        
+        REVLibError error =  m_encoder.setPosition(Constants.ElevatorConstants.minPos);
+        System.out.print("  Homed to "); System.out.println(Constants.ElevatorConstants.minPos);
+        enableSoftLimits();
+        m_isHomed = true;
+
+        setPositionInches(Constants.ElevatorConstants.downPos);
+        
+        return true;
     }
 
     public void setPositionInches(double inches) {
@@ -145,76 +225,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         );
 
         System.out.print("    setPoint: "); System.out.println(m_setpoint);
-    }
-
-    private void updateTelemetry() {
-        SmartDashboard.putNumber("elevator/height", getHeightInches());
-        SmartDashboard.putNumber("elevator/target", m_setpoint);
-        SmartDashboard.putBoolean("elevator/is_homed", m_isHomed);
-        // SmartDashboard.putString("elevator/state", currentTarget.toString());
-        SmartDashboard.putNumber("elevator/motor_current", m_primaryMotor.getOutputCurrent());
-        // SmartDashboard.putNumber("elevator/velocity", currentState.velocity);
-    }
-
-    public double getVelocity() {
-        return m_encoder.getVelocity();
-    }
-
-
-    public double getHeightInches() {
-        return m_encoder.getPosition();
-    }
-
-    public boolean isStalled() {
-        return m_primaryMotor.getWarnings().stall;
-    }
-    
-    public boolean isAtPosition(ElevatorPosition position) {
-        return m_atSetPoint = Math.abs(currentPos - position.positionInches) < ElevatorConstants.posTolerance;
-    }
-
-    public boolean disableSoftLimits() {
-        m_isHomed = false;
-        
-        SoftLimitConfig newLimit = new SoftLimitConfig();
-        newLimit.forwardSoftLimitEnabled(false)
-                .reverseSoftLimitEnabled(false);
-        
-        m_leaderConfig.apply(newLimit);
-        m_primaryMotor.configure(m_leaderConfig, ResetMode.kResetSafeParameters, null);
-
-        return true;
-    }
-
-    public boolean enableSoftLimits() {
-        SoftLimitConfig newLimit = new SoftLimitConfig();
-        newLimit.forwardSoftLimitEnabled(true)
-                .reverseSoftLimitEnabled(true);
-        
-        m_leaderConfig.apply(newLimit);
-        m_primaryMotor.configure(m_leaderConfig, ResetMode.kResetSafeParameters, null);
-
-        return true;
-    }
-
-    public boolean setHome() {
-        
-        REVLibError error =  m_encoder.setPosition(Constants.ElevatorConstants.minPos);
-        System.out.print("  Homed to "); System.out.println(Constants.ElevatorConstants.minPos);
-        enableSoftLimits();
-        m_isHomed = true;
-
-        setPositionInches(Constants.ElevatorConstants.downPos);
-        
-        return true;
-    }
-
-    public boolean isHomed() {
-        return m_isHomed;
-    }
-
-    public ElevatorPosition getCurrentTarget() {
-        return m_currentTarget;
     }
 
     public void setManualPower(double power) {
