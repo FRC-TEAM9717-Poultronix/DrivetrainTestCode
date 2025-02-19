@@ -1,5 +1,6 @@
 package frc.robot.subsystems.elevator;
 
+import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -9,6 +10,7 @@ import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SoftLimitConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.MathUtil;
@@ -97,7 +99,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         m_primaryMotor.setInverted(false);
         m_followerMotor.setInverted(false);
 
-        m_encoder.setPosition(0.0);
+        m_encoder.setPosition(Constants.ElevatorConstants.minPos);
     }
 
     @Override
@@ -107,31 +109,30 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         m_atSetPoint = Math.abs(currentPos - m_setpoint) < ElevatorConstants.posTolerance;
 
-        if(!m_isManual)
-        {
-        // if (isHomed) {
-            m_closedLoopController.setReference(m_setpoint, SparkBase.ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, Constants.ElevatorConstants.kAF);
-        // }
-        }
-
         // Update SmartDashboard
         updateTelemetry();
+
+        if(m_isManual) return;
+
+        if (!m_isHomed) return;
+
+        m_closedLoopController.setReference(m_setpoint, SparkBase.ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, Constants.ElevatorConstants.kAF);
     }
 
     public void stopMotors() {
         m_primaryMotor.set(0);
     }
 
-    public boolean isAtSetPoint(double targetHeightInches) {
+    public boolean isAtSetPoint() {
         // Check if the elevator is within a small tolerance of the target height
         return m_atSetPoint;
     }
 
     public void setPositionInches(double inches) {
-        // if (!isHomed && inches > 0) {
-        //     System.out.println("Warning: Elevator not homed! Home first before moving to positions.");
-        //     return;
-        // }
+        if (!m_isHomed && inches > 0) {
+            System.out.println("Warning: Elevator not homed! Home first before moving to positions.");
+            return;
+        }
 
         m_isManual = false;
 
@@ -155,6 +156,11 @@ public class ElevatorSubsystem extends SubsystemBase {
         // SmartDashboard.putNumber("elevator/velocity", currentState.velocity);
     }
 
+    public double getVelocity() {
+        return m_encoder.getVelocity();
+    }
+
+
     public double getHeightInches() {
         return m_encoder.getPosition();
     }
@@ -167,25 +173,53 @@ public class ElevatorSubsystem extends SubsystemBase {
         return m_atSetPoint = Math.abs(currentPos - position.positionInches) < ElevatorConstants.posTolerance;
     }
 
-    public boolean isM_isHomed() {
+    public boolean disableSoftLimits() {
+        m_isHomed = false;
+        
+        SoftLimitConfig newLimit = new SoftLimitConfig();
+        newLimit.forwardSoftLimitEnabled(false)
+                .reverseSoftLimitEnabled(false);
+        
+        m_leaderConfig.apply(newLimit);
+        m_primaryMotor.configure(m_leaderConfig, ResetMode.kResetSafeParameters, null);
+
+        return true;
+    }
+
+    public boolean enableSoftLimits() {
+        SoftLimitConfig newLimit = new SoftLimitConfig();
+        newLimit.forwardSoftLimitEnabled(true)
+                .reverseSoftLimitEnabled(true);
+        
+        m_leaderConfig.apply(newLimit);
+        m_primaryMotor.configure(m_leaderConfig, ResetMode.kResetSafeParameters, null);
+
+        return true;
+    }
+
+    public boolean setHome() {
+        
+        REVLibError error =  m_encoder.setPosition(Constants.ElevatorConstants.minPos);
+        System.out.print("  Homed to "); System.out.println(Constants.ElevatorConstants.minPos);
+        enableSoftLimits();
+        m_isHomed = true;
+
+        setPositionInches(Constants.ElevatorConstants.downPos);
+        
+        return true;
+    }
+
+    public boolean isHomed() {
         return m_isHomed;
     }
 
-    public ElevatorPosition getM_currentTarget() {
+    public ElevatorPosition getCurrentTarget() {
         return m_currentTarget;
     }
 
     public void setManualPower(double power) {
         // Disable PID control when in manual mode
         m_isManual = true;
-
-        // if (getHeightInches() >= ElevatorConstants.maxPos && power > 0) {
-        //     power = 0;
-        // }
-        
-        // if (getHeightInches() <= ElevatorConstants.minPos && power < 0) {
-        //     power = 0;
-        // }
         
         m_primaryMotor.set(MathUtil.clamp(power, -ElevatorConstants.maxOutput, ElevatorConstants.maxOutput));
     }

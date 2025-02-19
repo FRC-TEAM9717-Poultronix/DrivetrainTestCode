@@ -36,21 +36,21 @@ public final class Constants
     public static final double posTolerance = 0.1;    // Tolerance for PID control of elevator
 
     // PID values
-    public static final double kP = 0.05;
+    public static final double kP = 0.1;
     public static final double kI = 0.0;
-    public static final double kD = 0.01;
+    public static final double kD = 0.001;
 
     // Feedforward values
     public static final double kAF = 0.02;
     
     // Stored elevator positions
-    public static final double minPos = 5;
-    public static final double downPos = 2.0;
-    public static final double L1 = 7.0;
-    public static final double L2 = 20.0;
-    public static final double L3 = 25.0;
-    public static final double L4 = 35.0;
-    public static final double maxPos = 40.0;
+    public static final double minPos = 28;
+    public static final double downPos = 31;
+    public static final double L1 = 35;
+    public static final double L2 = 45.0;
+    public static final double L3 = 60.0;
+    public static final double L4 = 75.0;
+    public static final double maxPos = 76.0;
   }
 
   public static final class DrivebaseConstants

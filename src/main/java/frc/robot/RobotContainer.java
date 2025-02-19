@@ -166,14 +166,13 @@ public class RobotContainer
           m_drivebase.driveToPose(
               new Pose2d(new Translation2d(15, 4), Rotation2d.fromDegrees(0)))
                               );
-      m_driverXbox.start().whileTrue(Commands.none());
-      m_driverXbox.back().whileTrue(Commands.none());
       m_driverXbox.leftBumper().whileTrue(Commands.runOnce(m_drivebase::lock, m_drivebase).repeatedly());
-      m_driverXbox.rightBumper().onTrue(Commands.none());
+
       m_driverXbox.povUp().onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.L4));
       m_driverXbox.povRight().onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.L3));
       m_driverXbox.povLeft().onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.L2));
       m_driverXbox.povDown().onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.L1));
+      m_driverXbox.rightBumper().onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.downPos));
     }
 
   }

@@ -17,14 +17,21 @@ import swervelib.math.SwerveMath;
  * An example command that uses an example subsystem.
  */
 public class ElevatorHome extends Command {
-  private final ElevatorSubsystem elevator;
-  private long startTime;
+  private final ElevatorSubsystem m_elevator;
+  private double m_startHeightInInches;
+  private double m_currentHeightInInches;
+  private boolean m_isInitialized = false;
+
+  enum State {start, moving_up, start_down, homing, finished};
+
+  private State m_state;
+  // private boolean m_softLimitDisabled = false;
 
   public ElevatorHome(ElevatorSubsystem elevator)
   {
-    this.elevator = elevator;
+    m_elevator = elevator;
   
-    addRequirements(elevator);
+    addRequirements(m_elevator);
   }
 
     /**
@@ -33,30 +40,67 @@ public class ElevatorHome extends Command {
   @Override
   public void initialize()
   {
-    startTime = System.currentTimeMillis();
+    m_state = State.start;
+    m_elevator.disableSoftLimits();
+    m_startHeightInInches = m_elevator.getHeightInches();
   }
 
   @Override
   public void execute()
   {
     long currentTime = System.currentTimeMillis();
+    double currentHeightInInches = m_elevator.getHeightInches();
     
-    // Move up a short distance then down
-    if(currentTime - startTime < 100) elevator.setManualPower(0.1);
-      else elevator.setManualPower(-0.1);
+    // Move up for a short time, then start down, set initialized flag, then check homing
+    // the m_initialized variable ensures it is moving before the homing function is called
+    // overwise the velocity check during homing could trigger on first pass
+    switch (m_state) {
+      case start:
+        m_elevator.setManualPower(0.1);
+        m_state = State.moving_up;
+        break;
+      case moving_up:
+        System.out.print("Start Height: "); System.out.println(m_startHeightInInches);
+        System.out.print("Current Height: "); System.out.println(currentHeightInInches);
+        if(currentHeightInInches > (m_startHeightInInches + 3.0))
+        {
+          m_state = State.start_down;
+          m_elevator.setManualPower(-0.1);
+        }
+        break;
+      case start_down:
+        System.out.print("Start Height: "); System.out.println(m_startHeightInInches);
+        System.out.print("Current Height: "); System.out.println(currentHeightInInches);
+        if(currentHeightInInches < (m_startHeightInInches + 1.0))
+        {
+          m_state = State.homing;
+        }
+        break;
+      case homing:
+        System.out.print("Velocity"); System.out.println(m_elevator.getVelocity());
+        if(m_elevator.getVelocity() > -0.1)
+        {
+          m_elevator.setHome();
+          m_state = State.finished;
+        }
+        break;
+      default:
+        break;
+    }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished()
   {
-    return elevator.isStalled();  // Move down until we stall;
+    return m_state == State.finished;  // Move down until we stall;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted)
   {
+    System.out.println("Homing Ended!");
   }
 
 }
