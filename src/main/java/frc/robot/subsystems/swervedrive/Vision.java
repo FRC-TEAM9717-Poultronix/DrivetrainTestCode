@@ -101,6 +101,15 @@ public class Vision
     }
   }
 
+  public Cameras getCamera(String name)
+  {
+    for (Cameras camera : Cameras.values())
+    {
+      if(camera.name() == name) return camera;
+    }
+    return null;
+  }
+
   /**
    * Calculates a target pose relative to an AprilTag on the field.
    *
@@ -143,6 +152,10 @@ public class Vision
     for (Cameras camera : Cameras.values())
     {
       Optional<EstimatedRobotPose> poseEst = getEstimatedGlobalPose(camera);
+      // System.out.println(camera.name()); 
+      // System.out.print("  x: ");System.out.println(poseEst.get().estimatedPose.getX());
+      // System.out.print("  y: ");System.out.println(poseEst.get().estimatedPose.getY());
+      // System.out.print("  z: ");System.out.println(poseEst.get().estimatedPose.getZ());
       if (poseEst.isPresent())
       {
         var pose = poseEst.get();
@@ -361,7 +374,7 @@ public class Vision
                new Translation3d(Units.inchesToMeters(9.75),
                                  Units.inchesToMeters(-0.50),
                                  Units.inchesToMeters(7.00)),
-               VecBuilder.fill(2, 2, 4), VecBuilder.fill(0.25, 0.25, 0.5));
+               VecBuilder.fill(0.2, 0.2, 0.5), VecBuilder.fill(0.25, 0.25, 0.5));
 
     /**
      * Latency alert to use when high latency is detected.

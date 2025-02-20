@@ -218,6 +218,21 @@ public class SwerveSubsystem extends SubsystemBase
     PathfindingCommand.warmupCommand().schedule();
   }
 
+  public Transform3d getPoseOfTarget(String cameraName)
+  {
+    Optional<PhotonPipelineResult> latestResult = vision.getCamera(cameraName).getLatestResult();
+    if (latestResult.isPresent())
+    {
+      var result = latestResult.get();
+      if (result.hasTargets())
+      {
+      result.getBestTarget().getBestCameraToTarget();
+      }
+    }
+
+    return null;
+  }
+
   /**
    * Aim the robot at the target returned by PhotonVision.
    *

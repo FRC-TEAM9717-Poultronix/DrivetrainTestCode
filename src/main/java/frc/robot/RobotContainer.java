@@ -38,20 +38,23 @@ public class RobotContainer
   final         CommandXboxController m_driverXbox = new CommandXboxController(0);
   final         CommandXboxController m_driver2Xbox = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
-  private final SwerveSubsystem       m_drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+  final SwerveSubsystem       m_drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve/neo"));
-  private final ElevatorSubsystem     m_elevator = new ElevatorSubsystem();
+  final ElevatorSubsystem     m_elevator = new ElevatorSubsystem();
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
+  public Rotation2d m_targetRotation;
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(m_drivebase.getSwerveDrive(),
                                                                 () -> m_driverXbox.getRawAxis(1) * -1,
                                                                 () -> m_driverXbox.getRawAxis(0) * -1)
                                                             .withControllerRotationAxis(() -> m_driverXbox.getRawAxis(2) * -1)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
-                                                            .allianceRelativeControl(false);
+                                                            .allianceRelativeControl(false)
+                                                            .alignWhile(m_driverXbox.button(4))
+                                                            .align(m_targetRotation);
 
   /**
    * Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
