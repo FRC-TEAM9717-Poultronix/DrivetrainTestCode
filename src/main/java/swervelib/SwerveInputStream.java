@@ -84,7 +84,7 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
   /**
    * Target to align at.
    */
-  private Optional<Rotation2d>          alignTarget            = Optional.empty();
+  private Optional< Supplier<Pose2d> >    alignTarget        = Optional.empty();
   /**
    * Output {@link ChassisSpeeds} based on heading while this is True.
    */
@@ -469,12 +469,12 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
   /**
    * Align the {@link SwerveDrive} at this pose while driving.
    *
-   * @param alignTarget {@link Rotation2d} to point at.
+   * @param alignTarget {@link Pose2d} to align with.
    * @return this
    */
-  public SwerveInputStream align(Rotation2d alignTarget)
+  public SwerveInputStream align(Supplier<Pose2d> alignTarget)
   {
-    this.alignTarget = alignTarget.equals(Rotation2d.kZero) ? Optional.empty() : Optional.of(alignTarget);
+    this.alignTarget = Optional.of(alignTarget);
     return this;
   }
 
@@ -921,8 +921,10 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
       case ALIGN ->
       {
         Rotation2d    currentHeading = swerveDrive.getOdometryHeading();
-        Rotation2d    target         = alignTarget.get();
-        omegaRadiansPerSecond = swerveController.headingCalculate(currentHeading.getRadians(), target.getRadians());
+        double        targetY        = alignTarget.get().get().getY();
+        Rotation2d    targetRotation = alignTarget.get().get().getRotation();
+        omegaRadiansPerSecond = swerveController.headingCalculate(0.0, targetRotation.getRadians());
+        vyMetersPerSecond  = swerveController.translationCalculate(0.0, targetY);
         speeds = new ChassisSpeeds(vxMetersPerSecond, vyMetersPerSecond, omegaRadiansPerSecond);
         break;
       }

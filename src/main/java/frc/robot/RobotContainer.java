@@ -45,29 +45,31 @@ public class RobotContainer
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
-  public Rotation2d m_targetRotation;
+  public Pose2d m_targetPose;
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(m_drivebase.getSwerveDrive(),
                                                                 () -> m_driverXbox.getRawAxis(1) * -1,
                                                                 () -> m_driverXbox.getRawAxis(0) * -1)
-                                                            .withControllerRotationAxis(() -> m_driverXbox.getRawAxis(2) * -1)
+                                                            .withControllerRotationAxis(() -> m_driverXbox.getRawAxis(4) * -1)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(false)
                                                             .alignWhile(m_driverXbox.button(4))
-                                                            .align(m_targetRotation);
+                                                            .align(() -> m_targetPose);
 
   /**
    * Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
    */
-  SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(() -> m_driverXbox.getRawAxis(2) * -1,
-                                                                                             () -> m_driverXbox.getRawAxis(3) * -1)
+  SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(() -> m_driverXbox.getRawAxis(4) * -1,
+                                                                                             () -> m_driverXbox.getRawAxis(5) * -1)
                                                            .headingWhile(true);
 
   /**
    * Clone's the angular velocity input stream and converts it to a robotRelative input stream.
    */
   SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
-                                                             .allianceRelativeControl(false);
+                                                             .allianceRelativeControl(false)
+                                                             .alignWhile(m_driverXbox.button(4))
+                                                             .align(() -> m_targetPose);
 
 
   SwerveInputStream driveAngularVelocityKeyboard = SwerveInputStream.of(m_drivebase.getSwerveDrive(),

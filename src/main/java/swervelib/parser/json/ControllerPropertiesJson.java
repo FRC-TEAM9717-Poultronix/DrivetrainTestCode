@@ -19,6 +19,8 @@ public class ControllerPropertiesJson
    */
   public PIDFConfig heading;
 
+  public PIDFConfig translation;
+
   /**
    * Create the {@link SwerveControllerConfiguration} based on parsed and given data.
    *
@@ -30,6 +32,6 @@ public class ControllerPropertiesJson
       SwerveDriveConfiguration driveConfiguration, double maxSpeedMPS)
   {
     return new SwerveControllerConfiguration(
-        driveConfiguration, heading, angleJoystickRadiusDeadband, maxSpeedMPS);
+        driveConfiguration, translation, heading, angleJoystickRadiusDeadband, maxSpeedMPS);
   }
 }

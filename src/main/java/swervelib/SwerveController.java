@@ -18,6 +18,15 @@ public class SwerveController
    */
   public final SwerveControllerConfiguration config;
   /**
+   * PID Controller for the robot translation.
+   */
+  public final PIDController                 xController; // TODO: Switch to ProfilePIDController
+    /**
+   * PID Controller for the robot translation.
+   */
+  public final PIDController                 yController; // TODO: Switch to ProfilePIDController
+  /**
+  /**
    * PID Controller for the robot heading.
    */
   public final PIDController                 thetaController; // TODO: Switch to ProfilePIDController
@@ -47,6 +56,8 @@ public class SwerveController
   public SwerveController(SwerveControllerConfiguration cfg)
   {
     config = cfg;
+    xController = config.translationPIDF.createPIDController();
+    yController = config.translationPIDF.createPIDController();
     thetaController = config.headingPIDF.createPIDController();
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
     lastAngleScalar = 0;
@@ -209,6 +220,30 @@ public class SwerveController
   }
 
   /**
+   * Calculate the linear velocity given the current and target position in meters.
+   *
+   * @param currentLocationInMeters The current location of the robot in meters.
+   * @param targetLocationInMeters  The target location of the robot in meters.
+   * @return Linear velocity in meters per second.
+   */
+  public double xTranslationCalculate(double currentLocationInMeters, double targetLocationInMeters)
+  {
+    return xController.calculate(currentLocationInMeters, targetLocationInMeters) * config.maxLinearVelocity;
+  }
+
+    /**
+   * Calculate the linear velocity given the current and target position in meters.
+   *
+   * @param currentLocationInMeters The current location of the robot in meters.
+   * @param targetLocationInMeters  The target location of the robot in meters.
+   * @return Linear velocity in meters per second.
+   */
+  public double yTranslationCalculate(double currentLocationInMeters, double targetLocationInMeters)
+  {
+    return yController.calculate(currentLocationInMeters, targetLocationInMeters) * config.maxLinearVelocity;
+  }
+
+  /**
    * Calculate the angular velocity given the current and target heading angle in radians.
    *
    * @param currentHeadingAngleRadians The current heading of the robot in radians.
@@ -218,6 +253,18 @@ public class SwerveController
   public double headingCalculate(double currentHeadingAngleRadians, double targetHeadingAngleRadians)
   {
     return thetaController.calculate(currentHeadingAngleRadians, targetHeadingAngleRadians) * config.maxAngularVelocity;
+  }
+
+  /**
+   * Set a new maximum linear velocity that is different from the auto-generated one. Modified the
+   * {@link SwerveControllerConfiguration#maxLinearVelocity} field which is used in the {@link SwerveController} class
+   * for {@link ChassisSpeeds} generation.
+   *
+   * @param linearVelocity Linear velocity in meters per second.
+   */
+  public void setMaximumChassisLinearVelocity(double linearVelocity)
+  {
+    config.maxLinearVelocity = linearVelocity;
   }
 
   /**

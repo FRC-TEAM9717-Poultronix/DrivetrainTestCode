@@ -9,8 +9,14 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import org.photonvision.PhotonCamera;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.units.measure.Angle;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
  * described in the TimedRobot documentation. If you change the name of this class or the package after creating this
@@ -24,6 +30,7 @@ public class Robot extends TimedRobot
   private        Command m_teleopCommand;
 
   private RobotContainer m_robotContainer;
+  private PhotonCamera m_camera;
 
   private Timer disabledTimer;
 
@@ -46,6 +53,8 @@ public class Robot extends TimedRobot
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    m_camera = new PhotonCamera("center");
 
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
     // immediately when disabled, but then also let it be pushed more 
@@ -148,9 +157,48 @@ public class Robot extends TimedRobot
   @Override
   public void teleopPeriodic()
   {
-    Transform3d targetTransform = m_robotContainer.m_drivebase.getPoseOfTarget("Center");
-    Rotation2d targetRotation2d = targetTransform.getRotation().toRotation2d().unaryMinus();
-    m_robotContainer.m_targetRotation = m_robotContainer.m_drivebase.getHeading().plus(targetRotation2d);
+
+    // Read in relevant data from the Camera
+    boolean targetVisible = false;
+    Transform3d poseOfTarget3d = null;
+    var results = m_camera.getAllUnreadResults();
+    if (!results.isEmpty()) {
+        // Camera processed a new frame since last
+        // Get the last one in the list.
+        var result = results.get(results.size() - 1);
+        if (result.hasTargets()) {
+            // At least one AprilTag was seen by the camera
+            for (var target : result.getTargets()) {
+                if (target.getFiducialId() == 1) {
+                    // Found Tag 7, record its information
+                    poseOfTarget3d = target.getBestCameraToTarget();
+                    targetVisible = true;
+                }
+            }
+        }
+    }
+    
+    if(targetVisible)
+    {
+    //   System.out.println("Got Pose of Target!");
+      
+    //   // Pose2d poseOfRobot = m_robotContainer.m_drivebase.getPose();
+    //   // Transform2d transform = new Transform2d(poseOfRobot.getTranslation(), poseOfRobot.getRotation());
+
+      Rotation2d correction = new Rotation2d(Math.PI);
+      Rotation2d rotationOfTarget = poseOfTarget3d.getRotation().toRotation2d().plus(correction);
+      Pose2d poseOfTarget = new Pose2d(poseOfTarget3d.getX(),poseOfTarget3d.getY(),rotationOfTarget);
+      Pose2d targetPose = poseOfTarget;
+    //   // Pose2d targetPose = poseOfTarget.transformBy(transform);
+    
+      // System.out.print(" X: "); System.out.println(targetPose.getX());
+      // System.out.print(" Y: "); System.out.println(targetPose.getY());
+      // System.out.print(" Yaw: "); System.out.println(targetPose.getRotation().getDegrees());
+      m_robotContainer.m_targetPose = targetPose;
+    }
+
+
+    
   }
 
   @Override
