@@ -97,7 +97,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         m_primaryMotor.setInverted(false);
         m_followerMotor.setInverted(false);
 
-        m_encoder.setPosition(0.0);
+        m_encoder.setPosition(Constants.ElevatorConstants.minPos);
     }
 
     @Override

@@ -41,16 +41,17 @@ public final class Constants
     public static final double kD = 0.01;
 
     // Feedforward values
-    public static final double kAF = 0.02;
+    public static final double kAF = 0.03;
     
     // Stored elevator positions
-    public static final double minPos = 5;
-    public static final double downPos = 2.0;
-    public static final double L1 = 7.0;
-    public static final double L2 = 20.0;
-    public static final double L3 = 25.0;
-    public static final double L4 = 35.0;
-    public static final double maxPos = 40.0;
+    public static final double minPos = 28;
+    public static final double downPos = 30.0;
+    public static final double L1 = 35.0;
+    public static final double L2 = 40.0;
+    public static final double L3 = 50.0;
+    public static final double L4 = 77.5;
+    public static final double maxPos = 78.0;
+    
   }
 
   public static final class DrivebaseConstants
