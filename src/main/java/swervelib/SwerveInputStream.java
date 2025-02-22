@@ -82,6 +82,10 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
    */
   private Optional<Pose2d>          aimTarget            = Optional.empty();
   /**
+   * Target to align at.
+   */
+  private Optional< Supplier<Pose2d> >    alignTarget        = Optional.empty();
+  /**
    * Output {@link ChassisSpeeds} based on heading while this is True.
    */
   private       Optional<BooleanSupplier> headingEnabled         = Optional.empty();
@@ -93,6 +97,11 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
    * Output {@link ChassisSpeeds} based on aim while this is True.
    */
   private       Optional<BooleanSupplier> aimEnabled             = Optional.empty();
+  /**
+   * Output {@link ChassisSpeeds} based on align while this is True.
+   */
+  private       Optional<BooleanSupplier> alignEnabled             = Optional.empty();
+  
   /**
    * Maintain current heading and drive without rotating, ideally.
    */
@@ -204,8 +213,10 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
     newStream.translationAxisScale = translationAxisScale;
     newStream.omegaAxisScale = omegaAxisScale;
     newStream.aimTarget = aimTarget;
+    newStream.alignTarget = alignTarget;
     newStream.headingEnabled = headingEnabled;
     newStream.aimEnabled = aimEnabled;
+    newStream.alignEnabled = alignEnabled;
     newStream.currentMode = currentMode;
     newStream.translationOnlyEnabled = translationOnlyEnabled;
     newStream.lockedHeading = lockedHeading;
@@ -456,6 +467,18 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
   }
 
   /**
+   * Align the {@link SwerveDrive} at this pose while driving.
+   *
+   * @param alignTarget {@link Pose2d} to align with.
+   * @return this
+   */
+  public SwerveInputStream align(Supplier<Pose2d> alignTarget)
+  {
+    this.alignTarget = Optional.of(alignTarget);
+    return this;
+  }
+
+  /**
    * Enable aiming while the trigger is true.
    *
    * @param trigger When True will enable aiming at the current target.
@@ -464,6 +487,18 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
   public SwerveInputStream aimWhile(BooleanSupplier trigger)
   {
     aimEnabled = Optional.of(trigger);
+    return this;
+  }
+
+    /**
+   * Enable aligning while the trigger is true.
+   *
+   * @param trigger When True will enable aligning at the current target.
+   * @return this.
+   */
+  public SwerveInputStream alignWhile(BooleanSupplier trigger)
+  {
+    alignEnabled = Optional.of(trigger);
     return this;
   }
 
@@ -481,6 +516,24 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
     } else
     {
       aimEnabled = Optional.empty();
+    }
+    return this;
+  }
+
+  /**
+   * Enable aligning while the trigger is true.
+   *
+   * @param trigger When True will enable aligning at the current target.
+   * @return this.
+   */
+  public SwerveInputStream alignWhile(boolean trigger)
+  {
+    if (trigger)
+    {
+      alignEnabled = Optional.of(() -> true);
+    } else
+    {
+      alignEnabled = Optional.empty();
     }
     return this;
   }
@@ -536,6 +589,18 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
             "Attempting to enter AIM mode without target, please use SwerveInputStream.aim() to select a target first!",
             false);
       }
+    } else if (alignEnabled.isPresent() && alignEnabled.get().getAsBoolean())
+    {
+      if (alignTarget.isPresent())
+      {
+        return SwerveInputMode.ALIGN;
+      } else
+      {
+        DriverStation.reportError(
+            "Attempting to enter ALIGN mode without target, please use SwerveInputStream.align() to select a target first!",
+            false);
+      }
+
     } else if (headingEnabled.isPresent() && headingEnabled.get().getAsBoolean())
     {
       if (controllerHeadingX.isPresent() && controllerHeadingY.isPresent())
@@ -587,6 +652,11 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
         // Do nothing
         break;
       }
+      case ALIGN ->
+      {
+        // Do nothing
+        break;
+      }
     }
 
     // Transitioning to new mode
@@ -611,6 +681,11 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
         break;
       }
       case AIM ->
+      {
+        // Do nothing
+        break;
+      }
+      case ALIGN ->
       {
         // Do nothing
         break;
@@ -843,6 +918,19 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
         speeds = new ChassisSpeeds(vxMetersPerSecond, vyMetersPerSecond, omegaRadiansPerSecond);
         break;
       }
+      case ALIGN ->
+      {
+        if(alignTarget.get().get() != null)
+        {
+          Rotation2d    currentHeading = swerveDrive.getOdometryHeading();
+          double        targetY        = alignTarget.get().get().getY();
+          Rotation2d    targetRotation = alignTarget.get().get().getRotation();
+          omegaRadiansPerSecond = swerveController.headingCalculate(0.0, targetRotation.getRadians());
+          vyMetersPerSecond  = swerveController.yTranslationCalculate(0.0, targetY);
+          speeds = new ChassisSpeeds(vxMetersPerSecond, vyMetersPerSecond, omegaRadiansPerSecond);
+        }
+        break;
+      }
     }
 
     currentMode = newMode;
@@ -870,6 +958,10 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
     /**
      * Output based off of targeting.
      */
-    AIM
+    AIM,
+    /**
+     * Output based off of targeting.
+     */
+    ALIGN
   }
 }

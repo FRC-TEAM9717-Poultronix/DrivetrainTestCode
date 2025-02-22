@@ -23,6 +23,8 @@ import frc.robot.commands.elevator.ElevatorPosition;
 import frc.robot.commands.elevator.ElevatorVelecity;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.targeting.TargetingSubsystem;
+
 import java.io.File;
 import swervelib.SwerveInputStream;
 
@@ -38,9 +40,11 @@ public class RobotContainer
   final         CommandXboxController m_driverXbox = new CommandXboxController(0);
   final         CommandXboxController m_driver2Xbox = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
-  private final SwerveSubsystem       m_drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+  final TargetingSubsystem    m_targeting = new TargetingSubsystem();
+  
+  final SwerveSubsystem       m_drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve/neo"));
-  private final ElevatorSubsystem     m_elevator = new ElevatorSubsystem();
+  final ElevatorSubsystem     m_elevator = new ElevatorSubsystem();
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
@@ -48,23 +52,27 @@ public class RobotContainer
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(m_drivebase.getSwerveDrive(),
                                                                 () -> m_driverXbox.getRawAxis(1) * -1,
                                                                 () -> m_driverXbox.getRawAxis(0) * -1)
-                                                            .withControllerRotationAxis(() -> m_driverXbox.getRawAxis(2) * -1)
+                                                            .withControllerRotationAxis(() -> m_driverXbox.getRawAxis(4) * -1)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
-                                                            .allianceRelativeControl(false);
+                                                            .allianceRelativeControl(false)
+                                                            .alignWhile(m_driverXbox.button(4))
+                                                            .align(() -> m_targeting.getPoseForNearestTargetInRobotFrame().orElse(null));
 
   /**
    * Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
    */
-  SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(() -> m_driverXbox.getRawAxis(2) * -1,
-                                                                                             () -> m_driverXbox.getRawAxis(3) * -1)
+  SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(() -> m_driverXbox.getRawAxis(4) * -1,
+                                                                                             () -> m_driverXbox.getRawAxis(5) * -1)
                                                            .headingWhile(true);
 
   /**
    * Clone's the angular velocity input stream and converts it to a robotRelative input stream.
    */
   SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
-                                                             .allianceRelativeControl(false);
+                                                             .allianceRelativeControl(false)
+                                                             .alignWhile(m_driverXbox.button(4))
+                                                             .align(() -> m_targeting.getPoseForNearestTargetInRobotFrame().orElse(null));
 
 
   SwerveInputStream driveAngularVelocityKeyboard = SwerveInputStream.of(m_drivebase.getSwerveDrive(),
