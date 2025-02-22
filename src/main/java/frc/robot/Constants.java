@@ -41,7 +41,7 @@ public final class Constants
     public static final double kD = 0.001;
 
     // Feedforward values
-    public static final double kAF = 0.02;
+    public static final double kAF = 0.03;
     
     // Stored elevator positions
     public static final double minPos = 28;
