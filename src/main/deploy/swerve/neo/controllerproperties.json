@@ -1,12 +1,12 @@
 {
   "angleJoystickRadiusDeadband": 0.5,
   "translation": {
-    "p": 0.5,
+    "p": 1.5,
     "i": 0,
-    "d": 0.02
+    "d": 0.03
   },
   "heading": {
-    "p": 0.5,
+    "p": 1.0,
     "i": 0,
     "d": 0.02
   }

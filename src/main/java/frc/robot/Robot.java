@@ -30,7 +30,6 @@ public class Robot extends TimedRobot
   private        Command m_teleopCommand;
 
   private RobotContainer m_robotContainer;
-  private PhotonCamera m_camera;
 
   private Timer disabledTimer;
 
@@ -53,8 +52,6 @@ public class Robot extends TimedRobot
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-
-    m_camera = new PhotonCamera("center");
 
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
     // immediately when disabled, but then also let it be pushed more 
@@ -158,47 +155,7 @@ public class Robot extends TimedRobot
   public void teleopPeriodic()
   {
 
-    // Read in relevant data from the Camera
-    boolean targetVisible = false;
-    Transform3d poseOfTarget3d = null;
-    var results = m_camera.getAllUnreadResults();
-    if (!results.isEmpty()) {
-        // Camera processed a new frame since last
-        // Get the last one in the list.
-        var result = results.get(results.size() - 1);
-        if (result.hasTargets()) {
-            // At least one AprilTag was seen by the camera
-            for (var target : result.getTargets()) {
-                if (target.getFiducialId() == 1) {
-                    // Found Tag 7, record its information
-                    poseOfTarget3d = target.getBestCameraToTarget();
-                    targetVisible = true;
-                }
-            }
-        }
-    }
-    
-    if(targetVisible)
-    {
-    //   System.out.println("Got Pose of Target!");
-      
-    //   // Pose2d poseOfRobot = m_robotContainer.m_drivebase.getPose();
-    //   // Transform2d transform = new Transform2d(poseOfRobot.getTranslation(), poseOfRobot.getRotation());
-
-      Rotation2d correction = new Rotation2d(Math.PI);
-      Rotation2d rotationOfTarget = poseOfTarget3d.getRotation().toRotation2d().plus(correction);
-      Pose2d poseOfTarget = new Pose2d(poseOfTarget3d.getX(),poseOfTarget3d.getY(),rotationOfTarget);
-      Pose2d targetPose = poseOfTarget;
-    //   // Pose2d targetPose = poseOfTarget.transformBy(transform);
-    
-      // System.out.print(" X: "); System.out.println(targetPose.getX());
-      // System.out.print(" Y: "); System.out.println(targetPose.getY());
-      // System.out.print(" Yaw: "); System.out.println(targetPose.getRotation().getDegrees());
-      m_robotContainer.m_targetPose = targetPose;
-    }
-
-
-    
+        
   }
 
   @Override

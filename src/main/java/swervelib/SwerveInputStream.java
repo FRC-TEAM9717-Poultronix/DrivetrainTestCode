@@ -920,12 +920,15 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
       }
       case ALIGN ->
       {
-        Rotation2d    currentHeading = swerveDrive.getOdometryHeading();
-        double        targetY        = alignTarget.get().get().getY();
-        Rotation2d    targetRotation = alignTarget.get().get().getRotation();
-        omegaRadiansPerSecond = swerveController.headingCalculate(0.0, targetRotation.getRadians());
-        vyMetersPerSecond  = swerveController.translationCalculate(0.0, targetY);
-        speeds = new ChassisSpeeds(vxMetersPerSecond, vyMetersPerSecond, omegaRadiansPerSecond);
+        if(alignTarget.get().get() != null)
+        {
+          Rotation2d    currentHeading = swerveDrive.getOdometryHeading();
+          double        targetY        = alignTarget.get().get().getY();
+          Rotation2d    targetRotation = alignTarget.get().get().getRotation();
+          omegaRadiansPerSecond = swerveController.headingCalculate(0.0, targetRotation.getRadians());
+          vyMetersPerSecond  = swerveController.yTranslationCalculate(0.0, targetY);
+          speeds = new ChassisSpeeds(vxMetersPerSecond, vyMetersPerSecond, omegaRadiansPerSecond);
+        }
         break;
       }
     }
