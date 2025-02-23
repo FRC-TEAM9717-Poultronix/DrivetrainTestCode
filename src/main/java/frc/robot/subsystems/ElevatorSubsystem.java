@@ -1,4 +1,4 @@
-package frc.robot.subsystems.elevator;
+package frc.robot.subsystems;
 
 import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
@@ -44,8 +44,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         POSITION_1(Constants.ElevatorConstants.L1),
         POSITION_2(Constants.ElevatorConstants.L2),
         POSITION_3(Constants.ElevatorConstants.L3),
-        POSITION_4(Constants.ElevatorConstants.L4);
-
+        POSITION_4(Constants.ElevatorConstants.L4),
+        Processor_Position(Constants.AlgaeArmConstants.Processor);
         public final double positionInches;
         
         ElevatorPosition(double positionInches) {
@@ -96,6 +96,7 @@ public class ElevatorSubsystem extends SubsystemBase {
                                         .allowedClosedLoopError(Constants.ElevatorConstants.posTolerance);  
                                         
         m_leaderConfig.closedLoop.pid(Constants.ElevatorConstants.kP, Constants.ElevatorConstants.kI, Constants.ElevatorConstants.kD)
+                                 .iZone(ElevatorConstants.kIz)
                               .outputRange(-1.0, 1.0);
 
         // Special follower settings
@@ -231,6 +232,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         // Disable PID control when in manual mode
         m_isManual = true;
         
-        m_primaryMotor.set(MathUtil.clamp(power, -ElevatorConstants.maxOutput, ElevatorConstants.maxOutput));
+        m_primaryMotor.set(MathUtil.clamp(power + ElevatorConstants.kAF, -ElevatorConstants.maxOutput, ElevatorConstants.maxOutput));
     }
 }

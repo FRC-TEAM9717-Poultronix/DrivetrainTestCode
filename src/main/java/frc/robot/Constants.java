@@ -21,7 +21,7 @@ public final class Constants
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
-  public static final double MAX_SPEED  = Units.feetToMeters(14.5);// Maximum speed of the robot in meters per second, used to limit acceleration.
+  public static final double MAX_SPEED  = Units.feetToMeters(7);// Maximum speed of the robot in meters per second, used to limit acceleration.
 
   public static final class ElevatorConstants
   {
@@ -36,21 +36,54 @@ public final class Constants
     public static final double posTolerance = 0.1;    // Tolerance for PID control of elevator
 
     // PID values
-    public static final double kP = 0.1;
-    public static final double kI = 0.0;
-    public static final double kD = 0.001;
+    public static final double kP = 0.18;
+    public static final double kI = 0.0001;
+    public static final double kD = 0.2;
+    public static final double kIz = 20;
 
     // Feedforward values
-    public static final double kAF = 0.03;
+    public static final double kAF = 0.052;
     
     // Stored elevator positions
     public static final double minPos = 28;
     public static final double downPos = 31;
     public static final double L1 = 35;
-    public static final double L2 = 45.0;
-    public static final double L3 = 60.0;
-    public static final double L4 = 75.0;
-    public static final double maxPos = 76.0;
+    public static final double L2 = 40.0;
+    public static final double L3 = 56.0;
+    public static final double L4 = 79.0;
+    public static final double maxPos = 80.0;
+  }
+// stored coral arm positions
+  public static final class CoralConstants
+  {
+    public static final int launchID = 21;  
+    public static final int armID =22; 
+
+    public static final int MaxCurrentLimitArm = 40; // Max current limit of elevator motors 
+    public static final int MaxCurrentLimitLaunch = 20; // Max current limit of elevator motors 
+
+    public static final double maxOutput = 1.0;   // Max power output of elevator motors
+    public static final double maxVelocity = 8000.0; // Max velocity of elevator
+    public static final double maxAcceleration = 10000.0; // Max acceleration of elevator
+    public static final double countsPerDegreeLaunch = 360;   // Encoder ticks per inch of elevator travel
+    public static final double countsPerDegreeArm = 360;   // Encoder ticks per inch of elevator travel
+    public static final double posTolerance = 0.1;    // Tolerance for PID control of elevator
+
+     // PID values
+     public static final double kP_launch = 0.1;
+     public static final double kI_launch = 0.0;
+     public static final double kD_launch = 0.001;
+
+     public static final double kP_arm = 0.1;
+     public static final double kI_arm = 0.0;
+     public static final double kD_arm = 0.001;
+     public static final double kAF_arm = 0.00;
+
+       public static final double up = 90.0;
+       public static final double U1 = 45.0;
+       public static final double forward = 0.0;
+       public static final double D1 = -15.0;
+       public static final double down = -30.0;
   }
 
   public static final class DrivebaseConstants
@@ -67,4 +100,32 @@ public final class Constants
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT    = 6;
   }
+  public static final class AlgaeArmConstants
+  {
+    public static final int powerID = 32;  
+    public static final int angleID = 31; 
+
+  public static final int MaxCurrentLimitAngle = 40; // Max current limit of elevator motors 
+  public static final int MaxCurrentLimitPower = 20; // Max current limit of elevator motors 
+  public static final double maxOutput = 1.0;   // Max power output of elevator motors
+  public static final double maxVelocity = 8000.0; // Max velocity of elevator
+  public static final double maxAcceleration = 10000.0; // Max acceleration of elevator
+  public static final double countsPerDegreePower = 360;   // Encoder ticks per inch of elevator travel
+  public static final double countsPerDegreeAngle = 360;   // Encoder ticks per inch of elevator travel
+  public static final double posTolerance = 0.1;    // Tolerance for PID control of elevator
+
+  // PID values
+  public static final double kP_angle = 0.1;
+  public static final double kI_angle = 0.0;
+  public static final double kD_angle = 0.001;
+  public static final double kAF_angle = 0.00;
+
+  public static final double kP_power = 0.1;
+  public static final double kI_power = 0.0;
+  public static final double kD_power = 0.001;
+
+  public static final double up = 0.0;
+  public static final double Processor = 9.0;
+  public static final double down = 120;
+   }
 }

@@ -3,18 +3,18 @@ package frc.robot.commands.elevator;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 import java.util.function.DoubleSupplier;
 
 /**
  * A command to control the elevator with a joystick axis
  */
-public class ElevatorVelecity extends Command {
+public class ElevatorVelocity extends Command {
   private final ElevatorSubsystem elevator;
   private final DoubleSupplier  vZ;
 
   // Constructor
-  public ElevatorVelecity(ElevatorSubsystem elevator, DoubleSupplier vZ)
+  public ElevatorVelocity(ElevatorSubsystem elevator, DoubleSupplier vZ)
   {
     this.elevator = elevator;
     this.vZ = vZ;
@@ -39,7 +39,6 @@ public class ElevatorVelecity extends Command {
 
     // Make the robot move
     elevator.setManualPower(desiredVelocity);
-
   }
 
   // Returns true when the command should end.
