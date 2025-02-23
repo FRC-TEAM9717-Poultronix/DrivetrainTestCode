@@ -922,11 +922,26 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
       {
         if(alignTarget.get().get() != null)
         {
-          Rotation2d    currentHeading = swerveDrive.getOdometryHeading();
+          // Rotate x and y velcity to robotRelative Values
+          Rotation2d heading = new Rotation2d();
+          if (!robotRelative.isPresent() || !(robotRelative.get().getAsBoolean()))
+          {
+            heading = swerveDrive.getOdometryHeading();
+          }
+          Pose2d localVel = new Pose2d(vxMetersPerSecond, vyMetersPerSecond, heading);
+          localVel.rotateBy(heading.unaryMinus());
+          
+          // Solve for new values
           double        targetY        = alignTarget.get().get().getY();
           Rotation2d    targetRotation = alignTarget.get().get().getRotation();
           omegaRadiansPerSecond = swerveController.headingCalculate(0.0, targetRotation.getRadians());
-          vyMetersPerSecond  = swerveController.yTranslationCalculate(0.0, targetY);
+          double localY = swerveController.yTranslationCalculate(0.0, targetY);
+          localVel = new Pose2d(localVel.getX(), localY, localVel.getRotation());
+          
+          // Rotate velocities back to original frame of reverence
+          localVel.rotateBy(heading);
+          vxMetersPerSecond = localVel.getX();
+          vyMetersPerSecond = localVel.getY();
           speeds = new ChassisSpeeds(vxMetersPerSecond, vyMetersPerSecond, omegaRadiansPerSecond);
         }
         break;
