@@ -14,9 +14,11 @@ import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import frc.robot.Constants;
@@ -24,35 +26,38 @@ import frc.robot.Constants.AlgaeArmConstants;
 import frc.robot.Constants.CoralConstants;
 
 public class AlgaeSubsystem  extends SubsystemBase {
-    private final SparkMax m_angleMotor;
-    private final SparkFlex m_powerMotor;
+    private final SparkFlex m_motorAngle;
+    private final SparkFlex m_motorPowerLeader;
+    private final SparkFlex m_motorPowerFollower;
     private final RelativeEncoder m_encoderpower;
     private final AbsoluteEncoder m_encoderangle;
-    private final SparkClosedLoopController m_closedLoopControllerpower;
-    private final SparkClosedLoopController m_closedLoopControllerangle;
+    private final SparkClosedLoopController m_closedLoopControllerPower;
+    private final SparkClosedLoopController m_closedLoopControllerAngle;
 
+    // private boolean m_atSetPointPower = true;
     private boolean m_atSetPointAngle = true;
-    private boolean m_atSetPointPower = true;
     private boolean m_isManualAngle = true;
     private boolean m_isManualPower = true;
 
-    private SparkMaxConfig m_powerConfig = new SparkMaxConfig();
-    private SparkFlexConfig m_angleConfig = new SparkFlexConfig();
+    private SparkFlexConfig m_configPowerLeader = new SparkFlexConfig();
+    private SparkFlexConfig m_configPowerFollower = new SparkFlexConfig();
+    private SparkFlexConfig m_configAngle = new SparkFlexConfig();
+
+    // private double m_setPointPower = 0.0;
+    private double m_currentVelocityPower;
+    private double m_currentPositionPower;
+    private double m_currentCurrentPower;  
 
     private double m_setPointAngle = 0.0;
     private double m_currentVelocityAngle;
     private double m_currentPositionAngle;
     private double m_currentCurrentAngle;
 
-    private double m_setPointPower = 0.0;
-    private double m_currentVelocityPower;
-    private double m_currentPositionPower;
-    private double m_currentCurrentPower;    
-
     public enum anglePosition {
-        UP(Constants.AlgaeArmConstants.up),
-        POSITION_1(Constants.AlgaeArmConstants.Processor),
-               DOWN(Constants.AlgaeArmConstants.down);
+        UP(Constants.AlgaeArmConstants.positionMax),
+        POSITION_1(Constants.AlgaeArmConstants.positionProcessor),
+        POSITION_2(Constants.AlgaeArmConstants.positionFloor),
+        DOWN(Constants.AlgaeArmConstants.positionMin);
 
         private final double positionDegrees;
 
@@ -63,60 +68,76 @@ public class AlgaeSubsystem  extends SubsystemBase {
 
         // Constructor
     public AlgaeSubsystem() {
-            m_powerMotor = new SparkFlex(Constants.AlgaeArmConstants.powerID, MotorType.kBrushless);
-            m_angleMotor = new SparkMax(Constants.AlgaeArmConstants.angleID, MotorType.kBrushless);
+            m_motorPowerLeader = new SparkFlex(Constants.AlgaeArmConstants.powerLeaderID, MotorType.kBrushless);
+            m_motorPowerFollower = new SparkFlex(Constants.AlgaeArmConstants.powerFollowerID, MotorType.kBrushless);
+            m_motorAngle = new SparkFlex(Constants.AlgaeArmConstants.angleID, MotorType.kBrushless);
         
-            m_encoderpower = m_powerMotor.getEncoder();
-            m_encoderangle = m_angleMotor.getAbsoluteEncoder();
+            m_encoderpower = m_motorPowerLeader.getEncoder();
+            m_encoderangle = m_motorAngle.getAbsoluteEncoder();
 
-            m_closedLoopControllerpower = m_powerMotor.getClosedLoopController();
-            m_closedLoopControllerangle = m_angleMotor.getClosedLoopController();
+            m_closedLoopControllerPower = m_motorPowerLeader.getClosedLoopController();
+            m_closedLoopControllerAngle = m_motorAngle.getClosedLoopController();
 
             configureMotors();
     }
 
        // Initialize motor settings
     private void configureMotors() {
-        m_powerConfig.idleMode(IdleMode.kBrake)
+        m_configPowerLeader.idleMode(IdleMode.kBrake)
                     .inverted(false)
                     .smartCurrentLimit(Constants.AlgaeArmConstants.MaxCurrentLimitPower)
                     .voltageCompensation(12.0);
 
-        m_angleConfig.idleMode(IdleMode.kBrake)
+        m_configPowerFollower.idleMode(IdleMode.kBrake)
                     .inverted(false)
+                    .smartCurrentLimit(Constants.AlgaeArmConstants.MaxCurrentLimitPower)
+                    .voltageCompensation(12.0);                    
+
+        m_configAngle.idleMode(IdleMode.kBrake)
+                    .inverted(true)
                     .smartCurrentLimit(Constants.AlgaeArmConstants.MaxCurrentLimitAngle)
                     .voltageCompensation(12.0);
 
-        m_powerConfig.encoder.positionConversionFactor(Constants.AlgaeArmConstants.countsPerDegreeAngle)
-                    .velocityConversionFactor(Constants.AlgaeArmConstants.countsPerDegreeAngle/60);
-                
-        m_angleConfig.absoluteEncoder.zeroCentered(true)
+        m_configPowerLeader.encoder.positionConversionFactor(Constants.AlgaeArmConstants.countsPerDegreePower)
+                    .velocityConversionFactor(Constants.AlgaeArmConstants.countsPerDegreePower/60);
+
+        m_configPowerFollower.encoder.positionConversionFactor(Constants.AlgaeArmConstants.countsPerDegreePower)
+                    .velocityConversionFactor(Constants.AlgaeArmConstants.countsPerDegreePower/60);                    
+
+        m_configAngle.closedLoop.feedbackSensor(ClosedLoopConfig.FeedbackSensor.kAbsoluteEncoder);            
+
+        m_configAngle.absoluteEncoder.zeroCentered(true)
                                      .positionConversionFactor(Constants.AlgaeArmConstants.countsPerDegreeAngle)
                                      .velocityConversionFactor(Constants.AlgaeArmConstants.countsPerDegreeAngle/60);
 
-        m_angleConfig.softLimit.forwardSoftLimitEnabled(true).forwardSoftLimit(Constants.AlgaeArmConstants.down)
-                    .reverseSoftLimitEnabled(true).reverseSoftLimit(Constants.AlgaeArmConstants.up);
+        m_configAngle.softLimit.forwardSoftLimitEnabled(true).forwardSoftLimit(Constants.AlgaeArmConstants.positionMax)
+                    .reverseSoftLimitEnabled(true).reverseSoftLimit(Constants.AlgaeArmConstants.positionMin);
 
-        m_powerConfig.softLimit.forwardSoftLimitEnabled(false)
+        m_configPowerLeader.softLimit.forwardSoftLimitEnabled(false)
+                    .reverseSoftLimitEnabled(false);
+
+        m_configPowerFollower.softLimit.forwardSoftLimitEnabled(false)
                     .reverseSoftLimitEnabled(false);
 
         // Special Leader settings
-        m_powerConfig.closedLoop.pid(Constants.AlgaeArmConstants.kP_power, Constants.AlgaeArmConstants.kI_power, Constants.AlgaeArmConstants.kD_power)
-                                .outputRange(-1.0, 1.0);
+        // m_configPowerLeader.closedLoop.pid(Constants.AlgaeArmConstants.kP_power, Constants.AlgaeArmConstants.kI_power, Constants.AlgaeArmConstants.kD_power)
+        //                         .outputRange(-1.0, 1.0);
 
-        m_angleConfig.closedLoop.maxMotion.maxVelocity(Constants.AlgaeArmConstants.maxVelocity)
+        m_configAngle.closedLoop.maxMotion.maxVelocity(Constants.AlgaeArmConstants.maxVelocity)
                                         .maxAcceleration(Constants.AlgaeArmConstants.maxAcceleration)
                                         .allowedClosedLoopError(Constants.AlgaeArmConstants.posTolerance);  
                                         
-        m_angleConfig.closedLoop.pid(Constants.AlgaeArmConstants.kP_angle, Constants.AlgaeArmConstants.kI_angle, Constants.AlgaeArmConstants.kD_angle)
+        m_configAngle.closedLoop.pid(Constants.AlgaeArmConstants.kP_angle, Constants.AlgaeArmConstants.kI_angle, Constants.AlgaeArmConstants.kD_angle)
                                 .outputRange(-1.0, 1.0);
 
-        // Send setting to motors
-            m_powerMotor.configure(m_powerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-            m_angleMotor.configure(m_angleConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        // Special follower settings
+        m_configPowerFollower.follow(m_motorPowerLeader, true);                                  
 
-            // Zero elevator motor assuming it is min position on startup 
-            m_encoderpower.setPosition(0.0);
+        // Send setting to motors
+        m_motorPowerLeader.configure(m_configPowerLeader, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        m_motorPowerFollower.configure(m_configPowerFollower, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        m_motorAngle.configure(m_configAngle, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
     }
 
     @Override
@@ -125,57 +146,66 @@ public class AlgaeSubsystem  extends SubsystemBase {
         // Gather Telemetry
         m_currentVelocityPower = m_encoderpower.getVelocity();
         m_currentPositionPower = m_encoderpower.getPosition();
-        m_currentCurrentPower  = m_powerMotor.getOutputCurrent();
+        m_currentCurrentPower  = m_motorPowerLeader.getOutputCurrent();
 
         m_currentVelocityAngle = m_encoderangle.getVelocity();
         m_currentPositionAngle = m_encoderangle.getPosition();
-        m_currentCurrentAngle  = m_angleMotor.getOutputCurrent();
+        m_currentCurrentAngle  = m_motorAngle.getOutputCurrent();
 
-        m_atSetPointPower = Math.abs(m_currentPositionPower - m_setPointPower) < AlgaeArmConstants.posTolerance;
+        // m_atSetPointPower = Math.abs(m_currentPositionPower - m_setPointPower) < AlgaeArmConstants.posTolerance;
         m_atSetPointAngle = Math.abs(m_currentPositionAngle - m_setPointAngle) < AlgaeArmConstants.posTolerance;
 
         // Update SmartDashboard
         updateTelemetry();
 
-        if(!m_isManualPower)
-        {
-            m_closedLoopControllerpower.setReference(m_setPointPower, SparkBase.ControlType.kPosition, ClosedLoopSlot.kSlot0);
-        }
+        // if(!m_isManualPower)
+        // {
+        //     m_closedLoopControllerPower.setReference(m_setPointPower, SparkBase.ControlType.kPosition, ClosedLoopSlot.kSlot0);
+        // }
 
         if(!m_isManualAngle)
         {
-            m_closedLoopControllerangle.setReference(m_setPointAngle, SparkBase.ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, Constants.AlgaeArmConstants.kAF_angle);
+            m_closedLoopControllerAngle.setReference(m_setPointAngle, 
+                                                    SparkBase.ControlType.kMAXMotionPositionControl,
+                                                    ClosedLoopSlot.kSlot0, 
+                                                    Constants.AlgaeArmConstants.kAF_angle * Math.cos(Units.degreesToRadians(m_currentPositionAngle)));
         }
     }
 
     private void updateTelemetry() {
-        SmartDashboard.putBoolean("algae/launch/is_manual", m_isManualPower);
-        SmartDashboard.putNumber("algae/launch/position", m_currentPositionPower);
-        SmartDashboard.putNumber("algae/launch/set_point", m_setPointPower);
-        SmartDashboard.putNumber("algae/launch/velocity", m_currentVelocityPower);
-        SmartDashboard.putNumber("elevator/motor_current", m_currentCurrentPower);
+        SmartDashboard.putBoolean("algae/power/is_manual", m_isManualPower);
+        SmartDashboard.putNumber ("algae/power/position", m_currentPositionPower);
+        // SmartDashboard.putNumber("algae/launch/set_point", m_setPointPower);
+        SmartDashboard.putNumber ("algae/power/velocity", m_currentVelocityPower);
+        SmartDashboard.putNumber ("algae/power/motor_current", m_currentCurrentPower);
         
-        SmartDashboard.putBoolean("algae/arm/is_manual", m_isManualAngle);
-        SmartDashboard.putNumber("algae/arm/position", m_currentPositionAngle);
-        SmartDashboard.putNumber("algae/arm/set_point", m_setPointAngle);
-        SmartDashboard.putNumber("algae/arm/velocity", m_currentVelocityAngle);
-        SmartDashboard.putNumber("algae/arm/motor_current", m_currentCurrentAngle);
+        SmartDashboard.putBoolean("algae/angle/is_manual", m_isManualAngle);
+        SmartDashboard.putNumber ("algae/angle/position", m_currentPositionAngle);
+        SmartDashboard.putNumber ("algae/angle/set_point", m_setPointAngle);
+        SmartDashboard.putNumber ("algae/angle/velocity", m_currentVelocityAngle);
+        SmartDashboard.putNumber ("algae/angle/motor_current", m_currentCurrentAngle);
     }
 
-    public boolean isAtSetPointPower() {
-        return m_atSetPointPower;
+    public void stopMotors() {
+        m_motorPowerLeader.set(0);
+        m_motorPowerFollower.set(0);
+        m_motorAngle.set(0);
     }
+
+    // public boolean isAtSetPointPower() {
+    //     return m_atSetPointPower;
+    // }
 
     public boolean isAtSetPointAngle() {
         return m_atSetPointAngle;
     }
 
-    public void setPositionPower(double degree) {
+    // public void setPositionPower(double degree) {
 
-        m_isManualPower = false;
+    //     m_isManualPower = false;
 
-        m_setPointPower = degree;
-    }
+    //     m_setPointPower = degree;
+    // }
 
     public void setPositionAngle(double degree) {
 
@@ -183,22 +213,32 @@ public class AlgaeSubsystem  extends SubsystemBase {
 
         m_setPointAngle = MathUtil.clamp(
             degree,
-            CoralConstants.up,
-            CoralConstants.down
+            CoralConstants.positionMin,
+            CoralConstants.positionMax
         );
     }
 
     public void setManualPowerPower(double power) {
+        SmartDashboard.putNumber("algae/power/cmd_vel", power);
         // Disable PID control when in manual mode
-        m_isManualPower = true;
-        
-        m_powerMotor.set(MathUtil.clamp(power, -AlgaeArmConstants.maxOutput, AlgaeArmConstants.maxOutput));
+        if(Math.abs(power) > 0.01)
+        {
+            m_isManualPower = true;
+            m_motorPowerLeader.set(MathUtil.clamp(power, -AlgaeArmConstants.maxOutput, AlgaeArmConstants.maxOutput));
+        }
+        else
+        {
+            // m_setPointPower = m_currentPositionPower;
+            m_isManualPower = false;
+            m_motorPowerLeader.set(MathUtil.clamp(power, -CoralConstants.maxOutput, CoralConstants.maxOutput));
+         }
     }
 
     public void setManualPowerAngle(double power) {
+        SmartDashboard.putNumber("algae/angle/cmd_vel", power);
         // Disable PID control when in manual mode
         m_isManualAngle = true;
         
-        m_angleMotor.set(MathUtil.clamp(power + AlgaeArmConstants.kAF_angle * Math.cos(m_currentCurrentAngle), -AlgaeArmConstants.maxOutput, AlgaeArmConstants.maxOutput));
+        m_motorAngle.set(MathUtil.clamp(power + AlgaeArmConstants.kAF_angle * Math.cos(Units.degreesToRadians(m_currentPositionAngle)), -AlgaeArmConstants.maxOutput, AlgaeArmConstants.maxOutput));
     }
 }

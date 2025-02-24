@@ -1,8 +1,6 @@
 package frc.robot.commands.coral;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants;
 import frc.robot.subsystems.CoralSubsystem;
 
 /**

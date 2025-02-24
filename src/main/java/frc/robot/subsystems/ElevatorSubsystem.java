@@ -25,27 +25,26 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final RelativeEncoder m_encoder;
     private final SparkClosedLoopController m_closedLoopController;
 
-    private boolean m_atSetPoint = true;
-    private boolean m_isHomed = false;
-    private boolean m_isManual = true;
+    private boolean m_atSetPoint = false;
+    private boolean m_isHomed = true;
+    private boolean m_isManual = false;
     private boolean m_isStalled = false;
 
     private SparkMaxConfig m_leaderConfig = new SparkMaxConfig();
     private SparkMaxConfig m_followerConfig = new SparkMaxConfig();
 
-    private double m_setpoint = 0.0;
+    private double m_setpoint = ElevatorConstants.positionDown;
     private double m_currentVelocity;
     private double m_currentPosition;
     private double m_currentCurrent;
 
     // enum of pre-defined positions
     public enum ElevatorPosition {
-        DOWN(Constants.ElevatorConstants.downPos),
-        POSITION_1(Constants.ElevatorConstants.L1),
-        POSITION_2(Constants.ElevatorConstants.L2),
-        POSITION_3(Constants.ElevatorConstants.L3),
-        POSITION_4(Constants.ElevatorConstants.L4),
-        Processor_Position(Constants.AlgaeArmConstants.Processor);
+        DOWN(Constants.ElevatorConstants.positionDown),
+        POSITION_1(Constants.ElevatorConstants.positionL1),
+        POSITION_2(Constants.ElevatorConstants.positionL2),
+        POSITION_3(Constants.ElevatorConstants.positionL3),
+        POSITION_4(Constants.ElevatorConstants.positionL4);
         public final double positionInches;
         
         ElevatorPosition(double positionInches) {
@@ -84,8 +83,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         m_followerConfig.encoder.positionConversionFactor(ElevatorConstants.countsPerInch)
                                 .velocityConversionFactor(ElevatorConstants.countsPerInch/60);
     
-        m_leaderConfig.softLimit.forwardSoftLimitEnabled(true).forwardSoftLimit(Constants.ElevatorConstants.maxPos)
-                                .reverseSoftLimitEnabled(true).reverseSoftLimit(Constants.ElevatorConstants.minPos);
+        m_leaderConfig.softLimit.forwardSoftLimitEnabled(true).forwardSoftLimit(Constants.ElevatorConstants.positionMax)
+                                .reverseSoftLimitEnabled(true).reverseSoftLimit(Constants.ElevatorConstants.positionMin);
 
         m_followerConfig.softLimit.forwardSoftLimitEnabled(false)
                                   .reverseSoftLimitEnabled(false);
@@ -107,7 +106,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         m_followerMotor.configure(m_followerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         // Zero elevator motor assuming it is min position on startup 
-        m_encoder.setPosition(Constants.ElevatorConstants.minPos);
+        m_encoder.setPosition(Constants.ElevatorConstants.positionMin);
     }
 
     @Override
@@ -199,12 +198,12 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public boolean setHome() {
         
-        REVLibError error =  m_encoder.setPosition(Constants.ElevatorConstants.minPos);
-        System.out.print("  Homed to "); System.out.println(Constants.ElevatorConstants.minPos);
+        REVLibError error =  m_encoder.setPosition(Constants.ElevatorConstants.positionMin);
+        System.out.print("  Homed to "); System.out.println(Constants.ElevatorConstants.positionMin);
         enableSoftLimits();
         m_isHomed = true;
 
-        setPositionInches(Constants.ElevatorConstants.downPos);
+        setPositionInches(Constants.ElevatorConstants.positionDown);
         
         return true;
     }
@@ -221,8 +220,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         m_setpoint = MathUtil.clamp(
             inches,
-            ElevatorConstants.minPos,
-            ElevatorConstants.maxPos
+            ElevatorConstants.positionMin,
+            ElevatorConstants.positionMax
         );
 
         System.out.print("    setPoint: "); System.out.println(m_setpoint);
@@ -233,5 +232,13 @@ public class ElevatorSubsystem extends SubsystemBase {
         m_isManual = true;
         
         m_primaryMotor.set(MathUtil.clamp(power + ElevatorConstants.kAF, -ElevatorConstants.maxOutput, ElevatorConstants.maxOutput));
+    }
+
+    public double getElevatorThrottle()
+    {
+        double numerator = (m_currentPosition - ElevatorConstants.positionMin);
+        double denominator = (ElevatorConstants.positionMax - ElevatorConstants.positionMin);
+        
+        return (1.0 - numerator/denominator);
     }
 }

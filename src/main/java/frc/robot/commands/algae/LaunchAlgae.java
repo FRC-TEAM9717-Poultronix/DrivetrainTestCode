@@ -1,22 +1,20 @@
 package frc.robot.commands.algae;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AlgaeSubsystem;
-import java.util.function.DoubleSupplier;
 
 /**
  * A command to control the elevator with a joystick axis
  */
-public class AngleVelocity extends Command {
+public class LaunchAlgae extends Command {
   private final AlgaeSubsystem algae;
-  private final DoubleSupplier  vZ;
+  private final Double power;
 
   // Constructor
-  public AngleVelocity(AlgaeSubsystem algae, DoubleSupplier vZ)
+  public LaunchAlgae(AlgaeSubsystem algae, Double power)
   {
     this.algae = algae;
-    this.vZ = vZ;
+    this.power = power;
   
     addRequirements(algae);
   }
@@ -32,11 +30,7 @@ public class AngleVelocity extends Command {
   @Override
   public void execute()
   {
-    // Get the desired speeds based on a joystick module.
-    Double desiredVelocity = vZ.getAsDouble();
-  
-    // Make the robot move
-    algae.setManualPowerAngle(desiredVelocity);
+    algae.setManualPowerPower(power);
   }
 
   // Returns true when the command should end.
@@ -50,7 +44,7 @@ public class AngleVelocity extends Command {
   @Override
   public void end(boolean interrupted)
   {
-    algae.setManualPowerAngle(0.0);
+    algae.setManualPowerPower(0.0);
   }
 
 }

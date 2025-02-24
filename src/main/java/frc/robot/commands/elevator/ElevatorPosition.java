@@ -3,6 +3,7 @@ package frc.robot.commands.elevator;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants;
+import frc.robot.subsystems.CoralSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 
 /**
@@ -10,24 +11,29 @@ import frc.robot.subsystems.ElevatorSubsystem;
  */
 public class ElevatorPosition extends InstantCommand {
   private final ElevatorSubsystem elevator;
-  private final double  position;
+  private final CoralSubsystem coral;
+  private final double  positionElevator;
+  private final double  positionCoral;
 
   // Constructor
-  public ElevatorPosition(ElevatorSubsystem elevator, double position)
+  public ElevatorPosition(ElevatorSubsystem elevator, double positionElevator, CoralSubsystem coral,  double positionCoral)
   {
-    System.out.print("ElevatorPosition Command: "); System.out.println(position);
-    
     this.elevator = elevator;
-    this.position = position;
+    this.coral = coral;
+
+    this.positionElevator = positionElevator;
+    this.positionCoral = positionCoral;
   
     addRequirements(elevator);
+    addRequirements(coral);
   }
 
   // Called once when the command is initially scheduled.
   @Override
   public void initialize()
   {
-    elevator.setPositionInches(position);
+    elevator.setPositionInches(positionElevator);
+    coral.setPositionArm(positionCoral);
   }
 
 }
