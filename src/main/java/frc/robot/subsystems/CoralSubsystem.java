@@ -48,7 +48,7 @@ public class CoralSubsystem extends SubsystemBase {
     private double m_currentPositionLaunch;
     private double m_currentCurrentLaunch;
 
-    private double m_SetpointArm = 0.0;
+    private double m_SetpointArm = Constants.CoralConstants.positionStation;
     private double m_currentVelocityArm;
     private double m_currentPositionArm;
     private double m_currentCurrentArm;

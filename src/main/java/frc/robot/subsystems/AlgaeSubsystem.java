@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.security.AlgorithmConstraints;
+
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
@@ -36,7 +38,7 @@ public class AlgaeSubsystem  extends SubsystemBase {
 
     // private boolean m_atSetPointPower = true;
     private boolean m_atSetPointAngle = true;
-    private boolean m_isManualAngle = true;
+    private boolean m_isManualAngle = false;
     private boolean m_isManualPower = true;
 
     private SparkFlexConfig m_configPowerLeader = new SparkFlexConfig();
@@ -48,7 +50,7 @@ public class AlgaeSubsystem  extends SubsystemBase {
     private double m_currentPositionPower;
     private double m_currentCurrentPower;  
 
-    private double m_setPointAngle = 0.0;
+    private double m_setPointAngle = Constants.AlgaeArmConstants.positionUp;
     private double m_currentVelocityAngle;
     private double m_currentPositionAngle;
     private double m_currentCurrentAngle;
@@ -107,6 +109,7 @@ public class AlgaeSubsystem  extends SubsystemBase {
         m_configAngle.closedLoop.feedbackSensor(ClosedLoopConfig.FeedbackSensor.kAbsoluteEncoder);            
 
         m_configAngle.absoluteEncoder.zeroCentered(true)
+                                     .inverted(true)
                                      .positionConversionFactor(Constants.AlgaeArmConstants.countsPerDegreeAngle)
                                      .velocityConversionFactor(Constants.AlgaeArmConstants.countsPerDegreeAngle/60);
 
@@ -238,7 +241,10 @@ public class AlgaeSubsystem  extends SubsystemBase {
         SmartDashboard.putNumber("algae/angle/cmd_vel", power);
         // Disable PID control when in manual mode
         m_isManualAngle = true;
-        
-        m_motorAngle.set(MathUtil.clamp(power + AlgaeArmConstants.kAF_angle * Math.cos(Units.degreesToRadians(m_currentPositionAngle)), -AlgaeArmConstants.maxOutput, AlgaeArmConstants.maxOutput));
+        power += AlgaeArmConstants.kAF_angle * Math.cos(Units.degreesToRadians(m_currentPositionAngle));
+        power = MathUtil.clamp(power , -AlgaeArmConstants.maxOutput, AlgaeArmConstants.maxOutput);
+        SmartDashboard.putNumber("algae/angle/cmd_velAF", power);
+
+        m_motorAngle.set(power);
     }
 }

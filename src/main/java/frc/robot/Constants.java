@@ -36,7 +36,7 @@ public final class Constants
     public static final double maxVelocity = 8000.0; // Max velocity of elevator
     public static final double maxAcceleration = 10000.0; // Max acceleration of elevator
     public static final double countsPerInch = 0.9861;   // Encoder ticks per inch of elevator travel
-    public static final double posTolerance = 0.2;    // Tolerance for PID control of elevator
+    public static final double posTolerance = 0.5;    // Tolerance for PID control of elevator
 
     // PID values
     public static final double kP = 0.18;
@@ -49,14 +49,19 @@ public final class Constants
     
     // Stored elevator positions
     public static final double positionMin = 28;
+    public static final double positionMax = 80.0;
+
     public static final double positionDown = 29.5;
+    public static final double positionFloor = 31.0;
+    public static final double positionProcessor = 32.0;
+    public static final double positionA2 = 55.0;
+    public static final double positionA3 = 75.0;
+    
     public static final double positionL1 = 35.0;
     public static final double positionL2 = 36.0;
-    public static final double positionA2 = 45.0;
     public static final double positionL3 = 52.0;
-    public static final double positionA3 = 60.0;
     public static final double positionL4 = 79.0;
-    public static final double positionMax = 80.0;
+
   }
 // stored coral arm positions
   public static final class CoralConstants
@@ -75,7 +80,7 @@ public final class Constants
     public static final double maxAcceleration = 20000.0; // Max acceleration of elevator
     public static final double countsPerDegreeLaunch = 360;   // Encoder ticks per inch of elevator travel
     public static final double countsPerDegreeArm = 360;   // Encoder ticks per inch of elevator travel
-    public static final double posTolerance = 1.0;    // Tolerance for PID control of elevator
+    public static final double posTolerance = 10.0;    // Tolerance for PID control of elevator
 
      // PID values
     //  public static final double kP_launch = 0.05;
@@ -88,6 +93,7 @@ public final class Constants
      public static final double kAF_arm = 0.00;
 
        public static final double positionMax = 90.0;
+       public static final double positionUp = 85.0;
        public static final double positionStation = 45.0;
        public static final double positionHorizontal = 0.0;
        public static final double positionReef = -15.0;
@@ -114,32 +120,34 @@ public final class Constants
     public static final int powerLeaderID = 32;
     public static final int powerFollowerID = 33;
 
-    public static final double powerLaunch = 0.3;
+    public static final double powerLaunch = 1.0;
     public static final double powerIntake = 0.3;
 
     public static final int MaxCurrentLimitAngle = 40; // Max current limit of elevator motors 
-    public static final int MaxCurrentLimitPower = 20; // Max current limit of elevator motors 
+    public static final int MaxCurrentLimitPower = 100; // Max current limit of elevator motors 
 
     public static final double maxOutput = 1.0;   // Max power output of elevator motors
     public static final double maxVelocity = 8000.0; // Max velocity of elevator
     public static final double maxAcceleration = 10000.0; // Max acceleration of elevator
     public static final double countsPerDegreePower = 360;   // Encoder ticks per inch of elevator travel
     public static final double countsPerDegreeAngle = 360;   // Encoder ticks per inch of elevator travel
-    public static final double posTolerance = 1.0;    // Tolerance for PID control of elevator
+    public static final double posTolerance = 15.0;    // Tolerance for PID control of elevator
 
     // PID values
     public static final double kP_angle = 0.05;
     public static final double kI_angle = 0.0;
     public static final double kD_angle = 0.01;
-    public static final double kAF_angle = 0.00;
+    public static final double kAF_angle = 0.025;
 
     // public static final double kP_power = 0.1;
     // public static final double kI_power = 0.0;
     // public static final double kD_power = 0.001;
 
-    public static final double positionMax = 90.0;
+    public static final double positionMax = 80.0;
+    public static final double positionUp = 75.0;
     public static final double positionProcessor = 9.0;
-    public static final double positionFloor = -10.0;
-    public static final double positionMin = -20.0;
+    public static final double positionReef = -20.0;
+    public static final double positionFloor = -25.0;
+    public static final double positionMin = -30.0;
    }
 }

@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.AlgaeArmConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.algae.AngleVelocity;
 import frc.robot.commands.algae.AnglePosition;
@@ -36,6 +37,7 @@ import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import java.lang.invoke.ConstantCallSite;
+import java.security.AlgorithmConstraints;
 
 import swervelib.SwerveInputStream;
 
@@ -199,18 +201,36 @@ public class RobotContainer
       m_driver2Xbox.button(5).whileTrue(new AngleVelocity (m_algae, () -> m_driver2Xbox.getRightX() * -0.3));
 
 // m_driverXbox.rightBumper).whileTrue(slow movement to abt half of original)
-      m_driver2Xbox.pov(0).onTrue(new ArmPosition(m_coral, Constants.CoralConstants.positionStation));
-      m_driver2Xbox.pov(180).onTrue(new ArmPosition(m_coral, Constants.CoralConstants.positionReef));
+      // m_driver2Xbox.pov(0).onTrue(new ArmPosition(m_coral, Constants.CoralConstants.positionStation));
+      // m_driver2Xbox.pov(180).onTrue(new ArmPosition(m_coral, Constants.CoralConstants.positionReef));
 
-      m_driver2Xbox.pov(90).onTrue(new AnglePosition(m_algae, Constants.AlgaeArmConstants.positionProcessor));
-      m_driver2Xbox.pov(270).onTrue(new AnglePosition(m_algae, Constants.AlgaeArmConstants.positionFloor));
+      // m_driver2Xbox.pov(90).onTrue(new AnglePosition(m_algae, Constants.AlgaeArmConstants.positionProcessor));
+      // m_driver2Xbox.pov(270).onTrue(new AnglePosition(m_algae, Constants.AlgaeArmConstants.positionFloor));
 
-      m_driver2Xbox.button(4).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL4, m_coral, Constants.CoralConstants.positionReef));
-      m_driver2Xbox.button(3).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL3, m_coral, Constants.CoralConstants.positionReef));
-      m_driver2Xbox.button(2).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL2, m_coral, Constants.CoralConstants.positionReef));
-      m_driver2Xbox.button(1).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL1, m_coral, Constants.CoralConstants.positionReef));
-      m_driver2Xbox.button(6).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionStation));
-   // m_driver2Xbox.button(8).onTrue(hook down); 
+      //  Coral Positions
+        // L4
+        m_driver2Xbox.button(4).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL4, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
+        // L3 Positions
+        m_driver2Xbox.button(3).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL3, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
+        // L2 Position
+        m_driver2Xbox.button(2).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL2, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
+        // L1 Position
+        m_driver2Xbox.button(1).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL1, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
+        // Coral Station Position
+        m_driver2Xbox.button(6).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionStation, m_algae, Constants.AlgaeArmConstants.positionUp));
+
+      // Algae Positions
+        // A3
+        m_driver2Xbox.pov(0).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionA3, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionReef));
+        // A2
+        m_driver2Xbox.pov(90).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionA2, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionReef));
+        // Processor
+        m_driver2Xbox.pov(270).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionProcessor, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionProcessor));
+        // Floor
+        m_driver2Xbox.pov(180).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionFloor, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionFloor));
+        
+
+      // m_driver2Xbox.button(8).onTrue(hook down); 
    // m_driver2Xbox.button(9).onTrue(coral intake); 
    // m_driver2Xbox.button(10).onTrue(coral outtake); 
    // m_driver2Xbox.button(11).onTrue(algae intake); 
