@@ -8,6 +8,7 @@ import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController.ArbFFUnits;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -157,7 +158,8 @@ public class CoralSubsystem extends SubsystemBase {
             m_closedLoopControllerArm.setReference(m_SetpointArm, 
                                                 SparkBase.ControlType.kMAXMotionPositionControl, 
                                                 ClosedLoopSlot.kSlot0, 
-                                                CoralConstants.kAF_arm * Math.cos(Units.degreesToRadians(m_currentPositionArm)));
+                                                CoralConstants.kAF_arm * Math.cos(Units.degreesToRadians(m_currentPositionArm)),
+                                                ArbFFUnits.kPercentOut);
         }
     }
 

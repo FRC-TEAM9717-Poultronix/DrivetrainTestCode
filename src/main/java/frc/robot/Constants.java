@@ -33,29 +33,29 @@ public final class Constants
 
     public static final int MaxCurrentLimit = 40; // Max current limit of elevator motors 
     public static final double maxOutput = 1.0;   // Max power output of elevator motors
-    public static final double maxVelocity = 8000.0; // Max velocity of elevator
+    public static final double maxVelocity = 6000.0; // Max velocity of elevator
     public static final double maxAcceleration = 10000.0; // Max acceleration of elevator
     public static final double countsPerInch = 0.9861;   // Encoder ticks per inch of elevator travel
-    public static final double posTolerance = 0.5;    // Tolerance for PID control of elevator
+    public static final double posTolerance = 0.2;    // Tolerance for PID control of elevator
 
     // PID values
-    public static final double kP = 0.18;
-    public static final double kI = 0.0001;
-    public static final double kD = 0.4;
+    public static final double kP = 0.1;
+    public static final double kI = 0.0;
+    public static final double kD = 0.02;
     public static final double kIz = 20;
 
     // Feedforward values
-    public static final double kAF = 0.052;
+    public static final double kAF = 0.05;
     
     // Stored elevator positions
     public static final double positionMin = 28;
     public static final double positionMax = 80.0;
 
     public static final double positionDown = 29.5;
-    public static final double positionFloor = 31.0;
+    public static final double positionFloor = 28.5;
     public static final double positionProcessor = 32.0;
-    public static final double positionA2 = 55.0;
-    public static final double positionA3 = 75.0;
+    public static final double positionA2 = 58.0;
+    public static final double positionA3 = 76.0;
     
     public static final double positionL1 = 35.0;
     public static final double positionL2 = 36.0;
@@ -76,11 +76,11 @@ public final class Constants
     public static final int MaxCurrentLimitLaunch = 20; // Max current limit of elevator motors 
 
     public static final double maxOutput = 1.0;   // Max power output of elevator motors
-    public static final double maxVelocity = 8000.0; // Max velocity of elevator
+    public static final double maxVelocity = 5000.0; // Max velocity of elevator
     public static final double maxAcceleration = 20000.0; // Max acceleration of elevator
     public static final double countsPerDegreeLaunch = 360;   // Encoder ticks per inch of elevator travel
     public static final double countsPerDegreeArm = 360;   // Encoder ticks per inch of elevator travel
-    public static final double posTolerance = 10.0;    // Tolerance for PID control of elevator
+    public static final double posTolerance = 5.0;    // Tolerance for PID control of elevator
 
      // PID values
     //  public static final double kP_launch = 0.05;
@@ -127,17 +127,17 @@ public final class Constants
     public static final int MaxCurrentLimitPower = 100; // Max current limit of elevator motors 
 
     public static final double maxOutput = 1.0;   // Max power output of elevator motors
-    public static final double maxVelocity = 8000.0; // Max velocity of elevator
+    public static final double maxVelocity = 5000.0; // Max velocity of elevator
     public static final double maxAcceleration = 10000.0; // Max acceleration of elevator
     public static final double countsPerDegreePower = 360;   // Encoder ticks per inch of elevator travel
     public static final double countsPerDegreeAngle = 360;   // Encoder ticks per inch of elevator travel
-    public static final double posTolerance = 15.0;    // Tolerance for PID control of elevator
+    public static final double posTolerance = 10.0;    // Tolerance for PID control of elevator
 
     // PID values
-    public static final double kP_angle = 0.05;
-    public static final double kI_angle = 0.0;
+    public static final double kP_angle = 0.02;
+    public static final double kI_angle = 0.00;
     public static final double kD_angle = 0.01;
-    public static final double kAF_angle = 0.025;
+    public static final double kAF_angle = 0.02;
 
     // public static final double kP_power = 0.1;
     // public static final double kI_power = 0.0;
@@ -146,8 +146,8 @@ public final class Constants
     public static final double positionMax = 80.0;
     public static final double positionUp = 75.0;
     public static final double positionProcessor = 9.0;
-    public static final double positionReef = -20.0;
-    public static final double positionFloor = -25.0;
-    public static final double positionMin = -30.0;
+    public static final double positionReef = -35.0;
+    public static final double positionFloor = -35.0;
+    public static final double positionMin = -40.0;
    }
 }

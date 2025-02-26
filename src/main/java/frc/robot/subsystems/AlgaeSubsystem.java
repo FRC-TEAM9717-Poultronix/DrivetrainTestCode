@@ -9,6 +9,7 @@ import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkClosedLoopController.ArbFFUnits;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -106,7 +107,8 @@ public class AlgaeSubsystem  extends SubsystemBase {
         m_configPowerFollower.encoder.positionConversionFactor(Constants.AlgaeArmConstants.countsPerDegreePower)
                     .velocityConversionFactor(Constants.AlgaeArmConstants.countsPerDegreePower/60);                    
 
-        m_configAngle.closedLoop.feedbackSensor(ClosedLoopConfig.FeedbackSensor.kAbsoluteEncoder);            
+        m_configAngle.closedLoop.feedbackSensor(ClosedLoopConfig.FeedbackSensor.kAbsoluteEncoder);
+        // m_configAngle.closedLoopRampRate(5).openLoopRampRate(5);          
 
         m_configAngle.absoluteEncoder.zeroCentered(true)
                                      .inverted(true)
@@ -131,7 +133,7 @@ public class AlgaeSubsystem  extends SubsystemBase {
                                         .allowedClosedLoopError(Constants.AlgaeArmConstants.posTolerance);  
                                         
         m_configAngle.closedLoop.pid(Constants.AlgaeArmConstants.kP_angle, Constants.AlgaeArmConstants.kI_angle, Constants.AlgaeArmConstants.kD_angle)
-                                .outputRange(-1.0, 1.0);
+                                .outputRange(-0.3, 0.3);
 
         // Special follower settings
         m_configPowerFollower.follow(m_motorPowerLeader, true);                                  
@@ -171,7 +173,8 @@ public class AlgaeSubsystem  extends SubsystemBase {
             m_closedLoopControllerAngle.setReference(m_setPointAngle, 
                                                     SparkBase.ControlType.kMAXMotionPositionControl,
                                                     ClosedLoopSlot.kSlot0, 
-                                                    Constants.AlgaeArmConstants.kAF_angle * Math.cos(Units.degreesToRadians(m_currentPositionAngle)));
+                                                    Constants.AlgaeArmConstants.kAF_angle * Math.cos(Units.degreesToRadians(m_currentPositionAngle)),
+                                                    ArbFFUnits.kPercentOut);
         }
     }
 
@@ -216,8 +219,8 @@ public class AlgaeSubsystem  extends SubsystemBase {
 
         m_setPointAngle = MathUtil.clamp(
             degree,
-            CoralConstants.positionMin,
-            CoralConstants.positionMax
+            AlgaeArmConstants.positionMin,
+            AlgaeArmConstants.positionMax
         );
     }
 
