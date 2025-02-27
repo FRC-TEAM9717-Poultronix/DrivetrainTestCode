@@ -4,9 +4,16 @@
 
 package frc.robot;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
+import edu.wpi.first.math.numbers.N3;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean constants. This
@@ -25,6 +32,16 @@ public final class Constants
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
   public static final double MAX_SPEED  = Units.feetToMeters(7);// Maximum speed of the robot in meters per second, used to limit acceleration.
+
+  public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
+
+  public static final String Camera1Name = "center";
+  public static final Rotation3d Camera1Rotation = new Rotation3d(0, Units.degreesToRadians(15), 0);
+  public static final Translation3d Camera1Translation = new Translation3d(Units.inchesToMeters(9.75),
+                                                                           Units.inchesToMeters(-0.50),
+                                                                           Units.inchesToMeters(7.00));
+  public static final Vector<N3>  Camera1StdTrans = VecBuilder.fill(2, 2, 4);
+  public static final Vector<N3>  Camera1StdRot = VecBuilder.fill(0.25, 0.25, 0.5);
 
   public static final class ElevatorConstants
   {

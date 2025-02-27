@@ -22,6 +22,7 @@ import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import frc.robot.Constants;
 import frc.robot.Robot;
 import java.awt.Desktop;
 import java.util.ArrayList;
@@ -52,8 +53,7 @@ public class Vision
   /**
    * April Tag Field Layout of the year.
    */
-  public static final AprilTagFieldLayout fieldLayout                     = AprilTagFieldLayout.loadField(
-      AprilTagFields.k2025Reefscape);
+
   /**
    * Ambiguity defined as a value between (0,1). Used in {@link Vision#filterPose}.
    */
@@ -90,7 +90,7 @@ public class Vision
     if (Robot.isSimulation())
     {
       visionSim = new VisionSystemSim("Vision");
-      visionSim.addAprilTags(fieldLayout);
+      visionSim.addAprilTags(Constants.fieldLayout);
 
       for (Cameras c : Cameras.values())
       {
@@ -111,13 +111,13 @@ public class Vision
    */
   public static Pose2d getAprilTagPose(int aprilTag, Transform2d robotOffset)
   {
-    Optional<Pose3d> aprilTagPose3d = fieldLayout.getTagPose(aprilTag);
+    Optional<Pose3d> aprilTagPose3d = Constants.fieldLayout.getTagPose(aprilTag);
     if (aprilTagPose3d.isPresent())
     {
       return aprilTagPose3d.get().toPose2d().transformBy(robotOffset);
     } else
     {
-      throw new RuntimeException("Cannot get AprilTag " + aprilTag + " from field " + fieldLayout.toString());
+      throw new RuntimeException("Cannot get AprilTag " + aprilTag + " from field " + Constants.fieldLayout.toString());
     }
 
   }
@@ -238,7 +238,7 @@ public class Vision
    */
   public double getDistanceFromAprilTag(int id)
   {
-    Optional<Pose3d> tag = fieldLayout.getTagPose(id);
+    Optional<Pose3d> tag = Constants.fieldLayout.getTagPose(id);
     return tag.map(pose3d -> PhotonUtils.getDistanceToPose(currentPose.get(), pose3d.toPose2d())).orElse(-1.0);
   }
 
@@ -320,9 +320,9 @@ public class Vision
     List<Pose2d> poses = new ArrayList<>();
     for (PhotonTrackedTarget target : targets)
     {
-      if (fieldLayout.getTagPose(target.getFiducialId()).isPresent())
+      if (Constants.fieldLayout.getTagPose(target.getFiducialId()).isPresent())
       {
-        Pose2d targetPose = fieldLayout.getTagPose(target.getFiducialId()).get().toPose2d();
+        Pose2d targetPose = Constants.fieldLayout.getTagPose(target.getFiducialId()).get().toPose2d();
         poses.add(targetPose);
       }
     }
@@ -356,12 +356,11 @@ public class Vision
     /**
      * Center Camera
      */
-    CENTER_CAM("center",
-               new Rotation3d(0, Units.degreesToRadians(15), 0),
-               new Translation3d(Units.inchesToMeters(9.75),
-                                 Units.inchesToMeters(-0.50),
-                                 Units.inchesToMeters(7.00)),
-               VecBuilder.fill(2, 2, 4), VecBuilder.fill(0.25, 0.25, 0.5));
+    CAM1(Constants.Camera1Name,
+         Constants.Camera1Rotation,
+         Constants.Camera1Translation,
+         Constants.Camera1StdTrans, 
+         Constants.Camera1StdRot);
 
     /**
      * Latency alert to use when high latency is detected.
@@ -429,7 +428,7 @@ public class Vision
       // https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html
       robotToCamTransform = new Transform3d(robotToCamTranslation, robotToCamRotation);
 
-      poseEstimator = new PhotonPoseEstimator(Vision.fieldLayout,
+      poseEstimator = new PhotonPoseEstimator(Constants.fieldLayout,
                                               PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
                                               robotToCamTransform);
       poseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);

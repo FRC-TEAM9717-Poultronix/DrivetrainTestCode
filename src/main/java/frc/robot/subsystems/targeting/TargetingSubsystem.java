@@ -3,7 +3,10 @@ package frc.robot.subsystems.targeting;
 import java.lang.StackWalker.Option;
 import java.util.Optional;
 
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
@@ -18,8 +21,11 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SoftLimitConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -27,16 +33,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Robot;
 
 public class TargetingSubsystem extends SubsystemBase {
 
-    private PhotonCamera m_centerCamera;
+    private PhotonCamera m_camera1;
+    private Transform3d m_camera1Pose;
+    private final PhotonPoseEstimator m_photonEstimator;
     private Optional<Transform3d> m_nearestTarget;  // Transform to targets pose in Robot Frame
     private Optional<Pose2d> m_poseForNearestTarget; // Pose to align with nearest target (rotation is reversed) 
    
+    public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
+
     // Constructor
     public TargetingSubsystem() {
-        m_centerCamera = new PhotonCamera("center");
+        m_camera1 = new PhotonCamera(Constants.Camera1Name);
+        m_camera1Pose = new Transform3d(Constants.Camera1Translation, Constants.Camera1Rotation);
+        m_photonEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.LOWEST_AMBIGUITY, m_camera1Pose);
     }
 
     // Returns Pose of nearest Target in Robot Frame
@@ -65,6 +78,16 @@ public class TargetingSubsystem extends SubsystemBase {
         }
     }
 
+    public Optional<EstimatedRobotPose> getEstimatedGlobalPose() 
+    {
+        Optional<EstimatedRobotPose> visionEst = Optional.empty();
+        for (var change : m_camera1.getAllUnreadResults()) 
+        {
+            visionEst = m_photonEstimator.update(change);
+        }
+        return visionEst;
+    }
+
     @Override
     public void periodic() {
 
@@ -74,7 +97,7 @@ public class TargetingSubsystem extends SubsystemBase {
 
         // Read in relevant data from the Camera
         double area = 0.0;
-        var results = m_centerCamera.getAllUnreadResults();
+        var results = m_camera1.getAllUnreadResults();
         if (!results.isEmpty()) {
             // Camera processed a new frame since last
             // Get the last one in the list.
