@@ -11,21 +11,36 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.AlgaeArmConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.algae.AngleVelocity;
+import frc.robot.commands.algae.AnglePosition;
+import frc.robot.commands.algae.IntakeAlgae;
+import frc.robot.commands.algae.LaunchAlgae;
+import frc.robot.commands.coral.ArmPosition;
+import frc.robot.commands.coral.ArmVelocity;
+import frc.robot.commands.coral.IntakeCoral;
+import frc.robot.commands.coral.LaunchCoral;
 import frc.robot.commands.elevator.ElevatorHome;
 import frc.robot.commands.elevator.ElevatorPosition;
-import frc.robot.commands.elevator.ElevatorVelecity;
-import frc.robot.subsystems.elevator.ElevatorSubsystem;
+import frc.robot.commands.elevator.ElevatorVelocity;
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.CoralSubsystem;
+import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.targeting.TargetingSubsystem;
 
 import java.io.File;
+import java.lang.invoke.ConstantCallSite;
+import java.security.AlgorithmConstraints;
+
 import swervelib.SwerveInputStream;
 
 /**
@@ -35,6 +50,7 @@ import swervelib.SwerveInputStream;
  */
 public class RobotContainer
 {
+  public double throttle;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandXboxController m_driverXbox = new CommandXboxController(0);
@@ -44,15 +60,16 @@ public class RobotContainer
   
   final SwerveSubsystem       m_drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve/neo"));
-  final ElevatorSubsystem     m_elevator = new ElevatorSubsystem();
-
+  private final ElevatorSubsystem     m_elevator = new ElevatorSubsystem();
+  private final AlgaeSubsystem m_algae = new AlgaeSubsystem();
+  private final CoralSubsystem m_coral = new CoralSubsystem();
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(m_drivebase.getSwerveDrive(),
-                                                                () -> m_driverXbox.getRawAxis(1) * -1,
-                                                                () -> m_driverXbox.getRawAxis(0) * -1)
-                                                            .withControllerRotationAxis(() -> m_driverXbox.getRawAxis(4) * -1)
+                                                                () -> m_driverXbox.getRawAxis(1) * -1 * throttle,
+                                                                () -> m_driverXbox.getRawAxis(0) * -1 * throttle)
+                                                            .withControllerRotationAxis(() -> m_driverXbox.getRawAxis(2) * -0.7 * throttle)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(false)
@@ -100,7 +117,9 @@ public class RobotContainer
                                                                                                               (Math.PI *
                                                                                                                2))
                                                                                .headingWhile(true);
- 
+
+
+
   // Create SmartDashboard chooser for autonomous and teleop routines
   private final SendableChooser<Command> m_chooserTeleop = new SendableChooser<>();
 
@@ -109,6 +128,8 @@ public class RobotContainer
    */
   public RobotContainer()
   {
+    throttle = 1.0;
+    
     // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
@@ -166,23 +187,77 @@ public class RobotContainer
       m_driverXbox.rightBumper().onTrue(Commands.none());
     } else
     {
-      m_driverXbox.button(1).onTrue(new ElevatorHome(m_elevator));
+      // BUTTON CONTROLS
       m_driverXbox.button(2).onTrue((Commands.runOnce(m_drivebase::zeroGyro)));
-      m_driver2Xbox.button(5).whileTrue(new ElevatorVelecity(m_elevator, () -> m_driver2Xbox.getLeftY() * -0.3));
+      // m_driverXbox.leftBumper().whileTrue(Commands.runOnce(m_drivebase::lock, m_drivebase).repeatedly());
       m_driverXbox.x().onTrue(Commands.runOnce(m_drivebase::addFakeVisionReading));
       m_driverXbox.b().whileTrue(
           m_drivebase.driveToPose(
               new Pose2d(new Translation2d(15, 4), Rotation2d.fromDegrees(0)))
-                              );
-      m_driverXbox.leftBumper().whileTrue(Commands.runOnce(m_drivebase::lock, m_drivebase).repeatedly());
+              );
 
-      m_driverXbox.povUp().onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.L4));
-      m_driverXbox.povRight().onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.L3));
-      m_driverXbox.povLeft().onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.L2));
-      m_driverXbox.povDown().onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.L1));
-      m_driverXbox.rightBumper().onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.downPos));
+      m_driverXbox.button(5).whileTrue(new IntakeCoral(m_coral, Constants.CoralConstants.powerIntake));
+      m_driverXbox.button(7).whileTrue(new LaunchCoral(m_coral, Constants.CoralConstants.powerLaunch));
+
+      m_driverXbox.button(6).whileTrue(new IntakeAlgae(m_algae, Constants.AlgaeArmConstants.powerIntake));
+      m_driverXbox.button(8).whileTrue(new LaunchAlgae(m_algae, Constants.AlgaeArmConstants.powerLaunch));
+
+
+      m_driver2Xbox.button(7).onTrue(new ElevatorHome(m_elevator));
+      m_driver2Xbox.button(5).whileTrue(new ElevatorVelocity(m_elevator, () -> m_driver2Xbox.getLeftY() * -0.3));
+      m_driver2Xbox.button(5).whileTrue(new ArmVelocity (m_coral, () -> m_driver2Xbox.getRightY() * -0.3));
+      m_driver2Xbox.button(5).whileTrue(new AngleVelocity (m_algae, () -> m_driver2Xbox.getRightX() * -0.3));
+
+// m_driverXbox.rightBumper).whileTrue(slow movement to abt half of original)
+      // m_driver2Xbox.pov(0).onTrue(new ArmPosition(m_coral, Constants.CoralConstants.positionStation));
+      // m_driver2Xbox.pov(180).onTrue(new ArmPosition(m_coral, Constants.CoralConstants.positionReef));
+
+      // m_driver2Xbox.pov(90).onTrue(new AnglePosition(m_algae, Constants.AlgaeArmConstants.positionProcessor));
+      // m_driver2Xbox.pov(270).onTrue(new AnglePosition(m_algae, Constants.AlgaeArmConstants.positionFloor));
+
+      //  Coral Positions
+        // L4
+        m_driver2Xbox.button(4).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL4, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
+        // L3 Positions
+        m_driver2Xbox.button(3).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL3, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
+        // L2 Position
+        m_driver2Xbox.button(2).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL2, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
+        // L1 Position
+        m_driver2Xbox.button(1).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL1, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
+        // Coral Station Position
+        m_driver2Xbox.button(6).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionStation, m_algae, Constants.AlgaeArmConstants.positionUp));
+
+      // Algae Positions
+        // A3
+        m_driver2Xbox.pov(0).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionA3, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionReef));
+        // A2
+        m_driver2Xbox.pov(90).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionA2, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionReef));
+        // Processor
+        m_driver2Xbox.pov(270).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionProcessor, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionProcessor));
+        // Floor
+        m_driver2Xbox.pov(180).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionFloor, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionFloor));
+        
+
+      // m_driver2Xbox.button(8).onTrue(hook down); 
+   // m_driver2Xbox.button(9).onTrue(coral intake); 
+   // m_driver2Xbox.button(10).onTrue(coral outtake); 
+   // m_driver2Xbox.button(11).onTrue(algae intake); 
+   // m_driver2Xbox.button(12).onTrue(algae outtake); 
+   // m_driver2Xbox.button(13).onTrue(side algae down); 
+   // m_driver2Xbox.button(14).onTrue(side algae up); 
+   // m_driver2Xbox.button(15).onTrue(side algae intake); 
+   // m_driver2Xbox.button(16).onTrue(side algae outtake); 
+   // m_driver2Xbox.button(17).onTrue(hook up?); 
+   // m_driver2Xbox.button(18).onTrue(shoot algae full speed and set angle to the net (possibly using april tags to find the right angle depending on position)); 
+
+
     }
 
+  }
+
+  public double calcThrottle()
+  {
+    return Constants.minThrottle + (Constants.maxThrottle - Constants.minThrottle) * m_elevator.getElevatorThrottle();
   }
 
   /**
