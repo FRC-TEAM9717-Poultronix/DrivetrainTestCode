@@ -943,6 +943,7 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
           vxMetersPerSecond = localVel.getX();
           vyMetersPerSecond = localVel.getY();
           speeds = new ChassisSpeeds(vxMetersPerSecond, vyMetersPerSecond, omegaRadiansPerSecond);
+          swerveController.lastAngleScalar = targetRotation.getRadians();
         }
         break;
       }
