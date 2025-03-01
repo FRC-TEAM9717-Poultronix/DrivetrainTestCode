@@ -120,8 +120,8 @@ public final class Constants
        public static final double positionUp = 85.0;
        public static final double positionStation = 40.0;
        public static final double positionHorizontal = 0.0;
-       public static final double positionReef = -17.0;
-       public static final double positionMin = -20.0;
+       public static final double positionReef = -23.0;
+       public static final double positionMin = -25.0;
   }
 
   public static final class DrivebaseConstants
@@ -167,8 +167,8 @@ public final class Constants
     // public static final double kI_power = 0.0;
     // public static final double kD_power = 0.001;
 
-    public static final double positionMax = 80.0;
-    public static final double positionUp = 80.0;
+    public static final double positionMax = 75.0;
+    public static final double positionUp = 73.0;
     public static final double positionProcessor = 9.0;
     public static final double positionReef = -35.0;
     public static final double positionFloor = -16.0;
