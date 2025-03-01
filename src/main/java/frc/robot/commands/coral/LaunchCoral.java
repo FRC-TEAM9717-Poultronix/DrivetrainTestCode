@@ -73,7 +73,7 @@ public class LaunchCoral extends Command {
         {
           m_state = State.elevator;
         }
-        // m_state = State.elevator;
+        break;
       case elevator:
         if(m_elevator != null)
         {
