@@ -940,11 +940,11 @@ public class SwerveInputStream implements Supplier<ChassisSpeeds>
           
           // Rotate velocities back to original frame of reverence
           globalVel = localVel.rotateBy(heading);
-
+          // globalVel = localVel.rotateBy(applyAllianceAwareRotation(heading));
           vxMetersPerSecond = globalVel.getX();
           vyMetersPerSecond = globalVel.getY();
           speeds = new ChassisSpeeds(vxMetersPerSecond, vyMetersPerSecond, omegaRadiansPerSecond);
-          swerveController.lastAngleScalar = swerveDrive.getOdometryHeading().getRadians();
+          swerveController.lastAngleScalar = applyAllianceAwareRotation(swerveDrive.getOdometryHeading()).getRadians();
         }
         break;
       }

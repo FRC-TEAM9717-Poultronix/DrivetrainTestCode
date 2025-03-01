@@ -50,7 +50,8 @@ import swervelib.SwerveInputStream;
  */
 public class RobotContainer
 {
-  public double throttle;
+  public double throttleTrans;
+  public double throttleAngle;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandXboxController m_driverXbox = new CommandXboxController(0);
@@ -67,12 +68,12 @@ public class RobotContainer
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(m_drivebase.getSwerveDrive(),
-                                                                () -> m_driverXbox.getRawAxis(1) * -1 * throttle,
-                                                                () -> m_driverXbox.getRawAxis(0) * -1 * throttle)
-                                                            .withControllerRotationAxis(() -> m_driverXbox.getRawAxis(2) * -0.7 * throttle)
+                                                                () -> m_driverXbox.getRawAxis(1) * -1 * throttleTrans ,
+                                                                () -> m_driverXbox.getRawAxis(0) * -1 * throttleTrans)
+                                                            .withControllerRotationAxis(() -> m_driverXbox.getRawAxis(2) * -0.7 * throttleAngle)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
-                                                            .allianceRelativeControl(false)
+                                                            .allianceRelativeControl(true)
                                                             .alignWhile(m_driverXbox.button(4))
                                                             .align(() -> m_targeting.getPoseForNearestTargetInRobotFrame().orElse(null));
 
@@ -87,7 +88,7 @@ public class RobotContainer
    * Clone's the angular velocity input stream and converts it to a robotRelative input stream.
    */
   SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
-                                                             .allianceRelativeControl(false)
+                                                             .allianceRelativeControl(true)
                                                              .alignWhile(m_driverXbox.button(4))
                                                              .align(() -> m_targeting.getPoseForNearestTargetInRobotFrame().orElse(null));
 
@@ -99,7 +100,7 @@ public class RobotContainer
                                                                         2))
                                                                     .deadband(OperatorConstants.DEADBAND)
                                                                     .scaleTranslation(0.8)
-                                                                    .allianceRelativeControl(false);
+                                                                    .allianceRelativeControl(true);
   // Derive the heading axis with math!
   SwerveInputStream driveDirectAngleKeyboard     = driveAngularVelocityKeyboard.copy()
                                                                                .withControllerHeadingAxis(() ->
@@ -128,7 +129,8 @@ public class RobotContainer
    */
   public RobotContainer()
   {
-    throttle = 1.0;
+    throttleTrans = 1.0;
+    throttleAngle = 1.0;
     
     // Configure the trigger bindings
     configureBindings();
@@ -181,14 +183,14 @@ public class RobotContainer
 
       m_driverXbox.x().whileTrue(Commands.runOnce(m_drivebase::lock, m_drivebase).repeatedly());
       m_driverXbox.y().whileTrue(m_drivebase.driveToDistanceCommand(1.0, 0.2));
-      m_driverXbox.start().onTrue((Commands.runOnce(m_drivebase::zeroGyro)));
+      m_driverXbox.start().onTrue((Commands.runOnce(m_drivebase::zeroGyroWithAlliance)));
       m_driverXbox.back().whileTrue(m_drivebase.centerModulesCommand());
       m_driverXbox.leftBumper().onTrue(Commands.none());
       m_driverXbox.rightBumper().onTrue(Commands.none());
     } else
     {
       // BUTTON CONTROLS
-      m_driverXbox.button(2).onTrue((Commands.runOnce(m_drivebase::zeroGyro)));
+      m_driverXbox.button(2).onTrue((Commands.runOnce(m_drivebase::zeroGyroWithAlliance)));
       // m_driverXbox.leftBumper().whileTrue(Commands.runOnce(m_drivebase::lock, m_drivebase).repeatedly());
       m_driverXbox.x().onTrue(Commands.runOnce(m_drivebase::addFakeVisionReading));
       m_driverXbox.b().whileTrue(

@@ -4,12 +4,17 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Meter;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
@@ -31,9 +36,11 @@ public final class Constants
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
-  public static final double MAX_SPEED  = Units.feetToMeters(7);// Maximum speed of the robot in meters per second, used to limit acceleration.
+  public static final double MAX_SPEED  = Units.feetToMeters(6);// Maximum speed of the robot in meters per second, used to limit acceleration.
 
   public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
+
+  public static final Pose2d startPosition = new Pose2d(new Translation2d(Meter.of(15), Meter.of(4)), Rotation2d.fromDegrees(180));
 
   public static final String Camera1Name = "center";
   public static final Rotation3d Camera1Rotation = new Rotation3d(0, Units.degreesToRadians(15), 0);
@@ -41,7 +48,7 @@ public final class Constants
                                                                            Units.inchesToMeters(-0.50),
                                                                            Units.inchesToMeters(7.00));
   public static final Vector<N3>  Camera1StdTrans = VecBuilder.fill(2, 2, 4);
-  public static final Vector<N3>  Camera1StdRot = VecBuilder.fill(0.25, 0.25, 0.5);
+  public static final Vector<N3>  Camera1StdRot = VecBuilder.fill(0.5, 0.5, 0.5);
 
   public static final class ElevatorConstants
   {
@@ -53,7 +60,7 @@ public final class Constants
     public static final double maxVelocity = 6000.0; // Max velocity of elevator
     public static final double maxAcceleration = 10000.0; // Max acceleration of elevator
     public static final double countsPerInch = 0.9861;   // Encoder ticks per inch of elevator travel
-    public static final double posTolerance = 0.2;    // Tolerance for PID control of elevator
+    public static final double posTolerance = 0.15;    // Tolerance for PID control of elevator
 
     // PID values
     public static final double kP = 0.1;
@@ -75,9 +82,9 @@ public final class Constants
     public static final double positionA3 = 76.0;
     
     public static final double positionL1 = 35.0;
-    public static final double positionL2 = 36.0;
-    public static final double positionL3 = 52.0;
-    public static final double positionL4 = 79.0;
+    public static final double positionL2 = 37.5;
+    public static final double positionL3 = 53.5;
+    public static final double positionL4 = 80.0;
 
   }
 // stored coral arm positions
@@ -111,9 +118,9 @@ public final class Constants
 
        public static final double positionMax = 90.0;
        public static final double positionUp = 85.0;
-       public static final double positionStation = 45.0;
+       public static final double positionStation = 40.0;
        public static final double positionHorizontal = 0.0;
-       public static final double positionReef = -15.0;
+       public static final double positionReef = -17.0;
        public static final double positionMin = -20.0;
   }
 
@@ -148,7 +155,7 @@ public final class Constants
     public static final double maxAcceleration = 10000.0; // Max acceleration of elevator
     public static final double countsPerDegreePower = 360;   // Encoder ticks per inch of elevator travel
     public static final double countsPerDegreeAngle = 360;   // Encoder ticks per inch of elevator travel
-    public static final double posTolerance = 10.0;    // Tolerance for PID control of elevator
+    public static final double posTolerance = 6.0;    // Tolerance for PID control of elevator
 
     // PID values
     public static final double kP_angle = 0.02;
@@ -161,10 +168,10 @@ public final class Constants
     // public static final double kD_power = 0.001;
 
     public static final double positionMax = 80.0;
-    public static final double positionUp = 75.0;
+    public static final double positionUp = 80.0;
     public static final double positionProcessor = 9.0;
     public static final double positionReef = -35.0;
-    public static final double positionFloor = -35.0;
+    public static final double positionFloor = -16.0;
     public static final double positionMin = -40.0;
    }
 }

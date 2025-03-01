@@ -64,7 +64,7 @@ public class SwerveSubsystem extends SubsystemBase
   /**
    * Enable vision odometry updates while driving.
    */
-  private final boolean             visionDriveTest     = false;
+  private final boolean             visionDriveTest     = true;
   /**
    * PhotonVision class to keep an accurate odometry.
    */
@@ -82,9 +82,7 @@ public class SwerveSubsystem extends SubsystemBase
     try
     {
       swerveDrive = new SwerveParser(directory).createSwerveDrive(Constants.MAX_SPEED,
-                                                                  new Pose2d(new Translation2d(Meter.of(15),
-                                                                                               Meter.of(4)),
-                                                                             Rotation2d.fromDegrees(180)));
+                                                                  Constants.startPosition);
       // Alternative method if you don't want to supply the conversion factor via JSON files.
       // swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed, angleConversionFactor, driveConversionFactor);
     } catch (Exception e)
