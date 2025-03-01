@@ -72,20 +72,20 @@ public final class Constants
     public static final double kAF = 0.05;
     
     // Stored elevator positions
-    public static final double positionMin = 29.5;
-    public static final double positionMax = 80.5;
+    public static final double positionMin = 31.5;
+    public static final double positionMax = 82.5;
 
-    public static final double positionDown = 30;
-    public static final double positionFloor = 30;
+    public static final double positionDown = 32;
+    public static final double positionFloor = 32;
     public static final double positionProcessor = 32.0;
-    public static final double positionA2 = 54.0;
-    public static final double positionA3 = 71.0;
+    public static final double positionA2 = 59.0;
+    public static final double positionA3 = 76.0;
     public static final double positionNet = 79;
     
     public static final double positionL1 = positionMin;
-    public static final double positionL2 = 32.5;
-    public static final double positionL3 = 53.5;
-    public static final double positionL4 = 80.3;
+    public static final double positionL2 = 38.5;
+    public static final double positionL3 = 57.5;
+    public static final double positionL4 = 82;
 
   }
 // stored coral arm positions
@@ -119,9 +119,9 @@ public final class Constants
 
        public static final double positionMax = 75.0;
        public static final double positionUp = 68.0;
-       public static final double positionStation = 40.5;
+       public static final double positionStation = 45.5;
        public static final double positionHorizontal = 0.0;
-       public static final double positionReef = -41.0;
+       public static final double positionReef = -44.0;
        public static final double positionMin = -50.0;
   }
 
@@ -146,7 +146,7 @@ public final class Constants
     public static final int powerFollowerID = 33;
 
     public static final double powerLaunch = 1.0;
-    public static final double powerIntake = 0.35;
+    public static final double powerIntake = 0.30;
 
     public static final int MaxCurrentLimitAngle = 40; // Max current limit of elevator motors 
     public static final int MaxCurrentLimitPower = 100; // Max current limit of elevator motors 
