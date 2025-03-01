@@ -14,7 +14,7 @@ import frc.robot.subsystems.ElevatorSubsystem;
  * A command to rezero the elevator
  */
 public class ElevatorPositionAfterHome extends Command {
-  enum State {start, moving_up, start_down, homing, position, finished};
+  enum State {start, start_down, homing, position, finished};
 
   private final ElevatorSubsystem m_elevator;
   private final CoralSubsystem m_coral;

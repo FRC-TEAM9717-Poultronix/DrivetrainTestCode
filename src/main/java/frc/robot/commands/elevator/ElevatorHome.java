@@ -9,7 +9,7 @@ import frc.robot.subsystems.ElevatorSubsystem;
  * A command to rezero the elevator
  */
 public class ElevatorHome extends Command {
-  enum State {start, moving_up, start_down, homing, finished};
+  enum State {start, start_down, homing, finished};
 
   private final ElevatorSubsystem m_elevator;
   private double m_startTime;
@@ -40,10 +40,10 @@ public class ElevatorHome extends Command {
     switch (m_state) {
       case start:
         m_elevator.setManualPower(-0.1);
-        m_state = State.moving_up;
+        m_state = State.start_down;
         break;
       case start_down:
-      if(m_startTime + 100 > currentTime)
+      if(currentTime > m_startTime + 100)
         {
           m_state = State.homing;
         }
