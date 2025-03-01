@@ -107,6 +107,9 @@ public class AlgaeSubsystem  extends SubsystemBase {
         m_configPowerFollower.encoder.positionConversionFactor(Constants.AlgaeArmConstants.countsPerDegreePower)
                     .velocityConversionFactor(Constants.AlgaeArmConstants.countsPerDegreePower/60);                    
 
+        m_configAngle.encoder.positionConversionFactor(1.0)
+                    .velocityConversionFactor(1.0);  
+
         m_configAngle.closedLoop.feedbackSensor(ClosedLoopConfig.FeedbackSensor.kAbsoluteEncoder);
         // m_configAngle.closedLoopRampRate(5).openLoopRampRate(5);          
 
