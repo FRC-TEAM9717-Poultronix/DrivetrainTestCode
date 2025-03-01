@@ -78,12 +78,12 @@ public final class Constants
     public static final double positionDown = 29.5;
     public static final double positionFloor = 28.5;
     public static final double positionProcessor = 32.0;
-    public static final double positionA2 = 58.0;
-    public static final double positionA3 = 76.0;
+    public static final double positionA2 = 60.0;
+    public static final double positionA3 = 78.0;
     
     public static final double positionL1 = 35.0;
-    public static final double positionL2 = 37.5;
-    public static final double positionL3 = 53.5;
+    public static final double positionL2 = 37.0;
+    public static final double positionL3 = 52.5;
     public static final double positionL4 = 79.0;
 
   }
@@ -120,7 +120,7 @@ public final class Constants
        public static final double positionUp = 81.0;
        public static final double positionStation = 30.0;
        public static final double positionHorizontal = 0.0;
-       public static final double positionReef = -23.0;
+       public static final double positionReef = -24.0;
        public static final double positionMin = -20.0;
   }
 
@@ -168,10 +168,10 @@ public final class Constants
     // public static final double kD_power = 0.001;
 
     public static final double positionMax = 80.0;
-    public static final double positionUp = 75.0;
+    public static final double positionUp = 78.0;
     public static final double positionProcessor = 9.0;
-    public static final double positionReef = -30.0;
-    public static final double positionFloor = -7.0;
+    public static final double positionReef = -17.0;
+    public static final double positionFloor = -4.0;
     public static final double positionMin = -38.0;
    }
 }
