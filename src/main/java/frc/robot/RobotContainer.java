@@ -30,6 +30,7 @@ import frc.robot.commands.coral.IntakeCoral;
 import frc.robot.commands.coral.LaunchCoral;
 import frc.robot.commands.elevator.ElevatorHome;
 import frc.robot.commands.elevator.ElevatorPosition;
+import frc.robot.commands.elevator.ElevatorPositionAfterHome;
 import frc.robot.commands.elevator.ElevatorVelocity;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.CoralSubsystem;
@@ -227,7 +228,7 @@ public class RobotContainer
         // L1 Position
         m_driver2Xbox.button(1).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL1, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
         // Coral Station Position
-        m_driver2Xbox.button(6).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionStation, m_algae, Constants.AlgaeArmConstants.positionUp));
+        m_driver2Xbox.button(6).onTrue(new ElevatorPositionAfterHome(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionStation, m_algae, Constants.AlgaeArmConstants.positionUp));
 
       // Algae Positions
         // A3
