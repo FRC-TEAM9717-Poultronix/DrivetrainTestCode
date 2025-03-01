@@ -82,7 +82,8 @@ public class ElevatorPositionAfterHome extends Command {
         break;
       case position:
         m_elevator.setPositionInches(m_positionElevator);
-        m_state = State.finished; 
+        m_state = State.finished;
+        break;
       default:
         break;
     }
