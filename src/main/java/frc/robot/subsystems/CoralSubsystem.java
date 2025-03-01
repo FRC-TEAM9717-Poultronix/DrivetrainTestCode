@@ -187,15 +187,8 @@ public class CoralSubsystem extends SubsystemBase {
     // }
 
     public boolean isAtSetPointArm() {
-        return m_atSetPointArm;
+        return Math.abs(m_currentPositionArm - m_SetpointArm) < CoralConstants.posTolerance;
     }
-
-    // public void setPositionLaunch(double degree) {
-
-    //     m_isManualLaunch = false;
-
-    //     m_SetpointLaunch = degree;
-    // }
 
     public void setPositionArm(double degree) {
 
