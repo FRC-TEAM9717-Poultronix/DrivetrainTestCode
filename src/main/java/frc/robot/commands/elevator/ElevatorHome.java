@@ -12,9 +12,7 @@ public class ElevatorHome extends Command {
   enum State {start, moving_up, start_down, homing, finished};
 
   private final ElevatorSubsystem m_elevator;
-  private double m_startHeightInInches;
-  private double m_currentHeightInInches;
-  private boolean m_isInitialized = false;
+  private double m_startTime;
   private State m_state;
 
   // Constructor
@@ -31,29 +29,21 @@ public class ElevatorHome extends Command {
   {
     m_state = State.start;
     m_elevator.disableSoftLimits();
-    m_startHeightInInches = m_elevator.getHeightInches();
   }
 
   // Called every cycle while command is active
   @Override
   public void execute()
   {
-    double currentHeightInInches = m_elevator.getHeightInches();
+    double currentTime = System.currentTimeMillis();
     
     switch (m_state) {
       case start:
-        m_elevator.setManualPower(0.1);
+        m_elevator.setManualPower(-0.1);
         m_state = State.moving_up;
         break;
-      case moving_up:
-        if(currentHeightInInches > (m_startHeightInInches + 3.0))
-        {
-          m_state = State.start_down;
-          m_elevator.setManualPower(-0.1);
-        }
-        break;
       case start_down:
-        if(currentHeightInInches < (m_startHeightInInches + 1.0))
+      if(m_startTime + 100 > currentTime)
         {
           m_state = State.homing;
         }

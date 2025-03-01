@@ -1,5 +1,8 @@
 package frc.robot.commands.elevator;
 
+import java.sql.Time;
+import java.util.Timer;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -21,7 +24,7 @@ public class ElevatorPositionAfterHome extends Command {
   private final double  m_positionCoral;
   private final double  m_positionAlgae;
 
-  private double m_startHeightInInches;
+  private double m_startTime;
   private State m_state;
 
   // Constructor
@@ -46,31 +49,24 @@ public class ElevatorPositionAfterHome extends Command {
   @Override
   public void initialize()
   {
+    m_startTime = System.currentTimeMillis();
     m_state = State.start;
     m_elevator.disableSoftLimits();
-    m_startHeightInInches = m_elevator.getHeightInches();
   }
 
   // Called every cycle while command is active
   @Override
   public void execute()
   {
-    double currentHeightInInches = m_elevator.getHeightInches();
+    double currentTime = System.currentTimeMillis();
     
     switch (m_state) {
       case start:
         m_elevator.setManualPower(-0.1);
         m_state = State.start_down;
         break;
-      // case moving_up:
-      //   if(currentHeightInInches > (m_startHeightInInches + 1.0))
-      //   {
-      //     m_state = State.start_down;
-      //     m_elevator.setManualPower(-0.1);
-      //   }
-      //   break;
       case start_down:
-        if(currentHeightInInches < (m_startHeightInInches - 0.5))
+        if(m_startTime + 100 > currentTime)
         {
           m_state = State.homing;
         }
