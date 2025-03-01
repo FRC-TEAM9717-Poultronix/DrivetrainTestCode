@@ -73,7 +73,7 @@ public final class Constants
     
     // Stored elevator positions
     public static final double positionMin = 28;
-    public static final double positionMax = 80.0;
+    public static final double positionMax = 79.0;
 
     public static final double positionDown = 29.5;
     public static final double positionFloor = 28.5;
@@ -84,7 +84,7 @@ public final class Constants
     public static final double positionL1 = 35.0;
     public static final double positionL2 = 37.5;
     public static final double positionL3 = 53.5;
-    public static final double positionL4 = 80.0;
+    public static final double positionL4 = 79.0;
 
   }
 // stored coral arm positions
@@ -117,11 +117,11 @@ public final class Constants
      public static final double kAF_arm = 0.00;
 
        public static final double positionMax = 90.0;
-       public static final double positionUp = 85.0;
-       public static final double positionStation = 40.0;
+       public static final double positionUp = 81.0;
+       public static final double positionStation = 30.0;
        public static final double positionHorizontal = 0.0;
        public static final double positionReef = -23.0;
-       public static final double positionMin = -25.0;
+       public static final double positionMin = -20.0;
   }
 
   public static final class DrivebaseConstants
@@ -145,7 +145,7 @@ public final class Constants
     public static final int powerFollowerID = 33;
 
     public static final double powerLaunch = 1.0;
-    public static final double powerIntake = 0.3;
+    public static final double powerIntake = 0.35;
 
     public static final int MaxCurrentLimitAngle = 40; // Max current limit of elevator motors 
     public static final int MaxCurrentLimitPower = 100; // Max current limit of elevator motors 
@@ -167,11 +167,11 @@ public final class Constants
     // public static final double kI_power = 0.0;
     // public static final double kD_power = 0.001;
 
-    public static final double positionMax = 75.0;
-    public static final double positionUp = 73.0;
+    public static final double positionMax = 80.0;
+    public static final double positionUp = 75.0;
     public static final double positionProcessor = 9.0;
-    public static final double positionReef = -35.0;
-    public static final double positionFloor = -16.0;
-    public static final double positionMin = -40.0;
+    public static final double positionReef = -30.0;
+    public static final double positionFloor = -7.0;
+    public static final double positionMin = -38.0;
    }
 }

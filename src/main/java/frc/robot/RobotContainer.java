@@ -58,7 +58,7 @@ public class RobotContainer
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandJoystick m_driverSwitch = new CommandJoystick(0);
   final         CommandXboxController m_driver2Xbox = new CommandXboxController(1);
-  final         CommandJoystick       m_buttonBox = new CommandJoystick(3);
+  final         CommandJoystick       m_buttonBox = new CommandJoystick(2);
   // The robot's subsystems and commands are defined here...
   final TargetingSubsystem    m_targeting = new TargetingSubsystem();
   
@@ -216,16 +216,16 @@ public class RobotContainer
       //  Coral Positions
         // L4
         m_driver2Xbox.button(4).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL4, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
-        m_buttonBox.button(1).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL4, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
+        m_buttonBox.button(2).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL4, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
         // L3 Positions
         m_driver2Xbox.button(3).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL3, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
-        m_buttonBox.button(2).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL3, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
+        m_buttonBox.button(3).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL3, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
         // L2 Position
         m_driver2Xbox.button(2).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL2, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
-        m_buttonBox.button(3).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL2, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
+        m_buttonBox.button(10).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL2, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
         // L1 Position
         m_driver2Xbox.button(1).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL1, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
-        m_buttonBox.button(4).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL1, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
+        m_buttonBox.button(11).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL1, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
         // Coral Station Position
         m_driver2Xbox.button(6).onTrue(new ElevatorPositionAfterHome(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionStation, m_algae, Constants.AlgaeArmConstants.positionUp));
         m_buttonBox.button(5).onTrue(new ElevatorPositionAfterHome(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionStation, m_algae, Constants.AlgaeArmConstants.positionUp));

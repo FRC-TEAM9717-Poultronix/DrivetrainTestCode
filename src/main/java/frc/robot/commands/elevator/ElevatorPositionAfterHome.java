@@ -59,7 +59,7 @@ public class ElevatorPositionAfterHome extends Command {
     
     switch (m_state) {
       case start:
-        m_elevator.setManualPower(0.1);
+        m_elevator.setManualPower(-0.1);
         m_state = State.start_down;
         break;
       // case moving_up:
@@ -68,7 +68,7 @@ public class ElevatorPositionAfterHome extends Command {
       //     m_state = State.start_down;
       //     m_elevator.setManualPower(-0.1);
       //   }
-        break;
+      //   break;
       case start_down:
         if(currentHeightInInches < (m_startHeightInInches - 0.5))
         {
