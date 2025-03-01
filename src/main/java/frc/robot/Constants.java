@@ -81,9 +81,9 @@ public final class Constants
     public static final double positionA2 = 60.0;
     public static final double positionA3 = 78.0;
     
-    public static final double positionL1 = 35.0;
-    public static final double positionL2 = 37.0;
-    public static final double positionL3 = 52.5;
+    public static final double positionL1 = 34.0;
+    public static final double positionL2 = 36.5;
+    public static final double positionL3 = 51.5;
     public static final double positionL4 = 79.0;
 
   }
@@ -118,10 +118,10 @@ public final class Constants
 
        public static final double positionMax = 90.0;
        public static final double positionUp = 81.0;
-       public static final double positionStation = 30.0;
+       public static final double positionStation = 20.0;
        public static final double positionHorizontal = 0.0;
-       public static final double positionReef = -24.0;
-       public static final double positionMin = -20.0;
+       public static final double positionReef = -32.0;
+       public static final double positionMin = -35.0;
   }
 
   public static final class DrivebaseConstants
