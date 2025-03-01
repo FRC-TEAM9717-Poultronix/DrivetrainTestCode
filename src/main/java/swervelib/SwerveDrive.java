@@ -192,7 +192,7 @@ public class SwerveDrive implements AutoCloseable
   /**
    * The last heading set in radians.
    */
-  private       double              lastHeadingRadians                              = 0;
+  public       double              lastHeadingRadians                              = 0;
   /**
    * The absolute max speed that your robot can reach while translating in meters per second.
    */
