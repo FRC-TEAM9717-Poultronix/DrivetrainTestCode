@@ -74,7 +74,7 @@ public class ElevatorPositionAfterHome extends Command {
         }
         break;
       case homing:
-        if(m_elevator.getVelocity() > -0.15)
+        if(m_elevator.getVelocity() > -0.15 || m_elevator.isStalled())
         {
           m_elevator.setHome();
           m_state = State.position;
