@@ -69,6 +69,8 @@ public class ElevatorPositionAfterHome extends Command {
         if(currentTime > m_startTime + 100)
         {
           m_state = State.homing;
+          if(m_coral != null) m_coral.setPositionArm(m_positionCoral);
+          if(m_algae != null) m_algae.setPositionAngle(m_positionAlgae);
         }
         break;
       case homing:
@@ -80,8 +82,6 @@ public class ElevatorPositionAfterHome extends Command {
         break;
       case position:
         m_elevator.setPositionInches(m_positionElevator);
-        if(m_coral != null) m_coral.setPositionArm(m_positionCoral);
-        if(m_algae != null) m_algae.setPositionAngle(m_positionAlgae);
         m_state = State.finished; 
       default:
         break;
