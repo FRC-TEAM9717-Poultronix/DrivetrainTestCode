@@ -72,19 +72,20 @@ public final class Constants
     public static final double kAF = 0.05;
     
     // Stored elevator positions
-    public static final double positionMin = 28;
-    public static final double positionMax = 79.0;
+    public static final double positionMin = 29.5;
+    public static final double positionMax = 80.5;
 
-    public static final double positionDown = 29.5;
-    public static final double positionFloor = 28.5;
+    public static final double positionDown = 30;
+    public static final double positionFloor = 30;
     public static final double positionProcessor = 32.0;
-    public static final double positionA2 = 60.0;
-    public static final double positionA3 = 78.0;
+    public static final double positionA2 = 54.0;
+    public static final double positionA3 = 71.0;
+    public static final double positionNet = 79;
     
-    public static final double positionL1 = 34.0;
-    public static final double positionL2 = 36.5;
-    public static final double positionL3 = 51.5;
-    public static final double positionL4 = 79.0;
+    public static final double positionL1 = positionMin;
+    public static final double positionL2 = 32.5;
+    public static final double positionL3 = 53.5;
+    public static final double positionL4 = 80.3;
 
   }
 // stored coral arm positions
@@ -116,12 +117,12 @@ public final class Constants
      public static final double kD_arm = 0.01;
      public static final double kAF_arm = 0.00;
 
-       public static final double positionMax = 90.0;
-       public static final double positionUp = 81.0;
-       public static final double positionStation = 20.0;
+       public static final double positionMax = 75.0;
+       public static final double positionUp = 68.0;
+       public static final double positionStation = 40.5;
        public static final double positionHorizontal = 0.0;
-       public static final double positionReef = -32.0;
-       public static final double positionMin = -35.0;
+       public static final double positionReef = -41.0;
+       public static final double positionMin = -50.0;
   }
 
   public static final class DrivebaseConstants
@@ -167,11 +168,12 @@ public final class Constants
     // public static final double kI_power = 0.0;
     // public static final double kD_power = 0.001;
 
-    public static final double positionMax = 80.0;
-    public static final double positionUp = 78.0;
-    public static final double positionProcessor = 9.0;
-    public static final double positionReef = -17.0;
-    public static final double positionFloor = -4.0;
+    public static final double positionMax = 85.0;
+    public static final double positionUp = 83.0;
+    public static final double positionProcessor = 3.0;
+    public static final double positionReef = -18.0;
+    public static final double positionFloor = -20.0;
     public static final double positionMin = -38.0;
+    public static final double positionNet = 60.0;
    }
 }
