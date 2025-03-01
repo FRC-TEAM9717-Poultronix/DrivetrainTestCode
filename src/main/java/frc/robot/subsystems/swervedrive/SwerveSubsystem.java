@@ -583,7 +583,7 @@ public class SwerveSubsystem extends SubsystemBase
       resetOdometry(new Pose2d(getPose().getTranslation(), Rotation2d.fromDegrees(180)));
       swerveDrive.imuReadingCache.update();
       swerveDrive.swerveController.lastAngleScalar = swerveDrive.getOdometryHeading().getRadians();
-      swerveDrive.lastHeadingRadians = swerveDrive.getOdometryHeading().getRadians();
+      // swerveDrive.setLastHeadingRadians(swerveDrive.getOdometryHeading().getRadians());
     } else
     {
       zeroGyro();
