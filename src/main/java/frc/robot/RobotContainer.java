@@ -239,7 +239,8 @@ public class RobotContainer
         m_driver2Xbox.pov(270).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionProcessor, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionProcessor));
         // Floor
         m_driver2Xbox.pov(180).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionFloor, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionFloor));
-        
+        // net
+        m_driver2Xbox.button(8).onTrue(new ElevatorPositionAfterHome(m_elevator, Constants.ElevatorConstants.positionNet, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionNet ));
 
       // m_driver2Xbox.button(8).onTrue(hook down); 
    // m_driver2Xbox.button(9).onTrue(coral intake); 
