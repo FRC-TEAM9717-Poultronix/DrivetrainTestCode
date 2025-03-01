@@ -62,17 +62,17 @@ public class ElevatorPositionAfterHome extends Command {
     
     switch (m_state) {
       case start:
-        m_elevator.setManualPower(-0.1);
+        m_elevator.setManualPower(-0.15);
         m_state = State.start_down;
         break;
       case start_down:
-        if(m_startTime + 100 > currentTime)
+        if(currentTime > m_startTime + 100)
         {
           m_state = State.homing;
         }
         break;
       case homing:
-        if(m_elevator.getVelocity() > -0.1)
+        if(m_elevator.getVelocity() > -0.15)
         {
           m_elevator.setHome();
           m_state = State.position;
