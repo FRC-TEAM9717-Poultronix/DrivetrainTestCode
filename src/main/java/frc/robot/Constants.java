@@ -58,7 +58,7 @@ public final class Constants
     public static final int MaxCurrentLimit = 40; // Max current limit of elevator motors 
     public static final double maxOutput = 1.0;   // Max power output of elevator motors
     public static final double maxVelocity = 6000.0; // Max velocity of elevator
-    public static final double maxAcceleration = 10000.0; // Max acceleration of elevator
+    public static final double maxAcceleration = 14000; // Max acceleration of elevator
     public static final double countsPerInch = 0.9861;   // Encoder ticks per inch of elevator travel
     public static final double posTolerance = 0.15;    // Tolerance for PID control of elevator
 
@@ -78,14 +78,14 @@ public final class Constants
     public static final double positionDown = 32;
     public static final double positionFloor = 32;
     public static final double positionProcessor = 32.0;
-    public static final double positionA2 = 59.0;
+    public static final double positionA2 = 57.0;
     public static final double positionA3 = 76.0;
     public static final double positionNet = 79;
     
     public static final double positionL1 = positionMin;
     public static final double positionL2 = 38.5;
     public static final double positionL3 = 57.5;
-    public static final double positionL4 = 82;
+    public static final double positionL4 = 82.5;
 
   }
 // stored coral arm positions
@@ -121,7 +121,7 @@ public final class Constants
        public static final double positionUp = 68.0;
        public static final double positionStation = 45.5;
        public static final double positionHorizontal = 0.0;
-       public static final double positionReef = -44.0;
+       public static final double positionReef = -48.0;
        public static final double positionMin = -50.0;
   }
 
@@ -171,7 +171,7 @@ public final class Constants
     public static final double positionMax = 85.0;
     public static final double positionUp = 83.0;
     public static final double positionProcessor = 3.0;
-    public static final double positionReef = -18.0;
+    public static final double positionReef = -15.0;
     public static final double positionFloor = -20.0;
     public static final double positionMin = -38.0;
     public static final double positionNet = 60.0;

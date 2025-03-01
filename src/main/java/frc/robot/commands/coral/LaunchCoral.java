@@ -61,7 +61,7 @@ public class LaunchCoral extends Command {
         break;
       case launch:
         m_coral.setManualPowerLaunch(-m_power);  
-        if(currentTime > m_startTime + 150)
+        if(currentTime > m_startTime + 30)
         {
           m_state = State.flick;
         }
