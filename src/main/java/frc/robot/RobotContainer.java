@@ -202,7 +202,7 @@ public class RobotContainer
               );
 
       m_driverSwitch.button(5).whileTrue(new IntakeCoral(m_coral, Constants.CoralConstants.powerIntake));
-      m_driverSwitch.button(7).whileTrue(new LaunchCoral(m_coral, Constants.CoralConstants.powerLaunch));
+      m_driverSwitch.button(7).onTrue(new LaunchCoral(m_coral, Constants.CoralConstants.powerLaunch));
 
       m_driverSwitch.button(6).whileTrue(new IntakeAlgae(m_algae, Constants.AlgaeArmConstants.powerIntake));
       m_driverSwitch.button(8).whileTrue(new LaunchAlgae(m_algae, Constants.AlgaeArmConstants.powerLaunch));
@@ -240,7 +240,7 @@ public class RobotContainer
         // Floor
         m_driver2Xbox.pov(180).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionFloor, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionFloor));
         // net
-        m_driver2Xbox.button(8).onTrue(new ElevatorPositionAfterHome(m_elevator, Constants.ElevatorConstants.positionNet, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionNet ));
+        m_driver2Xbox.button(8).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionNet, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionNet ));
 
       // m_driver2Xbox.button(8).onTrue(hook down); 
    // m_driver2Xbox.button(9).onTrue(coral intake); 
