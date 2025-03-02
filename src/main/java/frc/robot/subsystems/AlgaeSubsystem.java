@@ -26,7 +26,6 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import frc.robot.Constants;
 import frc.robot.Constants.AlgaeArmConstants;
-import frc.robot.Constants.CoralConstants;
 
 public class AlgaeSubsystem  extends SubsystemBase {
     private final SparkFlex m_motorAngle;
@@ -239,7 +238,7 @@ public class AlgaeSubsystem  extends SubsystemBase {
         {
             // m_setPointPower = m_currentPositionPower;
             m_isManualPower = false;
-            m_motorPowerLeader.set(MathUtil.clamp(power, -CoralConstants.maxOutput, CoralConstants.maxOutput));
+            m_motorPowerLeader.set(MathUtil.clamp(power, -AlgaeArmConstants.maxOutput, AlgaeArmConstants.maxOutput));
          }
     }
 
