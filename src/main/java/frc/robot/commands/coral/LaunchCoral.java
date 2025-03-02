@@ -10,13 +10,13 @@ import frc.robot.subsystems.ElevatorSubsystem;
  * A command to control the elevator with a joystick axis
  */
 public class LaunchCoral extends Command {
-  enum State {start, launch, flick, elevator, finished};
+  enum State {start, launch, flick, wait, elevator, finished};
   private final CoralSubsystem m_coral;
   private final ElevatorSubsystem m_elevator;
   private final Double m_power;
   private final Double m_elevatorPosition;
 
-  private Timer m_timer = new Timer();
+  private long m_startTime;
   private State m_state;
 
   // Constructor for launch 
@@ -45,7 +45,6 @@ public class LaunchCoral extends Command {
   @Override
   public void initialize()
   {
-    m_timer.start();
     m_state = State.start;
   }
   
@@ -57,34 +56,39 @@ public class LaunchCoral extends Command {
 
     switch (m_state) {
       case start:
+        m_startTime = currentTime;
         m_coral.setManualPowerLaunch(-m_power);
         m_state = State.launch;
-        System.out.print("Begin Launch:   "); System.out.println(currentTime);
+        // System.out.print("Begin Launch:   "); System.out.println(currentTime);
         break;
       case launch:
         m_coral.setManualPowerLaunch(-m_power);  
-        if(m_timer.hasElapsed(0.010));
+        if(currentTime > (m_startTime + 500))
         {
           m_state = State.flick;
-          System.out.print("Begin Flick :    "); System.out.println(currentTime);
+          // System.out.print("Begin Flick :    "); System.out.println(currentTime);
         }
         break;
       case flick:
-        m_coral.setManualPowerLaunch(-m_power); 
+        m_coral.setManualPowerLaunch(0.0); 
         m_coral.setPositionArm(Constants.CoralConstants.positionStation);
+        m_state = State.wait;
+        // System.out.print("Begin Wait  :    "); System.out.println(currentTime);
+        break;
+      case wait:
         if (m_coral.isAtSetPointArm())
         {
           m_state = State.elevator;
-          System.out.print("Begin Elevator: "); System.out.println(currentTime);
+          // System.out.print("Begin Elevator: "); System.out.println(currentTime);
         }
-        break;
+        break;        
       case elevator:
         if(m_elevator != null)
         {
           m_elevator.setPositionInches(m_elevatorPosition);
         }
         m_state = State.finished;
-        System.out.print("Begin Finish:   "); System.out.println(currentTime);
+        // System.out.print("Begin Finish:   "); System.out.println(currentTime);
         break;
       default:
         break;

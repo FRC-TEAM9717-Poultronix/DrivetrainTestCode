@@ -36,19 +36,19 @@ public final class Constants
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
-  public static final double MAX_SPEED  = Units.feetToMeters(7);// Maximum speed of the robot in meters per second, used to limit acceleration.
+  public static final double MAX_SPEED  = Units.feetToMeters(5);// Maximum speed of the robot in meters per second, used to limit acceleration.
 
   public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
 
-  public static final Pose2d startPosition = new Pose2d(new Translation2d(Meter.of(15), Meter.of(4)), Rotation2d.fromDegrees(180));
+  public static final Pose2d startPosition = new Pose2d(new Translation2d(Meter.of(10), Meter.of(6.16)), Rotation2d.fromDegrees(0));
 
   public static final String Camera1Name = "center";
   public static final Rotation3d Camera1Rotation = new Rotation3d(0, Units.degreesToRadians(15), 0);
-  public static final Translation3d Camera1Translation = new Translation3d(Units.inchesToMeters(9.75),
-                                                                           Units.inchesToMeters(-0.50),
-                                                                           Units.inchesToMeters(7.00));
+  public static final Translation3d Camera1Translation = new Translation3d(Units.inchesToMeters(13.5),
+                                                                           Units.inchesToMeters(0.0),
+                                                                           Units.inchesToMeters(8.0));
   public static final Vector<N3>  Camera1StdTrans = VecBuilder.fill(2, 2, 4);
-  public static final Vector<N3>  Camera1StdRot = VecBuilder.fill(0.5, 0.5, 0.5);
+  public static final Vector<N3>  Camera1StdRot = VecBuilder.fill(0.5, 0.5, 1.0);
 
   public static final class ElevatorConstants
   {
@@ -79,9 +79,9 @@ public final class Constants
     public static final double positionFloor = 36;
     public static final double positionProcessor = 33.5;
     public static final double positionA2 = 58.5;
-    public static final double positionA3 = 77.0;
+    public static final double positionA3 = 78.0;
     public static final double positionNet = 81;
-    public static final double positionLollipop = 35;
+    public static final double positionLollipop = 34;
     
     public static final double positionL1 = positionMin;
     public static final double positionL2 = 39.5;
@@ -122,8 +122,8 @@ public final class Constants
        public static final double positionUp = 68.0;
        public static final double positionStation = 45.5;
        public static final double positionHorizontal = 0.0;
-       public static final double positionReef = -48.0;
-       public static final double positionMin = -50.0;
+       public static final double positionReef = -20.0;
+       public static final double positionMin = -25.0;
   }
 
   public static final class DrivebaseConstants
@@ -171,11 +171,11 @@ public final class Constants
 
     public static final double positionMax = 85.0;
     public static final double positionUp = 83.0;
-    public static final double positionProcessor = 3.0;
+    public static final double positionProcessor = 2.0;
     public static final double positionReef = -15.0;
     public static final double positionFloor = -35.0;
     public static final double positionMin = -38.0;
     public static final double positionNet = 45.0;
-    public static final double positionLollipop = 3.0;
+    public static final double positionLollipop = 0.0;
    }
 }
