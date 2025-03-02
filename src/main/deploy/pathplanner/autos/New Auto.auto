@@ -21,7 +21,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 1.0
+                        "waitTime": 5.0
                       }
                     },
                     {
@@ -31,6 +31,31 @@
                       }
                     }
                   ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeAlgae"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RearToProcessor"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "LowerToProcessor"
                 }
               }
             ]

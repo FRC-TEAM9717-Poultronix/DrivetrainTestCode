@@ -7,20 +7,21 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.AlgaeSubsystem;
+import frc.robot.subsystems.CoralSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.targeting.TargetingSubsystem;
 
 /**
  * A command to rezero the elevator
  */
-public class AutoIntakeAlgae extends Command {
+public class AutoIntakeCoral extends Command {
   enum State {start, move_forward, move_backward, finished};
 
   private final SwerveSubsystem m_swerve;
   private final TargetingSubsystem m_targeting;
-  private final AlgaeSubsystem m_algae;
+  private final CoralSubsystem m_coral;
 
   private final double m_distance;
   private final double m_tolTrans;
@@ -33,15 +34,19 @@ public class AutoIntakeAlgae extends Command {
 
   private double m_startTime;
   private State m_state;
-
+  public class CoralSubsystem extends SubsystemBase {
+public void setManualPower(double power)
+  {
+    
+  }}
   // Constructor
-  public AutoIntakeAlgae(SwerveSubsystem swerve, 
+  public AutoIntakeCoral(SwerveSubsystem swerve, 
                          TargetingSubsystem targeting, double distanceX, double tolTrans, double tolRot, 
-                         AlgaeSubsystem algae, double power)
+                         CoralSubsystem Coral, double power) 
   {
     m_swerve = swerve;
     m_targeting = targeting;
-    m_algae = algae;
+    m_coral = Coral;
 
     m_distance = distanceX;
     m_tolTrans = tolTrans;
@@ -53,7 +58,7 @@ public class AutoIntakeAlgae extends Command {
     m_velYaw = 0.0;
   
     addRequirements(swerve);
-    addRequirements(algae);
+    addRequirements(Coral);
   }
 
   // Called once when the command is initially scheduled.
@@ -62,7 +67,7 @@ public class AutoIntakeAlgae extends Command {
   {
     m_state = State.start;
     m_startTime = System.currentTimeMillis();
-    m_algae.setManualPowerPower(-m_power);
+    m_coral.setManualPower(-m_power);
   }
 
   // Called every cycle while command is active
@@ -89,6 +94,7 @@ public class AutoIntakeAlgae extends Command {
           m_velY = 0.0;
           m_velYaw = 0.0;
           
+
           // Get target
           Optional<Pose2d> poseTarget = m_targeting.getPoseForNearestTargetInRobotFrame();
           
@@ -115,7 +121,7 @@ public class AutoIntakeAlgae extends Command {
         }
         break;
       case move_backward:
-        m_algae.setManualPowerPower(0.0);
+        m_coral.setManualPower(0.0);
         m_swerve.driveToDistanceCommand(1.0, -1.0);
         m_state = State.finished;
         break;
@@ -135,7 +141,7 @@ public class AutoIntakeAlgae extends Command {
   @Override
   public void end(boolean interrupted)
   {
-    System.out.println("Intake Algae Ended!");
+    System.out.println("Intake Coral Ended!");
   }
 
 }

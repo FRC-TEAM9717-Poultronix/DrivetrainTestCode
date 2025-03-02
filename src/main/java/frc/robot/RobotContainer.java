@@ -254,8 +254,9 @@ public class RobotContainer
    // m_driver2Xbox.button(17).onTrue(hook up?); 
    // m_driver2Xbox.button(18).onTrue(shoot algae full speed and set angle to the net (possibly using april tags to find the right angle depending on position)); 
 
-      NamedCommands.registerCommand("RaiseToHeighAlgae", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionA3, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionReef));
-      NamedCommands.registerCommand("IntakeAlgae", new AutoIntakeAlgae(m_drivebase, m_targeting, 0.3, 0.1, 0.1, m_algae, Constants.AlgaeArmConstants.powerIntake));
+      NamedCommands.registerCommand("LowerToProcessor", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionProcessor, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionProcessor));
+      NamedCommands.registerCommand("RaiseToHighAlgae", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionA3, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionReef));
+      NamedCommands.registerCommand("IntakeAlgae", new AutoIntakeAlgae(m_drivebase, m_targeting, 0.2, 0.1, 0.1, m_algae, Constants.AlgaeArmConstants.powerIntake));
 
     }
 
