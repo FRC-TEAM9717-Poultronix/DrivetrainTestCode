@@ -58,12 +58,14 @@ public class LaunchCoral extends Command {
       case start:
         m_coral.setManualPowerLaunch(-m_power);
         m_state = State.launch;
+        System.out.print("Begin Launch"); System.out.println(currentTime);
         break;
       case launch:
         m_coral.setManualPowerLaunch(-m_power);  
-        if(currentTime > m_startTime + 30)
+        if(currentTime > m_startTime)
         {
           m_state = State.flick;
+          System.out.print("Begin Flick"); System.out.println(currentTime);
         }
         break;
       case flick:
@@ -72,6 +74,7 @@ public class LaunchCoral extends Command {
         if (m_coral.isAtSetPointArm())
         {
           m_state = State.elevator;
+          System.out.print("Begin Elevator"); System.out.println(currentTime);
         }
         break;
       case elevator:
@@ -80,6 +83,7 @@ public class LaunchCoral extends Command {
           m_elevator.setPositionInches(m_elevatorPosition);
         }
         m_state = State.finished;
+        System.out.print("Begin Finish"); System.out.println(currentTime);
         break;
       default:
         break;

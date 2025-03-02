@@ -36,7 +36,7 @@ public final class Constants
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
-  public static final double MAX_SPEED  = Units.feetToMeters(6);// Maximum speed of the robot in meters per second, used to limit acceleration.
+  public static final double MAX_SPEED  = Units.feetToMeters(7);// Maximum speed of the robot in meters per second, used to limit acceleration.
 
   public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
 
@@ -76,11 +76,11 @@ public final class Constants
     public static final double positionMax = 82.5;
 
     public static final double positionDown = 32;
-    public static final double positionFloor = 32;
-    public static final double positionProcessor = 32.0;
-    public static final double positionA2 = 57.0;
-    public static final double positionA3 = 76.0;
-    public static final double positionNet = 79;
+    public static final double positionFloor = 36;
+    public static final double positionProcessor = 33.5;
+    public static final double positionA2 = 58.5;
+    public static final double positionA3 = 77.0;
+    public static final double positionNet = 81;
     
     public static final double positionL1 = positionMin;
     public static final double positionL2 = 38.5;
@@ -101,8 +101,8 @@ public final class Constants
     public static final int MaxCurrentLimitLaunch = 20; // Max current limit of elevator motors 
 
     public static final double maxOutput = 1.0;   // Max power output of elevator motors
-    public static final double maxVelocity = 5000.0; // Max velocity of elevator
-    public static final double maxAcceleration = 20000.0; // Max acceleration of elevator
+    public static final double maxVelocity = 6000.0; // Max velocity of elevator
+    public static final double maxAcceleration = 30000.0; // Max acceleration of elevator
     public static final double countsPerDegreeLaunch = 360;   // Encoder ticks per inch of elevator travel
     public static final double countsPerDegreeArm = 360;   // Encoder ticks per inch of elevator travel
     public static final double posTolerance = 5.0;    // Tolerance for PID control of elevator
@@ -146,7 +146,7 @@ public final class Constants
     public static final int powerFollowerID = 33;
 
     public static final double powerLaunch = 1.0;
-    public static final double powerIntake = 0.30;
+    public static final double powerIntake = 0.55;
 
     public static final int MaxCurrentLimitAngle = 40; // Max current limit of elevator motors 
     public static final int MaxCurrentLimitPower = 100; // Max current limit of elevator motors 
@@ -172,8 +172,8 @@ public final class Constants
     public static final double positionUp = 83.0;
     public static final double positionProcessor = 3.0;
     public static final double positionReef = -15.0;
-    public static final double positionFloor = -40.0;
+    public static final double positionFloor = -35.0;
     public static final double positionMin = -38.0;
-    public static final double positionNet = 40.0;
+    public static final double positionNet = 45.0;
    }
 }
