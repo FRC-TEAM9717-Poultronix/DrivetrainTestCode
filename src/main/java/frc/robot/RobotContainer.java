@@ -25,6 +25,7 @@ import frc.robot.commands.algae.AngleVelocity;
 import frc.robot.commands.algae.AnglePosition;
 import frc.robot.commands.algae.IntakeAlgae;
 import frc.robot.commands.algae.LaunchAlgae;
+import frc.robot.commands.autos.AutoIntakeAlgae;
 import frc.robot.commands.coral.ArmPosition;
 import frc.robot.commands.coral.ArmVelocity;
 import frc.robot.commands.coral.IntakeCoral;
@@ -196,10 +197,7 @@ public class RobotContainer
       m_driverSwitch.button(2).onTrue((Commands.runOnce(m_drivebase::zeroGyroWithAlliance)));
       // m_driverXbox.leftBumper().whileTrue(Commands.runOnce(m_drivebase::lock, m_drivebase).repeatedly());
       m_driverSwitch.button(3).onTrue(Commands.runOnce(m_drivebase::addFakeVisionReading));
-      m_driverSwitch.button(10).whileTrue(
-          m_drivebase.driveToPose(
-              new Pose2d(new Translation2d(15, 4), Rotation2d.fromDegrees(180)))
-              );
+      m_driverSwitch.button(10).whileTrue(new AutoIntakeAlgae(m_drivebase, m_targeting, 0.3, 0.1, 0.1, m_algae, Constants.AlgaeArmConstants.powerIntake));
 
       m_driverSwitch.button(5).whileTrue(new IntakeCoral(m_coral, Constants.CoralConstants.powerIntake));
       m_driverSwitch.button(7).onTrue(new LaunchCoral(m_coral, Constants.CoralConstants.powerLaunch, m_elevator, Constants.ElevatorConstants.positionDown));
@@ -256,7 +254,8 @@ public class RobotContainer
    // m_driver2Xbox.button(17).onTrue(hook up?); 
    // m_driver2Xbox.button(18).onTrue(shoot algae full speed and set angle to the net (possibly using april tags to find the right angle depending on position)); 
 
-      NamedCommands.registerCommand("IntakeHighAlgae", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionA3, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionReef));
+      NamedCommands.registerCommand("RaiseToHeighAlgae", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionA3, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionReef));
+      NamedCommands.registerCommand("IntakeAlgae", new AutoIntakeAlgae(m_drivebase, m_targeting, 0.3, 0.1, 0.1, m_algae, Constants.AlgaeArmConstants.powerIntake));
 
     }
 
