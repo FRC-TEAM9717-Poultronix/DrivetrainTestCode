@@ -81,9 +81,10 @@ public final class Constants
     public static final double positionA2 = 58.5;
     public static final double positionA3 = 77.0;
     public static final double positionNet = 81;
+    public static final double positionLollipop = 35;
     
     public static final double positionL1 = positionMin;
-    public static final double positionL2 = 38.5;
+    public static final double positionL2 = 39.5;
     public static final double positionL3 = 57.5;
     public static final double positionL4 = 82.5;
 
@@ -175,5 +176,6 @@ public final class Constants
     public static final double positionFloor = -35.0;
     public static final double positionMin = -38.0;
     public static final double positionNet = 45.0;
+    public static final double positionLollipop = 3.0;
    }
 }
