@@ -57,7 +57,7 @@ public final class Constants
 
     public static final int MaxCurrentLimit = 40; // Max current limit of elevator motors 
     public static final double maxOutput = 1.0;   // Max power output of elevator motors
-    public static final double maxVelocity = 6000.0; // Max velocity of elevator
+    public static final double maxVelocity = 15000.0; // Max velocity of elevator
     public static final double maxAcceleration = 15000; // Max acceleration of elevator
     public static final double countsPerInch = 0.9861;   // Encoder ticks per inch of elevator travel
     public static final double posTolerance = 0.15;    // Tolerance for PID control of elevator
@@ -72,7 +72,7 @@ public final class Constants
     public static final double kAF = 0.05;
     
     // Stored elevator positions
-    public static final double positionMin = 31.5;
+    public static final double positionMin = 31.5;  //This is more of an intial value than a position.  Travel to all other positions is the listed value minus this one.
     public static final double positionMax = 82.5;
 
     public static final double positionDown = 32;

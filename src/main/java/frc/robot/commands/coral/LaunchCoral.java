@@ -1,5 +1,6 @@
 package frc.robot.commands.coral;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.CoralSubsystem;
@@ -15,7 +16,7 @@ public class LaunchCoral extends Command {
   private final Double m_power;
   private final Double m_elevatorPosition;
 
-  private double m_startTime;
+  private Timer m_timer = new Timer();
   private State m_state;
 
   // Constructor for launch 
@@ -44,7 +45,7 @@ public class LaunchCoral extends Command {
   @Override
   public void initialize()
   {
-    m_startTime = System.currentTimeMillis();
+    m_timer.start();
     m_state = State.start;
   }
   
@@ -52,20 +53,20 @@ public class LaunchCoral extends Command {
   @Override
   public void execute()
   {
-    double currentTime = System.currentTimeMillis();
+    long currentTime = System.currentTimeMillis();
 
     switch (m_state) {
       case start:
         m_coral.setManualPowerLaunch(-m_power);
         m_state = State.launch;
-        System.out.print("Begin Launch"); System.out.println(currentTime);
+        System.out.print("Begin Launch:   "); System.out.println(currentTime);
         break;
       case launch:
         m_coral.setManualPowerLaunch(-m_power);  
-        if(currentTime > m_startTime)
+        if(m_timer.hasElapsed(0.010));
         {
           m_state = State.flick;
-          System.out.print("Begin Flick"); System.out.println(currentTime);
+          System.out.print("Begin Flick :    "); System.out.println(currentTime);
         }
         break;
       case flick:
@@ -74,7 +75,7 @@ public class LaunchCoral extends Command {
         if (m_coral.isAtSetPointArm())
         {
           m_state = State.elevator;
-          System.out.print("Begin Elevator"); System.out.println(currentTime);
+          System.out.print("Begin Elevator: "); System.out.println(currentTime);
         }
         break;
       case elevator:
@@ -83,7 +84,7 @@ public class LaunchCoral extends Command {
           m_elevator.setPositionInches(m_elevatorPosition);
         }
         m_state = State.finished;
-        System.out.print("Begin Finish"); System.out.println(currentTime);
+        System.out.print("Begin Finish:   "); System.out.println(currentTime);
         break;
       default:
         break;

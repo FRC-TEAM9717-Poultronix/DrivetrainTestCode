@@ -153,14 +153,14 @@ public class CoralSubsystem extends SubsystemBase {
         //     m_closedLoopControllerLaunch.setReference(m_SetpointLaunch, SparkBase.ControlType.kPosition, ClosedLoopSlot.kSlot0);
         // }
 
-        if(!m_isManualArm)
-        {
-            m_closedLoopControllerArm.setReference(m_SetpointArm, 
-                                                SparkBase.ControlType.kMAXMotionPositionControl, 
-                                                ClosedLoopSlot.kSlot0, 
-                                                CoralConstants.kAF_arm * Math.cos(Units.degreesToRadians(m_currentPositionArm)),
-                                                ArbFFUnits.kPercentOut);
-        }
+        // if(!m_isManualArm)
+        // {
+        //     m_closedLoopControllerArm.setReference(m_SetpointArm, 
+        //                                         SparkBase.ControlType.kMAXMotionPositionControl, 
+        //                                         ClosedLoopSlot.kSlot0, 
+        //                                         CoralConstants.kAF_arm * Math.cos(Units.degreesToRadians(m_currentPositionArm)),
+        //                                         ArbFFUnits.kPercentOut);
+        // }
     }
 
     private void updateTelemetry() {
@@ -199,6 +199,12 @@ public class CoralSubsystem extends SubsystemBase {
             CoralConstants.positionMin,
             CoralConstants.positionMax
         );
+
+        m_closedLoopControllerArm.setReference(m_SetpointArm, 
+                                                SparkBase.ControlType.kMAXMotionPositionControl, 
+                                                ClosedLoopSlot.kSlot0, 
+                                                CoralConstants.kAF_arm * Math.cos(Units.degreesToRadians(m_currentPositionArm)),
+                                                ArbFFUnits.kPercentOut);
     }
 
     public void setManualPowerLaunch(double power) {
