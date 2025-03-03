@@ -79,39 +79,36 @@ public class AutoIntakeAlgae extends Command {
         }
         break;
       case move_forward:
-      if(currentTime > m_startTime + 100)
+        Boolean isReadyX = false;
+        Boolean isReadyY = false;
+        Boolean isReadyYaw = false;
+
+        m_velX = 0.0;
+        m_velY = 0.0;
+        m_velYaw = 0.0;
+        
+        // Get target
+        Optional<Pose2d> poseTarget = m_targeting.getPoseForNearestTargetInRobotFrame();
+        
+        if(poseTarget.isPresent())
         {
-          Boolean isReadyX = false;
-          Boolean isReadyY = false;
-          Boolean isReadyYaw = false;
+          // Get distances from target
+          double        targetX   = poseTarget.get().getX();
+          double        targetY   = poseTarget.get().getY();
+          Rotation2d    targetYaw = poseTarget.get().getRotation();
+          // Check Distances
 
-          m_velX = 0.0;
-          m_velY = 0.0;
-          m_velYaw = 0.0;
-          
-          // Get target
-          Optional<Pose2d> poseTarget = m_targeting.getPoseForNearestTargetInRobotFrame();
-          
-          if(poseTarget.isPresent())
-          {
-            // Get distances from target
-            double        targetX   = poseTarget.get().getX();
-            double        targetY   = poseTarget.get().getY();
-            Rotation2d    targetYaw = poseTarget.get().getRotation();
-            // Check Distances
-
-            if((targetX - m_distance) < m_tolTrans) isReadyX = true;
-            if(targetY < m_tolTrans) isReadyY = true;
-            if(targetYaw.getRadians() < m_tolRot) isReadyYaw = true;
-            if(isReadyX && isReadyY && isReadyYaw) m_state = State.move_backward;
-            // Update pids
-            if(!isReadyX) m_velX = m_swerve.getSwerveController().xTranslationCalculate(m_distance, targetX);
-            if(!isReadyY) m_velY = m_swerve.getSwerveController().yTranslationCalculate(0.0, targetY);
-            if(!isReadyYaw) m_velYaw = m_swerve.getSwerveController().headingCalculate(0.0, targetYaw.getRadians());
-            // Send speeds to drivetrain
-            ChassisSpeeds speeds = new ChassisSpeeds(m_velX, m_velY, m_velYaw);
-            m_swerve.drive(speeds);
-          }
+          if(Math.abs(targetX - m_distance) < m_tolTrans) isReadyX = true;
+          if(targetY < m_tolTrans) isReadyY = true;
+          if(targetYaw.getRadians() < m_tolRot) isReadyYaw = true;
+          if(isReadyX && isReadyY && isReadyYaw) m_state = State.move_backward;
+          // Update pids
+          if(!isReadyX) m_velX = m_swerve.getSwerveController().xTranslationCalculate(m_distance, targetX);
+          if(!isReadyY) m_velY = m_swerve.getSwerveController().yTranslationCalculate(0.0, targetY);
+          if(!isReadyYaw) m_velYaw = m_swerve.getSwerveController().headingCalculate(0.0, targetYaw.getRadians());
+          // Send speeds to drivetrain
+          ChassisSpeeds speeds = new ChassisSpeeds(m_velX, m_velY, m_velYaw);
+          m_swerve.drive(speeds);
         }
         break;
       case move_backward:

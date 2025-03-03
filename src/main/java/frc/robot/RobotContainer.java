@@ -26,6 +26,7 @@ import frc.robot.commands.algae.AnglePosition;
 import frc.robot.commands.algae.IntakeAlgae;
 import frc.robot.commands.algae.LaunchAlgae;
 import frc.robot.commands.autos.AutoIntakeAlgae;
+import frc.robot.commands.autos.AutoScoreCoral;
 import frc.robot.commands.coral.ArmPosition;
 import frc.robot.commands.coral.ArmVelocity;
 import frc.robot.commands.coral.IntakeCoral;
@@ -151,6 +152,7 @@ public class RobotContainer
    */
   private void configureBindings()
   {
+    // Drive Commands
     Command driveFieldOrientedDirectAngle      = m_drivebase.driveFieldOriented(driveDirectAngle);
     Command driveFieldOrientedAnglularVelocity = m_drivebase.driveFieldOriented(driveAngularVelocity);
     Command driveRobotOrientedAngularVelocity  = m_drivebase.driveFieldOriented(driveRobotOriented);
@@ -160,6 +162,16 @@ public class RobotContainer
     Command driveFieldOrientedAnglularVelocityKeyboard = m_drivebase.driveFieldOriented(driveAngularVelocityKeyboard);
     Command driveSetpointGenKeyboard = m_drivebase.driveWithSetpointGeneratorFieldRelative(
         driveDirectAngleKeyboard);
+
+    // Named Commands
+    NamedCommands.registerCommand("LowerToProcessor", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionProcessor, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionProcessor));
+    NamedCommands.registerCommand("RaiseToLowAlgae", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionA2, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionReef));
+    NamedCommands.registerCommand("RaiseToHighAlgae", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionA3, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionReef));
+    NamedCommands.registerCommand("LowerToCoralStation", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionStation, m_algae, Constants.AlgaeArmConstants.positionUp));
+    
+    NamedCommands.registerCommand("IntakeAlgae", new AutoIntakeAlgae(m_drivebase, m_targeting, 0.2, 0.1, 0.1, m_algae, Constants.AlgaeArmConstants.powerIntake));
+    NamedCommands.registerCommand("ScoreCoral", new AutoScoreCoral(m_targeting, 0.178, 0.3, m_drivebase, m_elevator, m_coral, m_algae));
+
 
     // Setup SmartDashboard chooser options
     m_chooserTeleop.setDefaultOption("driveFieldOrientedDirectAngle", driveFieldOrientedDirectAngle);
@@ -197,7 +209,8 @@ public class RobotContainer
       m_driverSwitch.button(2).onTrue((Commands.runOnce(m_drivebase::zeroGyroWithAlliance)));
       // m_driverXbox.leftBumper().whileTrue(Commands.runOnce(m_drivebase::lock, m_drivebase).repeatedly());
       m_driverSwitch.button(3).onTrue(Commands.runOnce(m_drivebase::addFakeVisionReading));
-      m_driverSwitch.button(10).whileTrue(new AutoIntakeAlgae(m_drivebase, m_targeting, 0.3, 0.1, 0.1, m_algae, Constants.AlgaeArmConstants.powerIntake));
+      m_driverSwitch.button(10).whileTrue(NamedCommands.getCommand("ScoreCoral"));
+      // m_driverSwitch.button(10).onTrue(m_drivebase.driveToDistanceCommand(2.0, 1.0));
 
       m_driverSwitch.button(5).whileTrue(new IntakeCoral(m_coral, Constants.CoralConstants.powerIntake));
       m_driverSwitch.button(7).onTrue(new LaunchCoral(m_coral, Constants.CoralConstants.powerLaunch, m_elevator, Constants.ElevatorConstants.positionDown));
@@ -253,11 +266,6 @@ public class RobotContainer
    // m_driver2Xbox.button(16).onTrue(side algae outtake); 
    // m_driver2Xbox.button(17).onTrue(hook up?); 
    // m_driver2Xbox.button(18).onTrue(shoot algae full speed and set angle to the net (possibly using april tags to find the right angle depending on position)); 
-
-      NamedCommands.registerCommand("LowerToProcessor", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionProcessor, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionProcessor));
-      NamedCommands.registerCommand("RaiseToHighAlgae", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionA3, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionReef));
-      NamedCommands.registerCommand("IntakeAlgae", new AutoIntakeAlgae(m_drivebase, m_targeting, 0.2, 0.1, 0.1, m_algae, Constants.AlgaeArmConstants.powerIntake));
-
     }
 
   }
