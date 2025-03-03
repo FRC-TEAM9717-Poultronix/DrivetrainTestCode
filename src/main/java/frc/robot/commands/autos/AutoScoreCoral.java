@@ -1,8 +1,12 @@
 package frc.robot.commands.autos;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.coral.LaunchCoral;
 import frc.robot.commands.elevator.ElevatorPosition;
+import frc.robot.commands.swervedrive.DriveDistance;
 import frc.robot.commands.targeting.AlignWithApriltag;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.targeting.TargetingSubsystem;
@@ -11,9 +15,9 @@ import frc.robot.subsystems.CoralSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.Constants;
 
-public class AutoIntakeCoral extends SequentialCommandGroup
+public class AutoScoreCoral extends SequentialCommandGroup
 {
-    public AutoIntakeCoral(TargetingSubsystem targeting,
+    public AutoScoreCoral(TargetingSubsystem targeting,
                           Double distLateral,
                           Double distForward,
                           SwerveSubsystem swerve,                           
@@ -23,9 +27,9 @@ public class AutoIntakeCoral extends SequentialCommandGroup
     {
         addCommands(
           new AlignWithApriltag(swerve, targeting, distForward * 2, distLateral, 0.05, 0.1)
-          ,swerve.driveToDistanceCommand(distForward, 1.0)
-        //   ,new LaunchCoral(coral, -1.0)
-        //   new ElevatorPosition(elevator, Constants.ElevatorConstants.positionDown, coral, Constants.CoralConstants.positionUp, algae, Constants.AlgaeArmConstants.positionUp)
+          ,new DriveDistance(swerve, distForward, 0.5)
+          ,new LaunchCoral(coral, 1.0)
+          ,new ElevatorPosition(elevator, Constants.ElevatorConstants.positionDown, coral, Constants.CoralConstants.positionUp, algae, Constants.AlgaeArmConstants.positionUp)
         );
     }
 }
