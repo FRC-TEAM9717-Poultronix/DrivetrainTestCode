@@ -50,6 +50,12 @@ public final class Constants
   public static final Vector<N3>  Camera1StdTrans = VecBuilder.fill(2, 2, 4);
   public static final Vector<N3>  Camera1StdRot = VecBuilder.fill(0.5, 0.5, 1.0);
 
+public static final class Hanger_Constants
+{
+  public static final int HangerID = 30;  // Can Id of Hanger motor
+  public static final double Hanger_Motor = 0.3;
+}
+
   public static final class ElevatorConstants
   {
     public static final int leftElevatorID = 11;  // Can Id of Left elevator motor

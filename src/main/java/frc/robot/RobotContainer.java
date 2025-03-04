@@ -128,6 +128,9 @@ public class RobotContainer
 
   // Create SmartDashboard chooser for autonomous and teleop routines
   private final SendableChooser<Command> m_chooserTeleop = new SendableChooser<>();
+  private final SendableChooser<Command> m_ChooserAuto = new SendableChooser<>();
+
+  private int Hanger_Motor = 0;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -170,7 +173,8 @@ public class RobotContainer
     NamedCommands.registerCommand("LowerToCoralStation", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionStation, m_algae, Constants.AlgaeArmConstants.positionUp));
     
     NamedCommands.registerCommand("IntakeAlgae", new AutoIntakeAlgae(m_drivebase, m_targeting, 0.2, 0.1, 0.1, m_algae, Constants.AlgaeArmConstants.powerIntake));
-    NamedCommands.registerCommand("ScoreCoral", new AutoScoreCoral(m_targeting, 0.178, 0.3, m_drivebase, m_elevator, m_coral, m_algae));
+    NamedCommands.registerCommand("ScoreCoralRight", new AutoScoreCoral(m_targeting, 0.178, 0.3, m_drivebase, m_elevator, m_coral, m_algae));
+    NamedCommands.registerCommand("ScoreCoralLeft", new AutoScoreCoral(m_targeting, -0.178, 0.3, m_drivebase, m_elevator, m_coral, m_algae));
 
 
     // Setup SmartDashboard chooser options
@@ -178,6 +182,12 @@ public class RobotContainer
     m_chooserTeleop.addOption("driveFieldOrientedAnglularVelocity", driveFieldOrientedAnglularVelocity);
     m_chooserTeleop.addOption("driveRobotOrientedAngularVelocity", driveRobotOrientedAngularVelocity);
     SmartDashboard.putData("Teleop Mode", m_chooserTeleop);
+
+    m_ChooserAuto.setDefaultOption("New Auto", m_drivebase.getAutonomousCommand("New Auto"));
+    m_ChooserAuto.addOption("Left L4", m_drivebase.getAutonomousCommand("Left L4"));
+    // m_ChooserAuto.addOption("driveRobotOrientedAngularVelocity", m_drivebase.getAutonomousCommand("New Auto"));
+    SmartDashboard.putData("Auto Mode", m_ChooserAuto);
+
 
     if (RobotBase.isSimulation())
     {
@@ -209,7 +219,8 @@ public class RobotContainer
       m_driverSwitch.button(2).onTrue((Commands.runOnce(m_drivebase::zeroGyroWithAlliance)));
       // m_driverXbox.leftBumper().whileTrue(Commands.runOnce(m_drivebase::lock, m_drivebase).repeatedly());
       m_driverSwitch.button(3).onTrue(Commands.runOnce(m_drivebase::addFakeVisionReading));
-      m_driverSwitch.button(10).whileTrue(NamedCommands.getCommand("ScoreCoral"));
+      m_driverSwitch.button(9).whileTrue(NamedCommands.getCommand("ScoreCoralLeft"));
+      m_driverSwitch.button(10).whileTrue(NamedCommands.getCommand("ScoreCoralRight"));
       // m_driverSwitch.button(10).onTrue(m_drivebase.driveToDistanceCommand(2.0, 1.0));
 
       m_driverSwitch.button(5).whileTrue(new IntakeCoral(m_coral, Constants.CoralConstants.powerIntake));
@@ -254,6 +265,10 @@ public class RobotContainer
         m_driver2Xbox.button(8).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionNet, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionNet ));
         // lollipop
         m_driver2Xbox.button(9).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionLollipop, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionLollipop));
+        //Hanger
+        m_driver2Xbox.button(10).whileTrue(Commands.run(() -> setHangerMotor(1)));
+        m_driver2Xbox.button(10).whileFalse(Commands.run(() -> setHangerMotor(0)));
+
 
       // m_driver2Xbox.button(8).onTrue(hook down); 
    // m_driver2Xbox.button(9).onTrue(coral intake); 
@@ -283,13 +298,17 @@ public class RobotContainer
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    return m_drivebase.getAutonomousCommand("New Auto");
+    return m_ChooserAuto.getSelected();
+  }
+  public void setHangerMotor(int value) {
+    Hanger_Motor = value;
   }
 
   /**
  * Use this to pass the teleop command to the main {@link Robot} class.
  *
  * @return the command to run in teleop
+ 
  */
   public Command getTeleopDriveCommand() {
     return m_chooserTeleop.getSelected();
