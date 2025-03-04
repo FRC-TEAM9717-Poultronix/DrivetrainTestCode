@@ -1,0 +1,56 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LEFT Score L4 from start"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LEFT first score to source"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LEFT source to second score"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LEFT Second Score to Source"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LEFT Source to Third Score"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LEFT Third Score to Source"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

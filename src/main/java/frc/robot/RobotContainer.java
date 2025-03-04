@@ -130,7 +130,6 @@ public class RobotContainer
   private final SendableChooser<Command> m_chooserTeleop = new SendableChooser<>();
   private final SendableChooser<Command> m_ChooserAuto = new SendableChooser<>();
 
-  private int Hanger_Motor = 0;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -171,7 +170,13 @@ public class RobotContainer
     NamedCommands.registerCommand("RaiseToLowAlgae", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionA2, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionReef));
     NamedCommands.registerCommand("RaiseToHighAlgae", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionA3, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionReef));
     NamedCommands.registerCommand("LowerToCoralStation", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionStation, m_algae, Constants.AlgaeArmConstants.positionUp));
-    
+    NamedCommands.registerCommand("raise to L4", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL4, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
+    NamedCommands.registerCommand("raise to L3", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL3, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
+    NamedCommands.registerCommand("raise to L2", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL2, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
+    NamedCommands.registerCommand("IntakeCoral", new IntakeCoral(m_coral, Constants.CoralConstants.powerIntake));
+    NamedCommands.registerCommand("LaunchCoral", new LaunchCoral(m_coral, Constants.CoralConstants.powerLaunch));
+    NamedCommands.registerCommand("StationPosition", new IntakeCoral(m_coral, Constants.CoralConstants.positionStation));
+    NamedCommands.registerCommand("raise to station", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionStation, m_algae, Constants.AlgaeArmConstants.positionUp));
     NamedCommands.registerCommand("IntakeAlgae", new AutoIntakeAlgae(m_drivebase, m_targeting, 0.2, 0.1, 0.1, m_algae, Constants.AlgaeArmConstants.powerIntake));
     NamedCommands.registerCommand("ScoreCoralRight", new AutoScoreCoral(m_targeting, 0.178, 0.3, m_drivebase, m_elevator, m_coral, m_algae));
     NamedCommands.registerCommand("ScoreCoralLeft", new AutoScoreCoral(m_targeting, -0.178, 0.3, m_drivebase, m_elevator, m_coral, m_algae));

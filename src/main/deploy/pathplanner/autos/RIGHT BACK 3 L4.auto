@@ -1,0 +1,55 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RIGHT start_pos to reef"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RIGHT first score to source"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RIGHT source to second score"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RIGHT second score to source"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RIGHT source to third score"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RIGHT third score to source"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
