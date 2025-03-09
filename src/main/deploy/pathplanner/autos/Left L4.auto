@@ -11,37 +11,37 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Score L4 from start"
+                  "pathName": null
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "first score to source"
+                  "pathName": null
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "source to second score"
+                  "pathName": null
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Second Score to Source"
+                  "pathName": null
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Source to Third Score"
+                  "pathName": null
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Third Score to Source"
+                  "pathName": null
                 }
               }
             ]

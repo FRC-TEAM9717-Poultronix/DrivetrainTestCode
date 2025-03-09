@@ -7,61 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RIGHT start_pos to reef"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Raise to L4"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ScoreCoralLeft"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "raise to station"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "StationPosition"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "RIGHT first score to source"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "IntakeCoral"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "RIGHT source to second score"
+            "pathName": "LEFT FRONT start to first score"
           }
         },
         {
@@ -97,7 +43,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RIGHT second score to source"
+            "pathName": "LEFT FRONT first score to source"
           }
         },
         {
@@ -115,7 +61,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RIGHT source to third score"
+            "pathName": "LEFT FRONT source to second score"
           }
         },
         {
@@ -151,13 +97,73 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RIGHT third score to source"
+            "pathName": " LEFT FRONT second score to source"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "IntakeCoral"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LEFT FRONT source to third score"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Raise to L4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreCoralRight"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "raise to station"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StationPosition"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LEFT FRONT third score to source"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeCoral"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
           }
         }
       ]

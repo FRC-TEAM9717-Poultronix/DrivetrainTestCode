@@ -1,0 +1,182 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LEFT Score L4 from start"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Raise to L4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ScoreCoralRight"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 3.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "raise to station"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "raise to station"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LEFT first score to source"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeCoral"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 3.0
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LEFT source to second score"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Raise to L4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ScoreCoralLeft"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 3.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "raise to station"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "StationPosition"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LEFT Second Score to Source"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeCoral"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 3.0
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LEFT Source to Third Score"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Raise to L4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ScoreCoralRight"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 3.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "raise to station"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "StationPosition"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LEFT Third Score to Source"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeCoral"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 3.0
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

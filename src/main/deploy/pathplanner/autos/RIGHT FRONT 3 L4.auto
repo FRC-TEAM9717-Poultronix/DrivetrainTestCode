@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RIGHT start_pos to reef"
+            "pathName": "RIGHT FRONT start position to first score"
           }
         },
         {
@@ -43,7 +43,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RIGHT first score to source"
+            "pathName": "RIGHT FRONT first score to source"
           }
         },
         {
@@ -61,7 +61,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RIGHT source to second score"
+            "pathName": "RIGHT FRONT source to second score"
           }
         },
         {
@@ -97,7 +97,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RIGHT second score to source"
+            "pathName": "RIGHT FRONT second score to source"
           }
         },
         {
@@ -115,7 +115,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RIGHT source to third score"
+            "pathName": " RIGHT FRONT source to third score"
           }
         },
         {
@@ -151,13 +151,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RIGHT third score to source"
+            "pathName": "RIGHT FRONT third score to source"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "IntakeCoral"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
           }
         }
       ]

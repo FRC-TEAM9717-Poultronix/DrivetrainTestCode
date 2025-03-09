@@ -5,6 +5,11 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.NamedCommands;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.config.SoftLimitConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -12,6 +17,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
+import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.AlgaeArmConstants;
+import frc.robot.Constants.HangerConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.algae.AngleVelocity;
 import frc.robot.commands.algae.AnglePosition;
@@ -40,7 +48,7 @@ import frc.robot.subsystems.CoralSubsystem;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.targeting.TargetingSubsystem;
-
+import frc.robot.subsystems.Hangersubsystem;
 import java.io.File;
 import java.lang.invoke.ConstantCallSite;
 import java.security.AlgorithmConstraints;
@@ -61,6 +69,7 @@ public class RobotContainer
   final         CommandJoystick m_driverSwitch = new CommandJoystick(0);
   final         CommandXboxController m_driver2Xbox = new CommandXboxController(1);
   final         CommandJoystick       m_buttonBox = new CommandJoystick(2);
+  final        CommandJoystick       m_switchBox = new CommandJoystick(3);
   // The robot's subsystems and commands are defined here...
   final TargetingSubsystem    m_targeting = new TargetingSubsystem();
   
@@ -69,6 +78,7 @@ public class RobotContainer
   private final ElevatorSubsystem     m_elevator = new ElevatorSubsystem();
   private final AlgaeSubsystem m_algae = new AlgaeSubsystem();
   private final CoralSubsystem m_coral = new CoralSubsystem();
+  private final Hangersubsystem m_hanger = new Hangersubsystem();
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
@@ -131,6 +141,7 @@ public class RobotContainer
   private final SendableChooser<Command> m_ChooserAuto = new SendableChooser<>();
 
 
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -189,7 +200,9 @@ public class RobotContainer
     SmartDashboard.putData("Teleop Mode", m_chooserTeleop);
 
     m_ChooserAuto.setDefaultOption("New Auto", m_drivebase.getAutonomousCommand("New Auto"));
-    m_ChooserAuto.addOption("Left L4", m_drivebase.getAutonomousCommand("Left L4"));
+    m_ChooserAuto.addOption("3 Left L4", m_drivebase.getAutonomousCommand("BACK LEFT 3 L4"));
+    m_ChooserAuto.addOption("3 Right L4", m_drivebase.getAutonomousCommand(" RIGHT BACK 3 L4"));
+
     // m_ChooserAuto.addOption("driveRobotOrientedAngularVelocity", m_drivebase.getAutonomousCommand("New Auto"));
     SmartDashboard.putData("Auto Mode", m_ChooserAuto);
 
@@ -227,7 +240,11 @@ public class RobotContainer
       m_driverSwitch.button(9).whileTrue(NamedCommands.getCommand("ScoreCoralLeft"));
       m_driverSwitch.button(10).whileTrue(NamedCommands.getCommand("ScoreCoralRight"));
       // m_driverSwitch.button(10).onTrue(m_drivebase.driveToDistanceCommand(2.0, 1.0));
-
+      m_switchBox.button(1).onTrue(Commands.run(() -> 
+      {
+          m_buttonBox.button(10).whileTrue(Commands.run(() -> m_hanger.setPosition(Constants.HangerConstants.ReverseAngle, false)));
+          m_buttonBox.button(11).whileTrue(Commands.run(() -> m_hanger.setPosition(Constants.HangerConstants.HangAngle, true)));
+      }));
       m_driverSwitch.button(5).whileTrue(new IntakeCoral(m_coral, Constants.CoralConstants.powerIntake));
       m_driverSwitch.button(7).onTrue(new LaunchCoral(m_coral, Constants.CoralConstants.powerLaunch, m_elevator, Constants.ElevatorConstants.positionDown));
 
@@ -269,58 +286,35 @@ public class RobotContainer
         // net
         m_driver2Xbox.button(8).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionNet, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionNet ));
         // lollipop
-        m_driver2Xbox.button(9).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionLollipop, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionLollipop));
-        //Hanger
-        m_driver2Xbox.button(10).whileTrue(Commands.run(() -> setHangerMotor(1)));
-        m_driver2Xbox.button(10).whileFalse(Commands.run(() -> setHangerMotor(0)));
-
-
-      // m_driver2Xbox.button(8).onTrue(hook down); 
-   // m_driver2Xbox.button(9).onTrue(coral intake); 
-   // m_driver2Xbox.button(10).onTrue(coral outtake); 
-   // m_driver2Xbox.button(11).onTrue(algae intake); 
-   // m_driver2Xbox.button(12).onTrue(algae outtake); 
-   // m_driver2Xbox.button(13).onTrue(side algae down); 
-   // m_driver2Xbox.button(14).onTrue(side algae up); 
-   // m_driver2Xbox.button(15).onTrue(side algae intake); 
-   // m_driver2Xbox.button(16).onTrue(side algae outtake); 
-   // m_driver2Xbox.button(17).onTrue(hook up?); 
-   // m_driver2Xbox.button(18).onTrue(shoot algae full speed and set angle to the net (possibly using april tags to find the right angle depending on position)); 
+        m_driver2Xbox.button(9).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionLollipop, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionLollipop));}
     }
 
-  }
+    //Hanger
+   
+        //enable hang mode
+      
+    
 
-  public double calcThrottle()
-  {
-    return Constants.minThrottle + (Constants.maxThrottle - Constants.minThrottle) * m_elevator.getElevatorThrottle();
-  }
+    
+    public Command getTeleopDriveCommand() {
+        return m_chooserTeleop.getSelected();
+    }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand()
-  {
-    // An example command will be run in autonomous
-    return m_ChooserAuto.getSelected();
-  }
-  public void setHangerMotor(int value) {
-    Hanger_Motor = value;
-  }
+    public double calcThrottle()
+    {
+        return Constants.minThrottle + (Constants.maxThrottle - Constants.minThrottle) * m_elevator.getElevatorThrottle();
+    }
 
-  /**
- * Use this to pass the teleop command to the main {@link Robot} class.
- *
- * @return the command to run in teleop
- 
- */
-  public Command getTeleopDriveCommand() {
-    return m_chooserTeleop.getSelected();
-  }
-
-  public void setMotorBrake(boolean brake)
-  {
-    m_drivebase.setMotorBrake(brake);
-  }
+    /**
+     * Use this to pass the autonomous command to the main {@link Robot} class.
+     *
+     * @return the command to run in autonomous
+     */
+    public Command getAutonomousCommand()
+    {
+        // An example command will be run in autonomous
+        return m_ChooserAuto.getSelected();
+    }
 }
+    
+

@@ -31,12 +31,12 @@ import edu.wpi.first.math.numbers.N3;
 public final class Constants
 {
   public static final double maxThrottle = 1.0;
-  public static final double minThrottle = 0.5;
+  public static final double minThrottle = 0.4;
 
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
-  public static final double MAX_SPEED  = Units.feetToMeters(5);// Maximum speed of the robot in meters per second, used to limit acceleration.
+  public static final double MAX_SPEED  = Units.feetToMeters(8);// Maximum speed of the robot in meters per second, used to limit acceleration.
 
   public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
 
@@ -184,4 +184,30 @@ public static final class Hanger_Constants
     public static final double positionNet = 45.0;
     public static final double positionLollipop = 0.0;
    }
+
+public static final class HangerConstants
+{
+  public static final int RightHangerID = 40;  // Can Id of Hanger motor right
+  public static final int LeftHangerID = 41;  // Can Id of Hanger motor left
+  public static final double StartingAngle = 50.0;
+  public static final double ReverseAngle = 20.0;
+  public static final double HangAngle = 75;
+  public static final double HangPower = 0.07; 
+  public static final double HangRampRate = 1.0;
+  public static final double PGain = 0.005;
+  public static final double maxVelocity = 16000;
+  public static final double maxAcceleration = 8000;
+  public static final double AllowableError = 2.0;
+  public static final double MaxCurrentLimit = 80;
+  public static final double DegreesPerRevolution = 360;
+  public static final double positionMax = 80;  
+  public static final double positionMin = 20;
+  public static final double kP = 0;
+  public static final double kI = 0;
+  public static final double kD = 0;
+  public static final double kIz = 0;
+  public static final double kAF = 0;
+
+}
+
 }
