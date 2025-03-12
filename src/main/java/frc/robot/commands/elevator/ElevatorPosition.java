@@ -31,9 +31,9 @@ public class ElevatorPosition extends InstantCommand {
     this.positionCoral = positionCoral;
     this.positionAlgae = positionAlgae;
   
-    addRequirements(elevator);
-    addRequirements(coral);
-    addRequirements(algae);
+ //   addRequirements(elevator);
+ //   addRequirements(coral);
+ //   addRequirements(algae);
   }
 
   // Called once when the command is initially scheduled.

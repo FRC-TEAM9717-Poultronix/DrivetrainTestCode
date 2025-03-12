@@ -63,10 +63,10 @@ public static final class Hanger_Constants
 
     public static final int MaxCurrentLimit = 40; // Max current limit of elevator motors 
     public static final double maxOutput = 1.0;   // Max power output of elevator motors
-    public static final double maxVelocity = 15000.0; // Max velocity of elevator
-    public static final double maxAcceleration = 15000; // Max acceleration of elevator
+    public static final double maxVelocity = 18000.0; // Max velocity of elevator
+    public static final double maxAcceleration = 16000; // Max acceleration of elevator
     public static final double countsPerInch = 0.9861;   // Encoder ticks per inch of elevator travel
-    public static final double posTolerance = 0.15;    // Tolerance for PID control of elevator
+    public static final double posTolerance = 2;    // Tolerance for PID control of elevator
 
     // PID values
     public static final double kP = 0.1;
@@ -79,20 +79,20 @@ public static final class Hanger_Constants
     
     // Stored elevator positions
     public static final double positionMin = 31.5;  //This is more of an intial value than a position.  Travel to all other positions is the listed value minus this one.
-    public static final double positionMax = 82.5;
+    public static final double positionMax = 84.5;
 
     public static final double positionDown = 32;
     public static final double positionFloor = 36;
-    public static final double positionProcessor = 33.5;
-    public static final double positionA2 = 58.5;
+    public static final double positionProcessor = 34.0;
+    public static final double positionA2 = 59.5;
     public static final double positionA3 = 78.0;
     public static final double positionNet = 81;
-    public static final double positionLollipop = 34;
+    public static final double positionLollipop = 35;
     
     public static final double positionL1 = positionMin;
     public static final double positionL2 = 39.5;
     public static final double positionL3 = 57.5;
-    public static final double positionL4 = 82.5;
+    public static final double positionL4 = 83.5;
 
   }
 // stored coral arm positions
@@ -125,11 +125,11 @@ public static final class Hanger_Constants
      public static final double kAF_arm = 0.00;
 
        public static final double positionMax = 75.0;
-       public static final double positionUp = 68.0;
-       public static final double positionStation = 45.5;
+       public static final double positionUp = 60.0;
+       public static final double positionStation = 35.5;
        public static final double positionHorizontal = 0.0;
-       public static final double positionReef = -20.0;
-       public static final double positionMin = -25.0;
+       public static final double positionReef = -27.0;
+       public static final double positionMin = -30.0;
   }
 
   public static final class DrivebaseConstants
@@ -177,12 +177,12 @@ public static final class Hanger_Constants
 
     public static final double positionMax = 85.0;
     public static final double positionUp = 83.0;
-    public static final double positionProcessor = 2.0;
+    public static final double positionProcessor = 4.0;
     public static final double positionReef = -15.0;
     public static final double positionFloor = -35.0;
     public static final double positionMin = -38.0;
     public static final double positionNet = 45.0;
-    public static final double positionLollipop = 0.0;
+    public static final double positionLollipop = 2.0;
    }
 
 public static final class HangerConstants
@@ -190,19 +190,19 @@ public static final class HangerConstants
   public static final int RightHangerID = 40;  // Can Id of Hanger motor right
   public static final int LeftHangerID = 41;  // Can Id of Hanger motor left
   public static final double StartingAngle = 50.0;
-  public static final double ReverseAngle = 20.0;
-  public static final double HangAngle = 75;
-  public static final double HangPower = 0.07; 
+  public static final double ReverseAngle = 25.0;
+  public static final double HangAngle = 84;
+  public static final double HangPower = 1; 
   public static final double HangRampRate = 1.0;
   public static final double PGain = 0.005;
-  public static final double maxVelocity = 16000;
-  public static final double maxAcceleration = 8000;
+  public static final double maxVelocity = 20000;
+  public static final double maxAcceleration = 9000;
   public static final double AllowableError = 2.0;
   public static final double MaxCurrentLimit = 80;
   public static final double DegreesPerRevolution = 360;
-  public static final double positionMax = 80;  
-  public static final double positionMin = 20;
-  public static final double kP = 0;
+  public static final double positionMax = 85;  
+  public static final double positionMin = 15;
+  public static final double kP = 0.005;
   public static final double kI = 0;
   public static final double kD = 0;
   public static final double kIz = 0;

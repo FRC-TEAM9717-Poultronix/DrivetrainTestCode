@@ -43,6 +43,8 @@ import frc.robot.commands.elevator.ElevatorHome;
 import frc.robot.commands.elevator.ElevatorPosition;
 import frc.robot.commands.elevator.ElevatorPositionAfterHome;
 import frc.robot.commands.elevator.ElevatorVelocity;
+import frc.robot.commands.hang.HangReversePosition;
+import frc.robot.commands.hang.HangHang;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.CoralSubsystem;
 import frc.robot.subsystems.AlgaeSubsystem;
@@ -186,11 +188,11 @@ public class RobotContainer
     NamedCommands.registerCommand("raise to L2", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL2, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
     NamedCommands.registerCommand("IntakeCoral", new IntakeCoral(m_coral, Constants.CoralConstants.powerIntake));
     NamedCommands.registerCommand("LaunchCoral", new LaunchCoral(m_coral, Constants.CoralConstants.powerLaunch));
-    NamedCommands.registerCommand("StationPosition", new IntakeCoral(m_coral, Constants.CoralConstants.positionStation));
+   // NamedCommands.registerCommand("StationPosition", new IntakeCoral(m_coral, Constants.CoralConstants.positionStation));
     NamedCommands.registerCommand("raise to station", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionStation, m_algae, Constants.AlgaeArmConstants.positionUp));
     NamedCommands.registerCommand("IntakeAlgae", new AutoIntakeAlgae(m_drivebase, m_targeting, 0.2, 0.1, 0.1, m_algae, Constants.AlgaeArmConstants.powerIntake));
     NamedCommands.registerCommand("ScoreCoralRight", new AutoScoreCoral(m_targeting, 0.178, 0.3, m_drivebase, m_elevator, m_coral, m_algae));
-    NamedCommands.registerCommand("ScoreCoralLeft", new AutoScoreCoral(m_targeting, -0.178, 0.3, m_drivebase, m_elevator, m_coral, m_algae));
+    NamedCommands.registerCommand("ScoreCoralLeft", new AutoScoreCoral(m_targeting, -0.165, 0.3, m_drivebase, m_elevator, m_coral, m_algae));
 
 
     // Setup SmartDashboard chooser options
@@ -200,8 +202,10 @@ public class RobotContainer
     SmartDashboard.putData("Teleop Mode", m_chooserTeleop);
 
     m_ChooserAuto.setDefaultOption("New Auto", m_drivebase.getAutonomousCommand("New Auto"));
-    m_ChooserAuto.addOption("3 Left L4", m_drivebase.getAutonomousCommand("BACK LEFT 3 L4"));
-    m_ChooserAuto.addOption("3 Right L4", m_drivebase.getAutonomousCommand(" RIGHT BACK 3 L4"));
+    m_ChooserAuto.addOption("3 Back Left L4", m_drivebase.getAutonomousCommand("BACK LEFT 3 L4"));
+    m_ChooserAuto.addOption("RIGHT BACK 3 L4", m_drivebase.getAutonomousCommand("RIGHT BACK 3 L4"));
+    m_ChooserAuto.addOption("3 Front Right L4", m_drivebase.getAutonomousCommand("RIGHT FRONT 3 L4"));
+    m_ChooserAuto.addOption("3 Front Left L4", m_drivebase.getAutonomousCommand("LEFT FRONT 3 L4"));
 
     // m_ChooserAuto.addOption("driveRobotOrientedAngularVelocity", m_drivebase.getAutonomousCommand("New Auto"));
     SmartDashboard.putData("Auto Mode", m_ChooserAuto);
@@ -240,11 +244,9 @@ public class RobotContainer
       m_driverSwitch.button(9).whileTrue(NamedCommands.getCommand("ScoreCoralLeft"));
       m_driverSwitch.button(10).whileTrue(NamedCommands.getCommand("ScoreCoralRight"));
       // m_driverSwitch.button(10).onTrue(m_drivebase.driveToDistanceCommand(2.0, 1.0));
-      m_switchBox.button(1).onTrue(Commands.run(() -> 
-      {
-          m_buttonBox.button(10).whileTrue(Commands.run(() -> m_hanger.setPosition(Constants.HangerConstants.ReverseAngle, false)));
-          m_buttonBox.button(11).whileTrue(Commands.run(() -> m_hanger.setPosition(Constants.HangerConstants.HangAngle, true)));
-      }));
+      
+      
+        
       m_driverSwitch.button(5).whileTrue(new IntakeCoral(m_coral, Constants.CoralConstants.powerIntake));
       m_driverSwitch.button(7).onTrue(new LaunchCoral(m_coral, Constants.CoralConstants.powerLaunch, m_elevator, Constants.ElevatorConstants.positionDown));
 
@@ -260,16 +262,12 @@ public class RobotContainer
       //  Coral Positions
         // L4
         m_driver2Xbox.button(4).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL4, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
-        m_buttonBox.button(2).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL4, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
         // L3 Positions
         m_driver2Xbox.button(3).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL3, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
-        m_buttonBox.button(3).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL3, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
         // L2 Position
         m_driver2Xbox.button(2).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL2, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
-        m_buttonBox.button(10).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL2, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
         // L1 Position
         m_driver2Xbox.button(1).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL1, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
-        m_buttonBox.button(11).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL1, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
         // Coral Station Position
         m_driver2Xbox.button(6).onTrue(new ElevatorPositionAfterHome(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionStation, m_algae, Constants.AlgaeArmConstants.positionUp));
         m_buttonBox.button(5).onTrue(new ElevatorPositionAfterHome(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionStation, m_algae, Constants.AlgaeArmConstants.positionUp));
@@ -287,12 +285,33 @@ public class RobotContainer
         m_driver2Xbox.button(8).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionNet, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionNet ));
         // lollipop
         m_driver2Xbox.button(9).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionLollipop, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionLollipop));}
-    }
-
-    //Hanger
-   
-        //enable hang mode
       
+        // BUTTON BOX INPUTS
+
+        //algae positions button box
+        m_buttonBox.button(1).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionNet, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionNet ));
+        m_buttonBox.button(2).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionA3, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionReef));
+        m_buttonBox.button(3).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionA2, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionReef));
+        m_buttonBox.button(4).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionProcessor, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionProcessor));
+        m_buttonBox.button(5).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionFloor, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionFloor));
+        m_buttonBox.button(6).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionLollipop, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionLollipop));
+        // coral positions button box
+        m_buttonBox.button(11).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL4, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
+        m_buttonBox.button(10).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL3, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
+        m_buttonBox.button(9).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL2, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
+        m_buttonBox.button(8).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL1, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
+        m_buttonBox.button(7).onTrue(new ElevatorPositionAfterHome(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionStation, m_algae, Constants.AlgaeArmConstants.positionUp));
+
+        //switches
+        //home the elevator
+        m_switchBox.button(1).onTrue(new ElevatorHome(m_elevator));
+        // hang
+        m_switchBox.button(4).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionUp));
+
+        m_switchBox.button(5).onTrue(new HangReversePosition(m_hanger));
+       // m_switchBox.button(5).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionUp));
+        m_switchBox.button(6).whileTrue(new HangHang(m_hanger));
+    }      
     
 
     

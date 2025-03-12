@@ -1,5 +1,7 @@
 package frc.robot.commands.coral;
 
+import java.util.Timer;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CoralSubsystem;
 
@@ -23,7 +25,7 @@ public class IntakeCoral extends Command {
   @Override
   public void initialize()
   {
-
+ 
   }
   
   // Called every cycle while command is active

@@ -71,7 +71,7 @@ public class LaunchCoral extends Command {
         break;
       case flick:
         m_coral.setManualPowerLaunch(0.0); 
-        m_coral.setPositionArm(Constants.CoralConstants.positionStation);
+        m_coral.setPositionArm(Constants.CoralConstants.positionUp);
         m_state = State.wait;
         // System.out.print("Begin Wait  :    "); System.out.println(currentTime);
         break;

@@ -10,6 +10,7 @@ import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkClosedLoopController.ArbFFUnits;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SoftLimitConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -39,7 +40,8 @@ public class Hangersubsystem extends SubsystemBase {
         private double m_currentCurrent;
         private SparkMaxConfig m_leaderConfig = new SparkMaxConfig();
         private SparkMaxConfig m_followerConfig = new SparkMaxConfig();
-
+        private boolean m_AttemptingHang = false;
+        private boolean m_isHanging = false;
  public Hangersubsystem() {
         m_primaryMotor = new SparkMax(HangerConstants.RightHangerID, MotorType.kBrushless);
         m_followerMotor = new SparkMax(HangerConstants.LeftHangerID, MotorType.kBrushless);
@@ -66,11 +68,15 @@ public class Hangersubsystem extends SubsystemBase {
                         .openLoopRampRate(HangerConstants.HangRampRate);   
 
         m_leaderConfig.absoluteEncoder.positionConversionFactor(HangerConstants.DegreesPerRevolution)
+                            .inverted(true)
                               .velocityConversionFactor(HangerConstants.DegreesPerRevolution/60);
 
+
         
-        m_leaderConfig.softLimit.forwardSoftLimitEnabled(true).forwardSoftLimit(Constants.HangerConstants.positionMax)
-                                .reverseSoftLimitEnabled(true).reverseSoftLimit(Constants.HangerConstants.positionMin);
+        m_leaderConfig.softLimit.forwardSoftLimitEnabled(true)
+                                .forwardSoftLimit(Constants.HangerConstants.positionMax)
+                                .reverseSoftLimitEnabled(true)
+                                .reverseSoftLimit(Constants.HangerConstants.positionMin);
 
         m_followerConfig.softLimit.forwardSoftLimitEnabled(false)
                                   .reverseSoftLimitEnabled(false);
@@ -78,14 +84,19 @@ public class Hangersubsystem extends SubsystemBase {
         // Special Leader settings
         m_leaderConfig.closedLoop.maxMotion.maxVelocity(Constants.HangerConstants.maxVelocity)
                                         .maxAcceleration(Constants.HangerConstants.maxAcceleration)
+   //                                     .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
                                         .allowedClosedLoopError(Constants.ElevatorConstants.posTolerance);  
                                         
-        m_leaderConfig.closedLoop.pid(Constants.HangerConstants.kP, Constants.HangerConstants.kI, Constants.HangerConstants.kD)
+        m_leaderConfig.closedLoop.pid(Constants.HangerConstants.kP
+                                     , Constants.HangerConstants.kI
+                                     , Constants.HangerConstants.kD)
                                  .iZone(HangerConstants.kIz)
-                              .outputRange(-1.0, 1.0);
+                                 .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+                                 .outputRange(-1.0, 1.0);
 
         // Special follower settings
         m_followerConfig.follow(m_primaryMotor, true);  
+        m_leaderConfig.openLoopRampRate(1.0);
 
         // Send setting to motors
         m_primaryMotor.configure(m_leaderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -105,6 +116,12 @@ public class Hangersubsystem extends SubsystemBase {
         m_isStalled = m_primaryMotor.getWarnings().stall;
         m_atSetPoint = Math.abs(m_currentPosition - m_setpoint) < HangerConstants.AllowableError;
 
+        if (m_AttemptingHang) {
+            if (m_currentPosition >= HangerConstants.HangAngle) {
+                m_AttemptingHang = false;
+                m_isHanging = true;
+            }
+        }
         // Update SmartDashboard
         updateTelemetry();
 
@@ -116,15 +133,20 @@ public class Hangersubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("hanger/is_manual", m_isManual);
         SmartDashboard.putNumber("hanger/set_angle", m_setpoint);
         SmartDashboard.putNumber("hanger/velocity", getVelocity());
+        SmartDashboard.putNumber("hanger/position", getPosition());
         SmartDashboard.putNumber("hanger/motor_current", getCurrent());
     }
     public void setPosition(double position, boolean isHang) {
-        if (m_isManual) {
+        if (m_isManual) {     System.out.println("setpoint manual");
+
             return;
         }
-        if (isHang) {
-            m_primaryMotor.set(HangerConstants.HangPower);
-        } else {
+        if (isHang) {     System.out.println("setpoint hang");
+
+            m_AttemptingHang = true;   
+            setPower(HangerConstants.HangPower);
+        } else {     System.out.println("attempting setpoint reverse");
+            m_setpoint = position; updateTelemetry();
             m_closedLoopController.setReference(position, SparkBase.ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0);
         }
     }
@@ -132,8 +154,15 @@ public class Hangersubsystem extends SubsystemBase {
         m_primaryMotor.set(0);
     }
 
+    public boolean isHanging() {
+        return m_isHanging;
+    }
     public void setPower(double power) {
         m_primaryMotor.set(power);
+    }
+
+    public double getPosition() {
+        return m_currentPosition;
     }
 
     public double getVelocity() {

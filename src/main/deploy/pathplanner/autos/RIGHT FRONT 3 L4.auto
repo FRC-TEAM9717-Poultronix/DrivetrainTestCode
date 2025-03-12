@@ -11,33 +11,47 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Raise to L4"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ScoreCoralLeft"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.0
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "raise to L4"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.4
+                }
+              },
+              {
+                "type": "race",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "ScoreCoralLeft"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 4.0
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
             "name": "raise to station"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "StationPosition"
           }
         },
         {
@@ -47,15 +61,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "IntakeCoral"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.0
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeCoral"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.2
+                }
+              }
+            ]
           }
         },
         {
@@ -65,33 +86,41 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Raise to L4"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ScoreCoralRight"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "raise to station"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "StationPosition"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "raise to L4"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.4
+                }
+              },
+              {
+                "type": "race",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "ScoreCoralRight"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 4.0
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {
@@ -101,15 +130,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "IntakeCoral"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.0
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeCoral"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.2
+                }
+              }
+            ]
           }
         },
         {
@@ -119,21 +155,41 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Raise to L4"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ScoreCoralLeft"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.0
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "raise to L4"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.4
+                }
+              },
+              {
+                "type": "race",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "ScoreCoralLeft"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 4.0
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {
@@ -143,27 +199,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "StationPosition"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "RIGHT FRONT third score to source"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "IntakeCoral"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.0
           }
         }
       ]
