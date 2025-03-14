@@ -1,0 +1,79 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MIDDLE start to reef"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "raise to L4"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreCoralRight"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "raise to station"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "grab algae"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "raise to A2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeAlgae"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reef to net"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Raise to Net"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Algae Out"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

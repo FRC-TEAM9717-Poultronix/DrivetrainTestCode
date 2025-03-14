@@ -82,12 +82,12 @@ public static final class Hanger_Constants
     public static final double positionMax = 84.5;
 
     public static final double positionDown = 32;
-    public static final double positionFloor = 36;
+    public static final double positionFloor = 32;
     public static final double positionProcessor = 34.0;
     public static final double positionA2 = 59.5;
     public static final double positionA3 = 78.0;
-    public static final double positionNet = 81;
-    public static final double positionLollipop = 35;
+    public static final double positionNet = 84.0;
+    public static final double positionLollipop = 37;
     
     public static final double positionL1 = positionMin;
     public static final double positionL2 = 39.5;
@@ -125,8 +125,8 @@ public static final class Hanger_Constants
      public static final double kAF_arm = 0.00;
 
        public static final double positionMax = 75.0;
-       public static final double positionUp = 60.0;
-       public static final double positionStation = 35.5;
+       public static final double positionUp = 65.0;
+       public static final double positionStation = 34.5;
        public static final double positionHorizontal = 0.0;
        public static final double positionReef = -27.0;
        public static final double positionMin = -30.0;
@@ -153,7 +153,7 @@ public static final class Hanger_Constants
     public static final int powerFollowerID = 33;
 
     public static final double powerLaunch = 1.0;
-    public static final double powerIntake = 0.55;
+    public static final double powerIntake = 0.45;
 
     public static final int MaxCurrentLimitAngle = 40; // Max current limit of elevator motors 
     public static final int MaxCurrentLimitPower = 100; // Max current limit of elevator motors 
@@ -179,9 +179,9 @@ public static final class Hanger_Constants
     public static final double positionUp = 83.0;
     public static final double positionProcessor = 4.0;
     public static final double positionReef = -15.0;
-    public static final double positionFloor = -35.0;
+    public static final double positionFloor = -24;
     public static final double positionMin = -38.0;
-    public static final double positionNet = 45.0;
+    public static final double positionNet = 63.0;
     public static final double positionLollipop = 2.0;
    }
 
@@ -190,8 +190,8 @@ public static final class HangerConstants
   public static final int RightHangerID = 40;  // Can Id of Hanger motor right
   public static final int LeftHangerID = 41;  // Can Id of Hanger motor left
   public static final double StartingAngle = 50.0;
-  public static final double ReverseAngle = 25.0;
-  public static final double HangAngle = 84;
+  public static final double ReverseAngle = 24.0;
+  public static final double HangAngle = 91;
   public static final double HangPower = 1; 
   public static final double HangRampRate = 1.0;
   public static final double PGain = 0.005;
@@ -200,7 +200,7 @@ public static final class HangerConstants
   public static final double AllowableError = 2.0;
   public static final double MaxCurrentLimit = 80;
   public static final double DegreesPerRevolution = 360;
-  public static final double positionMax = 85;  
+  public static final double positionMax = 93;  
   public static final double positionMin = 15;
   public static final double kP = 0.005;
   public static final double kI = 0;
