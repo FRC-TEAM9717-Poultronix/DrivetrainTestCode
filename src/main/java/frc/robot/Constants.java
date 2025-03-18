@@ -160,7 +160,7 @@ public static final class Hanger_Constants
 
     public static final double maxOutput = 1.0;   // Max power output of elevator motors
     public static final double maxVelocity = 5000.0; // Max velocity of elevator
-    public static final double maxAcceleration = 10000.0; // Max acceleration of elevator
+    public static final double maxAcceleration = 15000.0; // Max acceleration of elevator
     public static final double countsPerDegreePower = 360;   // Encoder ticks per inch of elevator travel
     public static final double countsPerDegreeAngle = 360;   // Encoder ticks per inch of elevator travel
     public static final double posTolerance = 6.0;    // Tolerance for PID control of elevator
