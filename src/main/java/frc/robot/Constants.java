@@ -36,7 +36,7 @@ public final class Constants
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
-  public static final double MAX_SPEED  = Units.feetToMeters(8);// Maximum speed of the robot in meters per second, used to limit acceleration.
+  public static final double MAX_SPEED  = Units.feetToMeters(12);// Maximum speed of the robot in meters per second, used to limit acceleration.
 
   public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
 
@@ -63,8 +63,8 @@ public static final class Hanger_Constants
 
     public static final int MaxCurrentLimit = 40; // Max current limit of elevator motors 
     public static final double maxOutput = 1.0;   // Max power output of elevator motors
-    public static final double maxVelocity = 18000.0; // Max velocity of elevator
-    public static final double maxAcceleration = 16000; // Max acceleration of elevator
+    public static final double maxVelocity = 20000.0; // Max velocity of elevator
+    public static final double maxAcceleration = 20000; // Max acceleration of elevator
     public static final double countsPerInch = 0.9861;   // Encoder ticks per inch of elevator travel
     public static final double posTolerance = 2;    // Tolerance for PID control of elevator
 
@@ -125,7 +125,7 @@ public static final class Hanger_Constants
      public static final double kAF_arm = 0.00;
 
        public static final double positionMax = 75.0;
-       public static final double positionUp = 65.0;
+       public static final double positionUp = 68.0;
        public static final double positionStation = 34.5;
        public static final double positionHorizontal = 0.0;
        public static final double positionReef = -27.0;
@@ -160,7 +160,7 @@ public static final class Hanger_Constants
 
     public static final double maxOutput = 1.0;   // Max power output of elevator motors
     public static final double maxVelocity = 5000.0; // Max velocity of elevator
-    public static final double maxAcceleration = 15000.0; // Max acceleration of elevator
+    public static final double maxAcceleration = 18000.0; // Max acceleration of elevator
     public static final double countsPerDegreePower = 360;   // Encoder ticks per inch of elevator travel
     public static final double countsPerDegreeAngle = 360;   // Encoder ticks per inch of elevator travel
     public static final double posTolerance = 6.0;    // Tolerance for PID control of elevator

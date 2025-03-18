@@ -55,7 +55,9 @@ import java.io.File;
 import java.lang.invoke.ConstantCallSite;
 import java.security.AlgorithmConstraints;
 
+import swervelib.SwerveDrive;
 import swervelib.SwerveInputStream;
+import swervelib.motors.SwerveMotor;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -244,10 +246,11 @@ public class RobotContainer
     {
       // BUTTON CONTROLS
       m_driverSwitch.button(2).onTrue((Commands.runOnce(m_drivebase::zeroGyroWithAlliance)));
-      // m_driverXbox.leftBumper().whileTrue(Commands.runOnce(m_drivebase::lock, m_drivebase).repeatedly());
+       m_driverSwitch.button(11).whileTrue(Commands.runOnce(m_drivebase::lock, m_drivebase).repeatedly());
       m_driverSwitch.button(3).onTrue(Commands.runOnce(m_drivebase::addFakeVisionReading));
       m_driverSwitch.button(9).whileTrue(NamedCommands.getCommand("ScoreCoralLeft"));
       m_driverSwitch.button(10).whileTrue(NamedCommands.getCommand("ScoreCoralRight"));
+
       // m_driverSwitch.button(10).onTrue(m_drivebase.driveToDistanceCommand(2.0, 1.0));
       
       
@@ -272,7 +275,7 @@ public class RobotContainer
         // L2 Position
         m_driver2Xbox.button(2).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL2, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
         // L1 Position
-        m_driver2Xbox.button(1).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL1, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
+        m_driver2Xbox.button(1).onTrue(new ElevatorPositionAfterHome(m_elevator, Constants.ElevatorConstants.positionL1, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
         // Coral Station Position
         m_driver2Xbox.button(6).onTrue(new ElevatorPositionAfterHome(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionStation, m_algae, Constants.AlgaeArmConstants.positionUp));
       //  m_buttonBox.button(5).onTrue(new ElevatorPositionAfterHome(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionStation, m_algae, Constants.AlgaeArmConstants.positionUp));
