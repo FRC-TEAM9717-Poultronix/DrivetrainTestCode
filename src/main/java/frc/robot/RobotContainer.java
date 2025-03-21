@@ -11,8 +11,10 @@ import com.revrobotics.spark.config.SoftLimitConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -153,7 +155,8 @@ public class RobotContainer
   {
     throttleTrans = 1.0;
     throttleAngle = 1.0;
-    
+    m_drivebase.getSwerveController().setMaximumChassisAngularVelocity(3.1416);
+
     // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
@@ -344,6 +347,7 @@ public class RobotContainer
         // An example command will be run in autonomous
         return m_ChooserAuto.getSelected();
     }
+
 }
     
 
