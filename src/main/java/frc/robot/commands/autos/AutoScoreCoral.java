@@ -20,13 +20,14 @@ public class AutoScoreCoral extends SequentialCommandGroup
     public AutoScoreCoral(TargetingSubsystem targeting,
                           Double distLateral,
                           Double distForward,
+                          int fiducial,
                           SwerveSubsystem swerve,                           
                           ElevatorSubsystem elevator,
                           CoralSubsystem coral, 
                           AlgaeSubsystem algae) 
     {
         addCommands(
-          new AlignWithApriltag(swerve, targeting, distForward * 2.0, distLateral, 0.05, 0.1)
+          new AlignWithApriltag(swerve, targeting, distForward * 2.0, distLateral, 0.05, 0.1, fiducial)
           ,new DriveDistance(swerve, distForward, 0.5)
           ,new LaunchCoral(coral, 0.5)
           ,new ElevatorPosition(elevator, Constants.ElevatorConstants.positionDown, coral, Constants.CoralConstants.positionUp, algae, Constants.AlgaeArmConstants.positionUp)

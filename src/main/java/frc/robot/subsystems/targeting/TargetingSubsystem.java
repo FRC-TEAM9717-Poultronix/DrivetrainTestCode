@@ -43,7 +43,7 @@ public class TargetingSubsystem extends SubsystemBase {
     private Optional<Transform3d> m_nearestTarget;  // Transform to targets pose in Robot Frame
     private Optional<Pose2d> m_poseForNearestTarget; // Pose to align with nearest target (rotation is reversed) 
    
-    public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
+    public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
 
     // Constructor
     public TargetingSubsystem() {

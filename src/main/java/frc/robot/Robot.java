@@ -83,6 +83,7 @@ public class Robot extends TimedRobot
   @Override
   public void disabledInit()
   {
+    m_robotContainer.m_elevator.setPositionInches(Constants.ElevatorConstants.positionDown);
     m_robotContainer.m_drivebase.setMotorBrake(true);
     disabledTimer.reset();
     disabledTimer.start();

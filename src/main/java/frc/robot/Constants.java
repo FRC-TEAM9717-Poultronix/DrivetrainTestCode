@@ -38,7 +38,7 @@ public final class Constants
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
   public static final double MAX_SPEED  = Units.feetToMeters(12);// Maximum speed of the robot in meters per second, used to limit acceleration.
 
-  public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
+  public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
 
   public static final Pose2d startPosition = new Pose2d(new Translation2d(Meter.of(10), Meter.of(6.16)), Rotation2d.fromDegrees(0));
 
@@ -84,7 +84,7 @@ public static final class Hanger_Constants
     public static final double positionDown = 32;
     public static final double positionFloor = 32;
     public static final double positionProcessor = 34.0;
-    public static final double positionA2 = 59.5;
+    public static final double positionA2 = 60.5;
     public static final double positionA3 = 78.0;
     public static final double positionNet = 84.0;
     public static final double positionLollipop = 37;
@@ -112,7 +112,7 @@ public static final class Hanger_Constants
     public static final double maxAcceleration = 30000.0; // Max acceleration of elevator
     public static final double countsPerDegreeLaunch = 360;   // Encoder ticks per inch of elevator travel
     public static final double countsPerDegreeArm = 360;   // Encoder ticks per inch of elevator travel
-    public static final double posTolerance = 5.0;    // Tolerance for PID control of elevator
+    public static final double posTolerance = 6.0;    // Tolerance for PID control of elevator
 
      // PID values
     //  public static final double kP_launch = 0.05;
@@ -163,7 +163,7 @@ public static final class Hanger_Constants
     public static final double maxAcceleration = 18000.0; // Max acceleration of elevator
     public static final double countsPerDegreePower = 360;   // Encoder ticks per inch of elevator travel
     public static final double countsPerDegreeAngle = 360;   // Encoder ticks per inch of elevator travel
-    public static final double posTolerance = 6.0;    // Tolerance for PID control of elevator
+    public static final double posTolerance = 8.0;    // Tolerance for PID control of elevator
 
     // PID values
     public static final double kP_angle = 0.02;
