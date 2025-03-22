@@ -46,6 +46,8 @@ import frc.robot.commands.elevator.ElevatorPosition;
 import frc.robot.commands.elevator.ElevatorPositionAfterHome;
 import frc.robot.commands.elevator.ElevatorVelocity;
 import frc.robot.commands.hang.HangReversePosition;
+import frc.robot.commands.swervedrive.DriveDistance;
+import frc.robot.commands.targeting.AlignWithApriltag;
 import frc.robot.commands.hang.HangHang;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.CoralSubsystem;
@@ -195,14 +197,18 @@ public class RobotContainer
     NamedCommands.registerCommand("LaunchCoral", new LaunchCoral(m_coral, Constants.CoralConstants.powerLaunch));
    // NamedCommands.registerCommand("StationPosition", new IntakeCoral(m_coral, Constants.CoralConstants.positionStation));
     NamedCommands.registerCommand("raise to station", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionStation, m_algae, Constants.AlgaeArmConstants.positionUp));
-    NamedCommands.registerCommand("IntakeAlgae", new AutoIntakeAlgae(m_drivebase, m_targeting, 0.2, 0.1, 0.1, m_algae, Constants.AlgaeArmConstants.powerIntake));
+//lots of issues with this one
+    NamedCommands.registerCommand("LineUpAlgae", new AutoScoreCoral(m_targeting, 0.0, 0.03, 10, m_drivebase, m_elevator, m_coral, m_algae));
+    NamedCommands.registerCommand("Algae In", new IntakeAlgae(m_algae, Constants.AlgaeArmConstants.powerIntake));
+
+
     NamedCommands.registerCommand("ScoreCoralRight", new AutoScoreCoral(m_targeting, 0.180, 0.3, 10, m_drivebase, m_elevator, m_coral, m_algae));
     NamedCommands.registerCommand("ScoreCoralLeft", new AutoScoreCoral(m_targeting, -0.180, 0.3, 10, m_drivebase, m_elevator, m_coral, m_algae));
     NamedCommands.registerCommand("Raise to Net", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionNet, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionNet));
     NamedCommands.registerCommand("Algae Out", new LaunchAlgae(m_algae, Constants.AlgaeArmConstants.powerLaunch));
-    NamedCommands.registerCommand("raise to A2", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionA2, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionNet));
-
-
+    NamedCommands.registerCommand("raise to A2", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionA2, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionReef));
+    NamedCommands.registerCommand("raise to Processor", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionProcessor, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionProcessor)); 
+    
     // Setup SmartDashboard chooser options
     m_chooserTeleop.setDefaultOption("driveFieldOrientedDirectAngle", driveFieldOrientedDirectAngle);
     m_chooserTeleop.addOption("driveFieldOrientedAnglularVelocity", driveFieldOrientedAnglularVelocity);

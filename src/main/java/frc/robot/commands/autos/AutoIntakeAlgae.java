@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.AlgaeSubsystem;
+import frc.robot.subsystems.CoralSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.targeting.TargetingSubsystem;
 
@@ -37,7 +39,13 @@ public class AutoIntakeAlgae extends Command {
   // Constructor
   public AutoIntakeAlgae(SwerveSubsystem swerve, 
                          TargetingSubsystem targeting, double distanceX, double tolTrans, double tolRot, 
-                         AlgaeSubsystem algae, double power)
+                         AlgaeSubsystem algae, double power,
+                         Double distLateral,
+                         Double distForward,
+                         int fiducial,
+                                                    
+                         ElevatorSubsystem elevator,
+                         CoralSubsystem coral)
   {
     m_swerve = swerve;
     m_targeting = targeting;
@@ -55,6 +63,7 @@ public class AutoIntakeAlgae extends Command {
     addRequirements(swerve);
     addRequirements(algae);
   }
+
 
   // Called once when the command is initially scheduled.
   @Override
