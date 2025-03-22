@@ -30,7 +30,7 @@ public class AlignWithApriltag extends Command {
 
     // Constructor
     public AlignWithApriltag(SwerveSubsystem swerve, 
-                            TargetingSubsystem targeting, double distanceForward, double distanceLateral, double tolTrans, double tolRot)
+                            TargetingSubsystem targeting, double distanceForward, double distanceLateral, double tolTrans, double tolRot, int fiducial)
     {
         m_swerve = swerve;
         m_targeting = targeting;
@@ -40,11 +40,33 @@ public class AlignWithApriltag extends Command {
         m_tolTrans = tolTrans;
         m_tolRot = tolRot;
 
+        m_targeting.setFiducial(fiducial);
+
         m_velX = 0.0;
         m_velY = 0.0;
         m_velYaw = 0.0;
     
         // addRequirements(swerve);
+    }
+
+    public AlignWithApriltag(SwerveSubsystem swerve, 
+    TargetingSubsystem targeting, double distanceForward, double distanceLateral, double tolTrans, double tolRot)
+    {
+    m_swerve = swerve;
+    m_targeting = targeting;
+
+    m_distanceForward = distanceForward;
+    m_distanceLateral = distanceLateral;
+    m_tolTrans = tolTrans;
+    m_tolRot = tolRot;
+
+    m_targeting.setFiducial(-1);
+
+    m_velX = 0.0;
+    m_velY = 0.0;
+    m_velYaw = 0.0;
+
+    // addRequirements(swerve);
     }
 
       // Called once when the command is initially scheduled.
@@ -101,6 +123,10 @@ public class AlignWithApriltag extends Command {
                 // Send speeds to drivetrain
                 ChassisSpeeds speeds = new ChassisSpeeds(m_velX, m_velY, m_velYaw);
                 m_swerve.drive(speeds);
+            } else
+            {
+                ChassisSpeeds speeds = new ChassisSpeeds(0.0, 0.0, 0.0);
+                 m_swerve.drive(speeds);
             }
             break;
         default:

@@ -40,7 +40,10 @@ public class TargetingSubsystem extends SubsystemBase {
     private PhotonCamera m_camera1;
     private Transform3d m_camera1Pose;
     private final PhotonPoseEstimator m_photonEstimator;
-    private Optional<Transform3d> m_nearestTarget;  // Transform to targets pose in Robot Frame
+
+    private int m_selectedFidicial;
+
+    private Optional<Transform3d> m_transForNearestTarget;  // Transform to nearest targets pose in Robot Frame
     private Optional<Pose2d> m_poseForNearestTarget; // Pose to align with nearest target (rotation is reversed) 
    
     public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
@@ -50,12 +53,22 @@ public class TargetingSubsystem extends SubsystemBase {
         m_camera1 = new PhotonCamera(Constants.Camera1Name);
         m_camera1Pose = new Transform3d(Constants.Camera1Translation, Constants.Camera1Rotation);
         m_photonEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.LOWEST_AMBIGUITY, m_camera1Pose);
+
+        m_selectedFidicial = -1;
+    }
+
+    public int getFiducial() {
+        return m_selectedFidicial;
+    }
+
+    public void setFiducial(int fiducial) {
+        m_selectedFidicial = fiducial;
     }
 
     // Returns Pose of nearest Target in Robot Frame
     public  Optional<Transform3d> getTransformToNearestTargetInRobotFrame()
     {
-        return m_nearestTarget;
+        return m_transForNearestTarget;
     }
 
     // Returns Pose that aligns with nearest target in Robot Frame
@@ -92,7 +105,7 @@ public class TargetingSubsystem extends SubsystemBase {
     public void periodic() {
 
         // Clear targets
-        m_nearestTarget = Optional.empty();
+        m_transForNearestTarget = Optional.empty();
         m_poseForNearestTarget = Optional.empty();
 
         // Read in relevant data from the Camera
@@ -106,32 +119,35 @@ public class TargetingSubsystem extends SubsystemBase {
                 // At least one AprilTag was seen by the camera
                 for (var target : result.getTargets()) {
                     // Find largest AprilTag
-                    if (target.area > area) {
+                    if((m_selectedFidicial > 0) && (target.getFiducialId() == m_selectedFidicial)) {
                         area = target.area;
-                        m_nearestTarget = Optional.of(target.getBestCameraToTarget());
-                    }
+                        m_transForNearestTarget = Optional.of(target.getBestCameraToTarget());
+                    } else if (target.area > area) {
+                        area = target.area;
+                        m_transForNearestTarget = Optional.of(target.getBestCameraToTarget());
+                }
                 }
             }
         }
         
         // Send target to drivetrain
-        if(m_nearestTarget.isPresent())
+        if(m_transForNearestTarget.isPresent())
         {
             Rotation2d correction = new Rotation2d(Math.PI);
-            Rotation2d rotationOfTarget = m_nearestTarget.get().getRotation().toRotation2d().plus(correction);
-            Pose2d poseOfTarget = new Pose2d(m_nearestTarget.get().getX(),m_nearestTarget.get().getY(),rotationOfTarget);
+            Rotation2d rotationOfTarget = m_transForNearestTarget.get().getRotation().toRotation2d().plus(correction);
+            Pose2d poseOfTarget = new Pose2d(m_transForNearestTarget.get().getX(),m_transForNearestTarget.get().getY(),rotationOfTarget);
             m_poseForNearestTarget = Optional.of(poseOfTarget);
         }
     }
 
     private void updateTelemetry() {
-        SmartDashboard.putBoolean("targeting/nearest_target/visible", m_nearestTarget.isPresent());
-        SmartDashboard.putNumber("targeting/nearest_target/x", m_nearestTarget.get().getX());
-        SmartDashboard.putNumber("targeting/nearest_target/y", m_nearestTarget.get().getY());
-        SmartDashboard.putNumber("targeting/nearest_target/z", m_nearestTarget.get().getZ());
-        SmartDashboard.putNumber("targeting/nearest_target/roll", m_nearestTarget.get().getRotation().getX());
-        SmartDashboard.putNumber("targeting/nearest_target/pitch", m_nearestTarget.get().getRotation().getY());
-        SmartDashboard.putNumber("targeting/nearest_target/yaw", m_nearestTarget.get().getRotation().getZ());
+        SmartDashboard.putBoolean("targeting/nearest_target/visible", m_transForNearestTarget.isPresent());
+        SmartDashboard.putNumber("targeting/nearest_target/x", m_transForNearestTarget.get().getX());
+        SmartDashboard.putNumber("targeting/nearest_target/y", m_transForNearestTarget.get().getY());
+        SmartDashboard.putNumber("targeting/nearest_target/z", m_transForNearestTarget.get().getZ());
+        SmartDashboard.putNumber("targeting/nearest_target/roll", m_transForNearestTarget.get().getRotation().getX());
+        SmartDashboard.putNumber("targeting/nearest_target/pitch", m_transForNearestTarget.get().getRotation().getY());
+        SmartDashboard.putNumber("targeting/nearest_target/yaw", m_transForNearestTarget.get().getRotation().getZ());
     }
 
 }
