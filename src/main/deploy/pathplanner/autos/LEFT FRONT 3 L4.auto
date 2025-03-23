@@ -21,30 +21,44 @@
                 }
               },
               {
-                "type": "wait",
+                "type": "race",
                 "data": {
-                  "waitTime": 1.4
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ScoreCoralRight"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 3.1
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "ScoreCoralRight"
+                      }
+                    }
+                  ]
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "raise to station"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LEFT FRONT first score to source"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LEFT FRONT first score to source"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "raise to station"
+                }
+              }
+            ]
           }
         },
         {
@@ -60,7 +74,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.2
+                  "waitTime": 0.6
                 }
               }
             ]
@@ -83,30 +97,44 @@
                 }
               },
               {
-                "type": "wait",
+                "type": "race",
                 "data": {
-                  "waitTime": 1.4
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ScoreCoralLeft"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 3.1
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "ScoreCoralRight"
+                      }
+                    }
+                  ]
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "raise to station"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": " LEFT FRONT second score to source"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": " LEFT FRONT second score to source"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "raise to station"
+                }
+              }
+            ]
           }
         },
         {
@@ -122,7 +150,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.2
+                  "waitTime": 0.6
                 }
               }
             ]
@@ -145,30 +173,44 @@
                 }
               },
               {
-                "type": "wait",
+                "type": "race",
                 "data": {
-                  "waitTime": 1.4
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ScoreCoralRight"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 3.3
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "ScoreCoralLeft"
+                      }
+                    }
+                  ]
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "raise to station"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LEFT FRONT third score to source"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LEFT FRONT third score to source"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "raise to station"
+                }
+              }
+            ]
           }
         }
       ]

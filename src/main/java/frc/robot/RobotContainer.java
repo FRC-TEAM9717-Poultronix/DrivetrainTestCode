@@ -202,13 +202,13 @@ public class RobotContainer
     NamedCommands.registerCommand("Algae In", new IntakeAlgae(m_algae, Constants.AlgaeArmConstants.powerIntake));
 
 
-    NamedCommands.registerCommand("ScoreCoralRight", new AutoScoreCoral(m_targeting, 0.180, 0.3, 10, m_drivebase, m_elevator, m_coral, m_algae));
-    NamedCommands.registerCommand("ScoreCoralLeft", new AutoScoreCoral(m_targeting, -0.180, 0.3, 10, m_drivebase, m_elevator, m_coral, m_algae));
+    NamedCommands.registerCommand("ScoreCoralRight", new AutoScoreCoral(m_targeting, 0.163, 0.3, 10, m_drivebase, m_elevator, m_coral, m_algae));
+    NamedCommands.registerCommand("ScoreCoralLeft", new AutoScoreCoral(m_targeting, -0.163, 0.3, 10, m_drivebase, m_elevator, m_coral, m_algae));
     NamedCommands.registerCommand("Raise to Net", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionNet, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionNet));
     NamedCommands.registerCommand("Algae Out", new LaunchAlgae(m_algae, Constants.AlgaeArmConstants.powerLaunch));
     NamedCommands.registerCommand("raise to A2", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionA2, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionReef));
     NamedCommands.registerCommand("raise to Processor", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionProcessor, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionProcessor)); 
-    
+
     // Setup SmartDashboard chooser options
     m_chooserTeleop.setDefaultOption("driveFieldOrientedDirectAngle", driveFieldOrientedDirectAngle);
     m_chooserTeleop.addOption("driveFieldOrientedAnglularVelocity", driveFieldOrientedAnglularVelocity);
@@ -271,7 +271,7 @@ public class RobotContainer
       m_driverSwitch.button(8).whileTrue(new LaunchAlgae(m_algae, Constants.AlgaeArmConstants.powerLaunch));
 
 
-      m_driver2Xbox.button(7).onTrue(new ElevatorHome(m_elevator));
+   //   m_driver2Xbox.button(7).onTrue(new ElevatorHome(m_elevator));
       m_driver2Xbox.button(5).whileTrue(new ElevatorVelocity(m_elevator, () -> m_driver2Xbox.getLeftY() * -0.3));
       m_driver2Xbox.button(5).whileTrue(new ArmVelocity (m_coral, () -> m_driver2Xbox.getRightY() * -0.3));
       m_driver2Xbox.button(5).whileTrue(new AngleVelocity (m_algae, () -> m_driver2Xbox.getRightX() * -0.3));
@@ -300,7 +300,7 @@ public class RobotContainer
         m_driver2Xbox.pov(180).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionFloor, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionFloor));
        System.out.println("setting to -10 driver 2");
         // net
-        m_driver2Xbox.button(8).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionNet, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionNet ));
+    //    m_driver2Xbox.button(8).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionNet, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionNet ));
         // lollipop
         m_driver2Xbox.button(9).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionLollipop, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionLollipop));}
         System.out.println("setting to 2 degrees driver 2");
@@ -320,6 +320,7 @@ public class RobotContainer
         m_buttonBox.button(9).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL2, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
         m_buttonBox.button(8).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL1, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
         m_buttonBox.button(7).onTrue(new ElevatorPositionAfterHome(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionStation, m_algae, Constants.AlgaeArmConstants.positionUp));
+
 
         //switches
         //home the elevator

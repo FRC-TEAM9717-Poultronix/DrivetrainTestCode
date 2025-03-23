@@ -84,13 +84,13 @@ public static final class Hanger_Constants
     public static final double positionDown = 32;
     public static final double positionFloor = 32;
     public static final double positionProcessor = 34.0;
-    public static final double positionA2 = 60.5;
-    public static final double positionA3 = 78.0;
+    public static final double positionA2 = 59.5;
+    public static final double positionA3 = 76.5;
     public static final double positionNet = 84.0;
     public static final double positionLollipop = 37;
     
     public static final double positionL1 = positionMin;
-    public static final double positionL2 = 39.5;
+    public static final double positionL2 = 39.7;
     public static final double positionL3 = 57.5;
     public static final double positionL4 = 83.5;
 
@@ -126,9 +126,9 @@ public static final class Hanger_Constants
 
        public static final double positionMax = 75.0;
        public static final double positionUp = 68.0;
-       public static final double positionStation = 34.5;
+       public static final double positionStation = 35.5;
        public static final double positionHorizontal = 0.0;
-       public static final double positionReef = -27.0;
+       public static final double positionReef = -29.0;
        public static final double positionMin = -30.0;
   }
 
@@ -153,7 +153,7 @@ public static final class Hanger_Constants
     public static final int powerFollowerID = 33;
 
     public static final double powerLaunch = 1.0;
-    public static final double powerIntake = 0.4;
+    public static final double powerIntake = 0.3;
 
     public static final int MaxCurrentLimitAngle = 40; // Max current limit of elevator motors 
     public static final int MaxCurrentLimitPower = 100; // Max current limit of elevator motors 
@@ -177,11 +177,11 @@ public static final class Hanger_Constants
 
     public static final double positionMax = 85.0;
     public static final double positionUp = 83.0;
-    public static final double positionProcessor = 4.0;
-    public static final double positionReef = -15.0;
+    public static final double positionProcessor = 0.0;
+    public static final double positionReef = -14.0;
     public static final double positionFloor = -24;
     public static final double positionMin = -38.0;
-    public static final double positionNet = 63.0;
+    public static final double positionNet = 64.0;
     public static final double positionLollipop = 2.0;
    }
 

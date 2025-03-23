@@ -74,7 +74,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.65
+                  "waitTime": 0.7
                 }
               }
             ]
@@ -97,30 +97,44 @@
                 }
               },
               {
-                "type": "wait",
+                "type": "race",
                 "data": {
-                  "waitTime": 3.4
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ScoreCoralLeft"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 3.3
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "ScoreCoralLeft"
+                      }
+                    }
+                  ]
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "raise to station"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "RIGHT second score to source"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RIGHT second score to source"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "raise to station"
+                }
+              }
+            ]
           }
         },
         {
@@ -136,7 +150,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.7
+                  "waitTime": 0.6
                 }
               }
             ]
@@ -159,30 +173,63 @@
                 }
               },
               {
-                "type": "wait",
+                "type": "race",
                 "data": {
-                  "waitTime": 1.4
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ScoreCoralRight"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 3.3
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "ScoreCoralRight"
+                      }
+                    }
+                  ]
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "raise to station"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RIGHT third score to source"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "raise to station"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "RIGHT third score to source"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeCoral"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.7
+                }
+              }
+            ]
           }
         }
       ]

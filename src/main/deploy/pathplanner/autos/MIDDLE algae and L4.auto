@@ -27,7 +27,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 3.4
+                        "waitTime": 3.0
                       }
                     },
                     {
@@ -43,21 +43,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "raise to Processor"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "grab algae"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "grab algae"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "raise to Processor"
+                }
+              }
+            ]
           }
         },
         {
@@ -75,7 +76,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 2.5
+            "waitTime": 1.2
           }
         },
         {
@@ -95,7 +96,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 3.5
+                        "waitTime": 1.8
                       }
                     },
                     {
@@ -108,18 +109,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "raise to Processor"
           }
         },
         {
@@ -137,13 +126,19 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 1.5
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Algae Out"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "raise to station"
           }
         }
       ]
