@@ -221,7 +221,9 @@ public class RobotContainer
     m_ChooserAuto.addOption("3 Front Right L4", m_drivebase.getAutonomousCommand("RIGHT FRONT 3 L4"));
     m_ChooserAuto.addOption("3 Front Left L4", m_drivebase.getAutonomousCommand("LEFT FRONT 3 L4"));
     m_ChooserAuto.addOption("Middle L4 and net", m_drivebase.getAutonomousCommand("MIDDLE algae and L4"));
+    m_ChooserAuto.addOption("3 Front Left L4 REVISED", m_drivebase.getAutonomousCommand("LEFT FRONT 3 L4 REVISED"));
 
+    
 
     // m_ChooserAuto.addOption("driveRobotOrientedAngularVelocity", m_drivebase.getAutonomousCommand("New Auto"));
     SmartDashboard.putData("Auto Mode", m_ChooserAuto);
@@ -319,7 +321,7 @@ public class RobotContainer
         m_buttonBox.button(10).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL3, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
         m_buttonBox.button(9).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL2, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
         m_buttonBox.button(8).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionL1, m_coral, Constants.CoralConstants.positionReef, m_algae, Constants.AlgaeArmConstants.positionUp));
-        m_buttonBox.button(7).onTrue(new ElevatorPositionAfterHome(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionStation, m_algae, Constants.AlgaeArmConstants.positionUp));
+        m_buttonBox.button(7).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionStation, m_algae, Constants.AlgaeArmConstants.positionUp));
 
 
         //switches
