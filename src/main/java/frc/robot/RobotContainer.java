@@ -221,9 +221,9 @@ public class RobotContainer
     m_ChooserAuto.addOption("3 Front Right L4", m_drivebase.getAutonomousCommand("RIGHT FRONT 3 L4"));
     m_ChooserAuto.addOption("3 Front Left L4", m_drivebase.getAutonomousCommand("LEFT FRONT 3 L4"));
     m_ChooserAuto.addOption("Middle L4 and net", m_drivebase.getAutonomousCommand("MIDDLE algae and L4"));
-    m_ChooserAuto.addOption("3 Front Left L4 REVISED", m_drivebase.getAutonomousCommand("LEFT FRONT 3 L4 REVISED"));
+  //  m_ChooserAuto.addOption("3 Front Left L4 REVISED", m_drivebase.getAutonomousCommand("LEFT FRONT 3 L4 REVISED"));
 
-    
+
 
     // m_ChooserAuto.addOption("driveRobotOrientedAngularVelocity", m_drivebase.getAutonomousCommand("New Auto"));
     SmartDashboard.putData("Auto Mode", m_ChooserAuto);

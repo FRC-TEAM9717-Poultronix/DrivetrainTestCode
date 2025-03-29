@@ -90,9 +90,9 @@ public static final class Hanger_Constants
     public static final double positionLollipop = 37;
     
     public static final double positionL1 = positionMin;
-    public static final double positionL2 = 39.7;
-    public static final double positionL3 = 57.5;
-    public static final double positionL4 = 83.5;
+    public static final double positionL2 = 40.5;
+    public static final double positionL3 = 58.5;
+    public static final double positionL4 = 84.5;
 
   }
 // stored coral arm positions
@@ -101,8 +101,8 @@ public static final class Hanger_Constants
     public static final int launchID = 21;  
     public static final int armID =22; 
 
-    public static final double powerLaunch = 1.0;
-    public static final double powerIntake = 0.2;
+    public static final double powerLaunch = 0.7;
+    public static final double powerIntake = 0.5;
 
     public static final int MaxCurrentLimitArm = 20; // Max current limit of elevator motors 
     public static final int MaxCurrentLimitLaunch = 20; // Max current limit of elevator motors 

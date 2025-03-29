@@ -4,24 +4,24 @@
     {
       "anchor": {
         "x": 6.749077868852458,
-        "y": 5.8
+        "y": 5.996977459016393
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.1792242037034155,
-        "y": 5.666756627164121
+        "x": 5.722649138585833,
+        "y": 5.634685203924981
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.826,
+        "x": 5.5,
         "y": 5.565
       },
       "prevControl": {
-        "x": 6.53351246831043,
-        "y": 5.753539239964995
+        "x": 6.415114019354524,
+        "y": 5.893233950685316
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,21 +29,7 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [
-    {
-      "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.00920910075839996,
-      "maxWaypointRelativePos": 0.31473456121343507,
-      "constraints": {
-        "maxVelocity": 11.5,
-        "maxAcceleration": 2.0,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0,
-        "nominalVoltage": 12.0,
-        "unlimited": false
-      }
-    }
-  ],
+  "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
@@ -56,22 +42,11 @@
           "name": "raise to L4"
         }
       }
-    },
-    {
-      "name": "ScoreCoralRight",
-      "waypointRelativePos": 0.8001083423618567,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "ScoreCoralRight"
-        }
-      }
     }
   ],
   "globalConstraints": {
     "maxVelocity": 11.5,
-    "maxAcceleration": 4.1,
+    "maxAcceleration": 2.1,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
