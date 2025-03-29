@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.102,
-        "y": 4.055
+        "x": 5.418,
+        "y": 5.661
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.105109834621663,
-        "y": 4.53954959281822
+        "x": 5.385759273722374,
+        "y": 5.908912354611647
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.832991803278689,
-        "y": 5.373616803278688
+        "x": 7.132684426229508,
+        "y": 5.68529713114754
       },
       "prevControl": {
-        "x": 6.891958953665631,
-        "y": 4.92197478878407
+        "x": 7.316596180375702,
+        "y": 5.515955858308135
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,11 +47,11 @@
   "pointTowardsZones": [
     {
       "fieldPosition": {
-        "x": 9.9,
-        "y": 5.5
+        "x": 8.4,
+        "y": 5.6
       },
       "rotationOffset": 0.0,
-      "minWaypointRelativePos": 0.6891279728199267,
+      "minWaypointRelativePos": 0.9279523293607872,
       "maxWaypointRelativePos": 1.0,
       "name": "Point Towards Zone"
     }
@@ -59,14 +59,9 @@
   "eventMarkers": [
     {
       "name": "Raise to Net",
-      "waypointRelativePos": 0.4750812567713977,
+      "waypointRelativePos": 0.4989165763813661,
       "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Raise to Net"
-        }
-      }
+      "command": null
     }
   ],
   "globalConstraints": {
@@ -79,13 +74,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -1.2453642667683515
+    "rotation": -0.7638984609300246
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -119.16799999999999
   },
   "useDefaultConstraints": true
 }

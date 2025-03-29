@@ -79,20 +79,20 @@ public static final class Hanger_Constants
     
     // Stored elevator positions
     public static final double positionMin = 31.5;  //This is more of an intial value than a position.  Travel to all other positions is the listed value minus this one.
-    public static final double positionMax = 84.5;
+    public static final double positionMax = 85.5;
 
     public static final double positionDown = 32;
     public static final double positionFloor = 32;
-    public static final double positionProcessor = 34.0;
-    public static final double positionA2 = 59.5;
-    public static final double positionA3 = 76.5;
-    public static final double positionNet = 84.0;
+    public static final double positionProcessor = 34.5;
+    public static final double positionA2 = 60.0;
+    public static final double positionA3 = 76.8;
+    public static final double positionNet = 83.5;
     public static final double positionLollipop = 37;
     
     public static final double positionL1 = positionMin;
     public static final double positionL2 = 40.5;
     public static final double positionL3 = 58.5;
-    public static final double positionL4 = 84.5;
+    public static final double positionL4 = 83.5;
 
   }
 // stored coral arm positions
@@ -125,7 +125,7 @@ public static final class Hanger_Constants
      public static final double kAF_arm = 0.00;
 
        public static final double positionMax = 75.0;
-       public static final double positionUp = 68.0;
+       public static final double positionUp = 71.0;
        public static final double positionStation = 35.5;
        public static final double positionHorizontal = 0.0;
        public static final double positionReef = -29.0;
@@ -163,7 +163,7 @@ public static final class Hanger_Constants
     public static final double maxAcceleration = 18000.0; // Max acceleration of elevator
     public static final double countsPerDegreePower = 360;   // Encoder ticks per inch of elevator travel
     public static final double countsPerDegreeAngle = 360;   // Encoder ticks per inch of elevator travel
-    public static final double posTolerance = 8.0;    // Tolerance for PID control of elevator
+    public static final double posTolerance = 9.0;    // Tolerance for PID control of elevator
 
     // PID values
     public static final double kP_angle = 0.02;
@@ -178,10 +178,10 @@ public static final class Hanger_Constants
     public static final double positionMax = 85.0;
     public static final double positionUp = 83.0;
     public static final double positionProcessor = 0.0;
-    public static final double positionReef = -14.0;
+    public static final double positionReef = -18.0;
     public static final double positionFloor = -24;
     public static final double positionMin = -38.0;
-    public static final double positionNet = 64.0;
+    public static final double positionNet = 63.0;
     public static final double positionLollipop = 2.0;
    }
 

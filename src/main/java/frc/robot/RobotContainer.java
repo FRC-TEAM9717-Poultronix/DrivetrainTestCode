@@ -208,6 +208,8 @@ public class RobotContainer
     NamedCommands.registerCommand("Algae Out", new LaunchAlgae(m_algae, Constants.AlgaeArmConstants.powerLaunch));
     NamedCommands.registerCommand("raise to A2", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionA2, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionReef));
     NamedCommands.registerCommand("raise to Processor", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionProcessor, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionProcessor)); 
+    NamedCommands.registerCommand("raise to A3", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionA3, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionReef));
+
 
     // Setup SmartDashboard chooser options
     m_chooserTeleop.setDefaultOption("driveFieldOrientedDirectAngle", driveFieldOrientedDirectAngle);
