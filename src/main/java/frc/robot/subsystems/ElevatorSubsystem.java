@@ -21,9 +21,10 @@ import frc.robot.Constants;
 import frc.robot.Constants.ElevatorConstants;
 
 public class ElevatorSubsystem extends SubsystemBase {
-    private final SparkMax m_primaryMotor;
-    private final SparkMax m_followerMotor;
-    private final RelativeEncoder m_encoder;
+    private final SparkMax m_motorPrimary;
+    private final SparkMax m_motorFollower;
+    private final RelativeEncoder m_encoderPrimary;
+    private final RelativeEncoder m_encoderFollower;
     private final SparkClosedLoopController m_closedLoopController;
 
     private boolean m_atSetPoint = false;
@@ -35,9 +36,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     private SparkMaxConfig m_followerConfig = new SparkMaxConfig();
 
     private double m_setpoint = ElevatorConstants.positionDown;
-    private double m_currentVelocity;
-    private double m_currentPosition;
-    private double m_currentCurrent;
+    private double m_velocityPrimary;
+    private double m_positionPrimary;
+    private double m_velocityFollower;
+    private double m_positionFollower;
+    private double m_outputPrimary;
+    private double m_currentPrimary;
+    private double m_outputFollower;
+    private double m_currentFollower;
 
     // enum of pre-defined positions
     public enum ElevatorPosition {
@@ -55,11 +61,12 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     // Constructor
     public ElevatorSubsystem() {
-        m_primaryMotor = new SparkMax(ElevatorConstants.rightElevatorID, MotorType.kBrushless);
-        m_followerMotor = new SparkMax(ElevatorConstants.leftElevatorID, MotorType.kBrushless);
+        m_motorPrimary = new SparkMax(ElevatorConstants.rightElevatorID, MotorType.kBrushless);
+        m_motorFollower = new SparkMax(ElevatorConstants.leftElevatorID, MotorType.kBrushless);
 
-        m_encoder = m_primaryMotor.getEncoder();
-        m_closedLoopController = m_primaryMotor.getClosedLoopController();
+        m_encoderPrimary = m_motorPrimary.getEncoder();
+        m_encoderFollower = m_motorFollower.getEncoder();
+        m_closedLoopController = m_motorPrimary.getClosedLoopController();
         
         configureMotors();
     }
@@ -100,25 +107,32 @@ public class ElevatorSubsystem extends SubsystemBase {
                               .outputRange(-1.0, 1.0);
 
         // Special follower settings
-        m_followerConfig.follow(m_primaryMotor, true);  
+        m_followerConfig.follow(m_motorPrimary, true);  
 
         // Send setting to motors
-        m_primaryMotor.configure(m_leaderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        m_followerMotor.configure(m_followerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        m_motorPrimary.configure(m_leaderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        m_motorFollower.configure(m_followerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         // Zero elevator motor assuming it is min position on startup 
-        m_encoder.setPosition(Constants.ElevatorConstants.positionMin);
+        m_encoderPrimary.setPosition(Constants.ElevatorConstants.positionMin);
     }
 
     @Override
     public void periodic() {
 
         // Gather Telemetry
-        m_currentVelocity = m_encoder.getVelocity();
-        m_currentPosition = m_encoder.getPosition();
-        m_currentCurrent  = m_primaryMotor.getOutputCurrent();
-        m_isStalled = m_primaryMotor.getWarnings().stall;
-        m_atSetPoint = Math.abs(m_currentPosition - m_setpoint) < ElevatorConstants.posTolerance;
+        m_velocityPrimary = m_encoderPrimary.getVelocity();
+        m_positionPrimary = m_encoderPrimary.getPosition();
+        m_velocityFollower = m_encoderFollower.getVelocity();
+        m_positionFollower = m_encoderFollower.getPosition();
+
+        m_outputPrimary = m_motorPrimary.getAppliedOutput();
+        m_currentPrimary  = m_motorPrimary.getOutputCurrent();
+        m_outputFollower = m_motorFollower.getAppliedOutput();
+        m_currentFollower  = m_motorFollower.getOutputCurrent();
+
+        m_isStalled = m_motorPrimary.getWarnings().stall;
+        m_atSetPoint = Math.abs(m_positionPrimary - m_setpoint) < ElevatorConstants.posTolerance;
 
         // Update SmartDashboard
         updateTelemetry();
@@ -137,24 +151,35 @@ public class ElevatorSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("elevator/height", getHeightInches());
         SmartDashboard.putNumber("elevator/set_point", m_setpoint);
 
-        SmartDashboard.putNumber("elevator/velocity", getVelocity());
-        SmartDashboard.putNumber("elevator/motor_current", getCurrent());
+        SmartDashboard.putNumber("elevator/primary/position", m_positionPrimary);
+        SmartDashboard.putNumber("elevator/primary/velocity", m_velocityPrimary);
+        SmartDashboard.putNumber("elevator/primary/motor_output", m_outputPrimary);
+        SmartDashboard.putNumber("elevator/primary/motor_current", m_currentPrimary);
+
+        SmartDashboard.putNumber("elevator/follower/position", m_positionFollower);
+        SmartDashboard.putNumber("elevator/follower/velocity", m_velocityFollower);
+        SmartDashboard.putNumber("elevator/follower/motor_output", m_outputFollower);
+        SmartDashboard.putNumber("elevator/follower/motor_current", m_currentFollower);
     }
 
     public void stopMotors() {
-        m_primaryMotor.set(0);
+        m_motorPrimary.set(0);
     }
 
     public double getVelocity() {
-        return m_currentVelocity;
+        return m_velocityPrimary;
+    }
+
+    public double getOutput() {
+        return m_outputPrimary;
     }
 
     public double getCurrent() {
-        return m_currentCurrent;
+        return m_currentPrimary;
     }
 
     public double getHeightInches() {
-        return m_currentPosition;
+        return m_positionPrimary;
     }
 
     public boolean isStalled() {
@@ -170,7 +195,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
     
     public boolean isAtPosition(ElevatorPosition position) {
-        return Math.abs(m_currentPosition - position.positionInches) < ElevatorConstants.posTolerance;
+        return Math.abs(m_positionPrimary - position.positionInches) < ElevatorConstants.posTolerance;
     }
 
     public boolean disableSoftLimits() {
@@ -181,7 +206,7 @@ public class ElevatorSubsystem extends SubsystemBase {
                 .reverseSoftLimitEnabled(false);
         
         m_leaderConfig.apply(newLimit);
-        m_primaryMotor.configure(m_leaderConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        m_motorPrimary.configure(m_leaderConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
 
         return true;
     }
@@ -192,14 +217,14 @@ public class ElevatorSubsystem extends SubsystemBase {
                 .reverseSoftLimitEnabled(true);
         
         m_leaderConfig.apply(newLimit);
-        m_primaryMotor.configure(m_leaderConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+        m_motorPrimary.configure(m_leaderConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
 
         return true;
     }
 
     public boolean setHome() {
         
-        REVLibError error =  m_encoder.setPosition(Constants.ElevatorConstants.positionMin);
+        REVLibError error =  m_encoderPrimary.setPosition(Constants.ElevatorConstants.positionMin);
         System.out.print("  Homed to "); System.out.println(Constants.ElevatorConstants.positionMin);
         enableSoftLimits();
         m_isHomed = true;
@@ -232,12 +257,12 @@ public class ElevatorSubsystem extends SubsystemBase {
         // Disable PID control when in manual mode
         m_isManual = true;
         
-        m_primaryMotor.set(MathUtil.clamp(power + ElevatorConstants.kAF, -ElevatorConstants.maxOutput, ElevatorConstants.maxOutput));
+        m_motorPrimary.set(MathUtil.clamp(power + ElevatorConstants.kAF, -ElevatorConstants.maxOutput, ElevatorConstants.maxOutput));
     }
 
     public double getElevatorThrottle()
     {
-        double numerator = (m_currentPosition - ElevatorConstants.positionMin);
+        double numerator = (m_positionPrimary - ElevatorConstants.positionMin);
         double denominator = (ElevatorConstants.positionMax - ElevatorConstants.positionMin);
         
         return (1.0 - numerator/denominator);
