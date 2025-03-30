@@ -86,6 +86,7 @@ public class ElevatorSubsystem extends SubsystemBase {
                         .voltageCompensation(12.0);   
 
         m_leaderConfig.encoder.positionConversionFactor(ElevatorConstants.countsPerInch)
+    //    System.out.println("lead");
                               .velocityConversionFactor(ElevatorConstants.countsPerInch/60);
 
         m_followerConfig.encoder.positionConversionFactor(ElevatorConstants.countsPerInch)

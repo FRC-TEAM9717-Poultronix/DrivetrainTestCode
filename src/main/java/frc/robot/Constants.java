@@ -63,13 +63,13 @@ public static final class Hanger_Constants
 
     public static final int MaxCurrentLimit = 40; // Max current limit of elevator motors 
     public static final double maxOutput = 1.0;   // Max power output of elevator motors
-    public static final double maxVelocity = 20000.0; // Max velocity of elevator
-    public static final double maxAcceleration = 20000; // Max acceleration of elevator
+    public static final double maxVelocity = 15000.0; // Max velocity of elevator
+    public static final double maxAcceleration = 10000; // Max acceleration of elevator
     public static final double countsPerInch = 0.9861;   // Encoder ticks per inch of elevator travel
-    public static final double posTolerance = 2;    // Tolerance for PID control of elevator
+    public static final double posTolerance = 0.25;    // Tolerance for PID control of elevator
 
     // PID values
-    public static final double kP = 0.1;
+    public static final double kP = 0.65;
     public static final double kI = 0.0;
     public static final double kD = 0.02;
     public static final double kIz = 20;
@@ -86,13 +86,13 @@ public static final class Hanger_Constants
     public static final double positionProcessor = 34.5;
     public static final double positionA2 = 60.0;
     public static final double positionA3 = 76.8;
-    public static final double positionNet = 83.5;
+    public static final double positionNet = 82.5;
     public static final double positionLollipop = 37;
     
-    public static final double positionL1 = positionMin;
+    public static final double positionL1 = 32;
     public static final double positionL2 = 40.5;
-    public static final double positionL3 = 58.5;
-    public static final double positionL4 = 83.5;
+    public static final double positionL3 = 57.75;
+    public static final double positionL4 = 82.5;
 
   }
 // stored coral arm positions
@@ -163,7 +163,7 @@ public static final class Hanger_Constants
     public static final double maxAcceleration = 18000.0; // Max acceleration of elevator
     public static final double countsPerDegreePower = 360;   // Encoder ticks per inch of elevator travel
     public static final double countsPerDegreeAngle = 360;   // Encoder ticks per inch of elevator travel
-    public static final double posTolerance = 9.0;    // Tolerance for PID control of elevator
+    public static final double posTolerance = 10.0;    // Tolerance for PID control of elevator
 
     // PID values
     public static final double kP_angle = 0.02;
