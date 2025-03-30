@@ -209,6 +209,9 @@ public class ElevatorSubsystem extends SubsystemBase {
         m_leaderConfig.apply(newLimit);
         m_motorPrimary.configure(m_leaderConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
 
+        m_followerConfig.apply(newLimit);
+        m_motorFollower.configure(m_leaderConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+
         return true;
     }
 
@@ -225,7 +228,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public boolean setHome() {
         
-        REVLibError error =  m_encoderPrimary.setPosition(Constants.ElevatorConstants.positionMin);
+        m_encoderPrimary.setPosition(Constants.ElevatorConstants.positionMin);
+        m_encoderFollower.setPosition(Constants.ElevatorConstants.positionMin);
         System.out.print("  Homed to "); System.out.println(Constants.ElevatorConstants.positionMin);
         enableSoftLimits();
         m_isHomed = true;
