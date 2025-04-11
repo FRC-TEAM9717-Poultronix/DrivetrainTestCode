@@ -202,8 +202,8 @@ public class RobotContainer
     NamedCommands.registerCommand("Algae In", new IntakeAlgae(m_algae, Constants.AlgaeArmConstants.powerIntake));
 
 
-    NamedCommands.registerCommand("ScoreCoralRight", new AutoScoreCoral(m_targeting, 0.163, 0.3, 10, m_drivebase, m_elevator, m_coral, m_algae));
-    NamedCommands.registerCommand("ScoreCoralLeft", new AutoScoreCoral(m_targeting, -0.163, 0.3, 10, m_drivebase, m_elevator, m_coral, m_algae));
+    NamedCommands.registerCommand("ScoreCoralRight", new AutoScoreCoral(m_targeting, 0.155, 0.26, 10, m_drivebase, m_elevator, m_coral, m_algae));
+    NamedCommands.registerCommand("ScoreCoralLeft", new AutoScoreCoral(m_targeting, -0.155, 0.26, 10, m_drivebase, m_elevator, m_coral, m_algae));
     NamedCommands.registerCommand("Raise to Net", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionNet, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionNet));
     NamedCommands.registerCommand("Algae Out", new LaunchAlgae(m_algae, Constants.AlgaeArmConstants.powerLaunch));
     NamedCommands.registerCommand("raise to A2", new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionA2, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionReef));
@@ -335,6 +335,8 @@ public class RobotContainer
         m_switchBox.button(5).onTrue(new HangReversePosition(m_hanger));
        // m_switchBox.button(5).onTrue(new ElevatorPosition(m_elevator, Constants.ElevatorConstants.positionDown, m_coral, Constants.CoralConstants.positionUp, m_algae, Constants.AlgaeArmConstants.positionUp));
         m_switchBox.button(6).whileTrue(new HangHang(m_hanger));
+        m_driverSwitch.button(14).onTrue(new HangReversePosition(m_hanger));
+        m_driverSwitch.button(13).whileTrue(new HangHang(m_hanger));
     }      
     
 

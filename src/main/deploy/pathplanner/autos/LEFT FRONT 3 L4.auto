@@ -21,7 +21,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 2.45
+                        "waitTime": 3.1
                       }
                     },
                     {
@@ -31,6 +31,25 @@
                       }
                     }
                   ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "LaunchCoral"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.3
                 }
               }
             ]
@@ -91,7 +110,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 2.2
+                        "waitTime": 3.0
                       }
                     },
                     {
@@ -101,6 +120,25 @@
                       }
                     }
                   ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "LaunchCoral"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.3
                 }
               }
             ]
@@ -161,7 +199,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 2.25
+                        "waitTime": 2.6
                       }
                     },
                     {

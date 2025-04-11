@@ -64,7 +64,7 @@ public static final class Hanger_Constants
     public static final int MaxCurrentLimit = 40; // Max current limit of elevator motors 
     public static final double maxOutput = 1.0;   // Max power output of elevator motors
     public static final double maxVelocity = 1000.0; // Max velocity of elevator
-    public static final double maxAcceleration = 13500; // Max acceleration of elevator
+    public static final double maxAcceleration = 13000; // Max acceleration of elevator
     public static final double countsPerInch = 0.9861;   // Encoder ticks per inch of elevator travel
     public static final double posTolerance = 0.25;    // Tolerance for PID control of elevator
 
@@ -189,9 +189,9 @@ public static final class HangerConstants
 {
   public static final int RightHangerID = 40;  // Can Id of Hanger motor right
   public static final int LeftHangerID = 41;  // Can Id of Hanger motor left
-  public static final double StartingAngle = 50.0;
+  public static final double StartingAngle = 60.0;
   public static final double ReverseAngle = 24.0;
-  public static final double HangAngle = 91;
+  public static final double HangAngle = 80;
   public static final double HangPower = 1; 
   public static final double HangRampRate = 1.0;
   public static final double PGain = 0.005;
